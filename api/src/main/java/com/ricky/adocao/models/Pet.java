@@ -4,7 +4,7 @@ import com.ricky.adocao.enums.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -12,7 +12,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PET_ID")
-    private String id;
+    private Long id;
 
     @Column(name = "NOME")
     private String nome;
@@ -36,8 +36,8 @@ public class Pet {
     private PetGeneroEnum genero;
 
     @Column(name = "DATA_PUBLICACAO")
-    @Temporal(TemporalType.TIME)
-    private LocalDate dataPublicacao;
+    @Temporal(TemporalType.DATE)
+    private Date dataPublicacao;
 
     @Lob
     @Column(name = "foto")
