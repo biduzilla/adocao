@@ -1,9 +1,6 @@
 package com.ricky.adocao.models;
 
-import com.ricky.adocao.enums.PetGeneroEnum;
-import com.ricky.adocao.enums.PetIdadeEnum;
-import com.ricky.adocao.enums.PetTipoAnimalEnum;
-import com.ricky.adocao.enums.PetTipoEnum;
+import com.ricky.adocao.enums.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,7 +22,7 @@ public class Pet {
     private PetIdadeEnum idade;
 
     @Column(name = "LOCALIZACAO")
-    private String localizacao;
+    private PetCidadeEnum localizacao;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
