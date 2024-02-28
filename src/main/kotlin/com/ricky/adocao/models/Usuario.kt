@@ -7,7 +7,7 @@ data class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "USER_ID")
-    val id: String? = null,
+    val id: String,
 
     @Column(name = "NOME", length = 50)
     val nome: String,

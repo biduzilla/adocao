@@ -11,32 +11,32 @@ data class Pet(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "PET_ID")
-    val id: String? = null,
+    val id: String,
 
     @Column(name = "NOME")
-    private var nome: String? = null,
+    private var nome: String,
 
     @Column(name = "IDADE")
     @Enumerated(EnumType.STRING)
-    val idade: PetIdadeEnum? = null,
+    val idade: PetIdadeEnum,
 
     @Column(name = "LOCALIZACAO")
-    val localizacao: PetCidadeEnum? = null,
+    val localizacao: PetCidadeEnum,
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
-    val usuario: Usuario? = null,
+    val usuario: Usuario,
 
     @Column(name = "DESCRICAO")
-    val descricao: String? = null,
+    val descricao: String,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "GENERO")
-    val genero: PetGeneroEnum? = null,
+    val genero: PetGeneroEnum,
 
     @Column(name = "DATA_PUBLICACAO")
     @Temporal(TemporalType.DATE)
-    val dataPublicacao: Date? = null,
+    val dataPublicacao: Date,
 
     @Lob
     @Column(name = "FOTO")
@@ -44,11 +44,11 @@ data class Pet(
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    val status: PetStatusEnum? = null,
+    val status: PetStatusEnum,
 
     @Column(name = "TIPO_ANIMAL")
     @Enumerated(EnumType.STRING)
-    val tipoAnimal: PetTipoAnimalEnum? = null,
+    val tipoAnimal: PetTipoAnimalEnum,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

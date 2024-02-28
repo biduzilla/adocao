@@ -10,7 +10,7 @@ import lombok.Setter
 @Getter
 @Setter
 data class UsuarioDTO(
-    val id: String? = null,
+    val id: String,
     val nome: String,
     val login: String,
     val email: String,

@@ -1,24 +1,24 @@
 package com.ricky.adocao.service
 
-import com.ricky.adocao.dto.UsuarioDTO
 import com.ricky.adocao.exception.NotFoundException
-import com.ricky.adocao.mapper.UsuarioToDTO
+import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
 class UsuarioService(
     private val usuarioRepository: UsuarioRepository,
-    private val usuarioMapper: UsuarioToDTO
+    private val usuarioMapper: UsuarioDTOMapper
 ) {
-    fun findAll(): List<UsuarioDTO> {
-        return usuarioRepository.findAll().map(usuarioMapper::map)
+    fun findAll(pageable: Pageable): Page<Usuario> {
+        return usuarioRepository.findAll(pageable)
     }
 
-    fun findAllById(idUser: String): UsuarioDTO {
-        return usuarioRepository.findById(idUser).map(usuarioMapper::map)
-            .orElseThrow { NotFoundException("usuario.nao.encotrado") }
+    fun findById(idUser: String): Usuario {
+        return usuarioRepository.findById(idUser).orElseThrow { NotFoundException("usuario.nao.encotrado") }
     }
 
     fun save(usuario: Usuario): Usuario {
