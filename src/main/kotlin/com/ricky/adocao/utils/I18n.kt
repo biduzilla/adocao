@@ -1,0 +1,13 @@
+package com.ricky.adocao.utils
+
+import org.springframework.context.MessageSource
+import org.springframework.stereotype.Component
+import java.util.*
+
+@Component
+class I18n(private val messageSource: MessageSource) {
+
+    fun getMessage(message:String):String{
+        return messageSource.getMessage(message, null, Locale.getDefault())
+    }
+}

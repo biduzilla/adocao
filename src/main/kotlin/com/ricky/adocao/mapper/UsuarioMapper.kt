@@ -2,7 +2,6 @@ package com.ricky.adocao.mapper
 
 import com.ricky.adocao.dto.UsuarioDTO
 import com.ricky.adocao.models.Usuario
-import com.ricky.adocao.service.UsuarioService
 import org.springframework.stereotype.Component
 
 @Component
