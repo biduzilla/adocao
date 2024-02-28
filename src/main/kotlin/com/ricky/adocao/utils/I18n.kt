@@ -7,7 +7,15 @@ import java.util.*
 @Component
 class I18n(private val messageSource: MessageSource) {
 
-    fun getMessage(message:String):String{
+    fun getMessage(message: String): String {
         return messageSource.getMessage(message, null, Locale.getDefault())
+    }
+
+    fun getMessage(message: String, locale: Locale): String {
+        return messageSource.getMessage(message, null, locale)
+    }
+
+    fun getMessage(message: String, vararg args: Any, locale: Locale): String {
+        return messageSource.getMessage(message, args, locale)
     }
 }
