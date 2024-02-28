@@ -1,8 +1,6 @@
 package com.ricky.adocao.controller
 
-import com.ricky.adocao.dto.RegisterDTO
 import com.ricky.adocao.dto.UsuarioDTO
-import com.ricky.adocao.mapper.RegisterToUsuario
 import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.mapper.UsuarioMapper
 import com.ricky.adocao.service.UsuarioService
@@ -25,7 +23,6 @@ class UsuarioController(
     private val usuarioService: UsuarioService,
     private val usuarioDTOMapper: UsuarioDTOMapper,
     private val usuarioMapper: UsuarioMapper,
-    private val registerToUsuario: RegisterToUsuario
 ) {
 
     @GetMapping
@@ -48,8 +45,8 @@ class UsuarioController(
     @PostMapping
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
-    fun insert(@RequestBody registerDTO: RegisterDTO): ResponseEntity<UsuarioDTO> {
-        val userSalvar = registerToUsuario.map(registerDTO)
+    fun insert(@RequestBody usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
+        val userSalvar = usuarioMapper.map(usuarioDTO)
         val user = usuarioService.save(userSalvar)
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(user))
     }

@@ -7,20 +7,20 @@ data class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "USER_ID")
-    var id: String? = null,
+    var id: String = "",
 
     @Column(name = "NOME", length = 50)
-    var nome: String,
+    var nome: String = "",
 
     @Column(name = "LOGIN", length = 50)
-    var login: String,
+    var login: String = "",
 
     @Column(name = "SENHA")
-    var senha: String,
+    var senha: String = "",
 
     @Column(name = "EMAIL", length = 50)
-    var email: String,
+    var email: String = "",
 
     @Column(name = "TELEFONE", length = 10)
-    var telefone: String,
+    var telefone: String = "",
 )

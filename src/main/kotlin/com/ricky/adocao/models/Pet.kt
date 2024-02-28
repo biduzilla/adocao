@@ -3,7 +3,8 @@ package com.ricky.adocao.models
 import com.ricky.adocao.enums.*
 import jakarta.persistence.*
 import lombok.Data
-import java.sql.Date
+import java.time.Instant
+import java.util.*
 
 @Entity
 @Data
@@ -11,44 +12,44 @@ data class Pet(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "PET_ID")
-    val id: String,
+    var id: String = "",
 
     @Column(name = "NOME")
-    private var nome: String,
+    var nome: String = "",
 
     @Column(name = "IDADE")
     @Enumerated(EnumType.STRING)
-    val idade: PetIdadeEnum,
+    var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
 
     @Column(name = "LOCALIZACAO")
-    val localizacao: PetCidadeEnum,
+    var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
-    val usuario: Usuario,
+    var usuario: Usuario = Usuario(),
 
     @Column(name = "DESCRICAO")
-    val descricao: String,
+    var descricao: String = "",
 
     @Enumerated(EnumType.STRING)
     @Column(name = "GENERO")
-    val genero: PetGeneroEnum,
+    var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
 
     @Column(name = "DATA_PUBLICACAO")
     @Temporal(TemporalType.DATE)
-    val dataPublicacao: Date,
+    var dataPublicacao: Date = Date.from(Instant.now()),
 
     @Lob
     @Column(name = "FOTO")
-    val foto: ByteArray,
+    var foto: ByteArray = ByteArray(0),
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
-    val status: PetStatusEnum,
+    var status: PetStatusEnum = PetStatusEnum.ACHADO,
 
     @Column(name = "TIPO_ANIMAL")
     @Enumerated(EnumType.STRING)
-    val tipoAnimal: PetTipoAnimalEnum,
+    var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -72,17 +73,17 @@ data class Pet(
     }
 
     override fun hashCode(): Int {
-        var result = id?.hashCode() ?: 0
-        result = 31 * result + (nome?.hashCode() ?: 0)
-        result = 31 * result + (idade?.hashCode() ?: 0)
-        result = 31 * result + (localizacao?.hashCode() ?: 0)
-        result = 31 * result + (usuario?.hashCode() ?: 0)
-        result = 31 * result + (descricao?.hashCode() ?: 0)
-        result = 31 * result + (genero?.hashCode() ?: 0)
-        result = 31 * result + (dataPublicacao?.hashCode() ?: 0)
+        var result = id.hashCode()
+        result = 31 * result + nome.hashCode()
+        result = 31 * result + idade.hashCode()
+        result = 31 * result + localizacao.hashCode()
+        result = 31 * result + usuario.hashCode()
+        result = 31 * result + descricao.hashCode()
+        result = 31 * result + genero.hashCode()
+        result = 31 * result + dataPublicacao.hashCode()
         result = 31 * result + foto.contentHashCode()
-        result = 31 * result + (status?.hashCode() ?: 0)
-        result = 31 * result + (tipoAnimal?.hashCode() ?: 0)
+        result = 31 * result + status.hashCode()
+        result = 31 * result + tipoAnimal.hashCode()
         return result
     }
 }

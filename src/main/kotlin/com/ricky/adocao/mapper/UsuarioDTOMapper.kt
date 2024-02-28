@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class UsuarioDTOMapper:Mapper<Usuario, UsuarioDTO> {
     override fun map(t: Usuario): UsuarioDTO {
         return UsuarioDTO(
-            id= t.id!!,
+            id= t.id,
             nome = t.nome,
             login = t.login,
             email = t.email,
