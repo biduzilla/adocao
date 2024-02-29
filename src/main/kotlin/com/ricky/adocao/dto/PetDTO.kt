@@ -18,8 +18,7 @@ data class PetDTO(
     var foto: ByteArray = ByteArray(0),
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
-    var dono: String ="",
-    var telefone:String="",
+    var donoId:String = "",
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

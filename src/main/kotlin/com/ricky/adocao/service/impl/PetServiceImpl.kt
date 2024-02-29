@@ -2,8 +2,10 @@ package com.ricky.adocao.service.impl
 
 import com.ricky.adocao.exception.NotFoundException
 import com.ricky.adocao.models.Pet
+import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.PetRepository
 import com.ricky.adocao.service.PetService
+import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class PetServiceImpl(
     private val petRepository: PetRepository,
+    private val usuarioService: UsuarioService,
     private val i18n: I18n
 ) : PetService {
     override fun findAll(search: String?, pageable: Pageable): Page<Pet> {
@@ -26,7 +29,13 @@ class PetServiceImpl(
         return petRepository.findById(idPet).orElseThrow { NotFoundException(i18n.getMessage("pet.nao.encontrado")) }
     }
 
-    override fun save(pet: Pet): Pet {
+    override fun findUsuarioByPet(pet: Pet): Usuario {
+        return petRepository.findUsuarioByPet(pet)
+    }
+
+    override fun save(pet: Pet, userId: String): Pet {
+        val usuario = usuarioService.findById(userId)
+        pet.usuario = usuario
         return petRepository.save(pet)
     }
 

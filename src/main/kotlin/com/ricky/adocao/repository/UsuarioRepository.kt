@@ -1,7 +1,13 @@
 package com.ricky.adocao.repository
 
+import com.ricky.adocao.models.Pet
 import com.ricky.adocao.models.Usuario
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import java.util.Optional
 
 interface UsuarioRepository:JpaRepository<Usuario,String>{
+
+
 }
