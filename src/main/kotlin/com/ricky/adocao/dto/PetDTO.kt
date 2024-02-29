@@ -1,22 +1,29 @@
 package com.ricky.adocao.dto
 
 import com.ricky.adocao.enums.*
-import com.ricky.adocao.models.Usuario
-import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
+
+import jakarta.validation.constraints.NotEmpty
 import java.time.Instant
 import java.util.*
 
 data class PetDTO(
     var id: String = "",
+    @field:NotBlank(message = "{nome.obrigatorio}")
     var nome: String = "",
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
+    @field:NotEmpty(message = "{localizacao.obrigatorio}")
     var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
     var usuario: UsuarioDTO = UsuarioDTO(),
+    @field:NotBlank(message = "{descricao.obrigatorio}")
     var descricao: String = "",
+    @field:NotEmpty(message = "{genero.obrigatorio}")
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
     var dataPublicacao: Date = Date.from(Instant.now()),
     var foto: ByteArray = ByteArray(0),
+    @field:NotEmpty(message = "{status.obrigatorio}")
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
+    @field:NotEmpty(message = "{tipoAnimal.obrigatorio}")
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     var donoId:String = "",
 ) {

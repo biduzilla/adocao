@@ -6,6 +6,7 @@ import com.ricky.adocao.mapper.UsuarioMapper
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.CacheConstants
 import jakarta.transaction.Transactional
+import jakarta.validation.Valid
 import org.springframework.beans.BeanUtils
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -45,7 +46,7 @@ class UsuarioController(
     @PostMapping
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
-    fun insert(@RequestBody usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
+    fun insert(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
         val userSalvar = usuarioMapper.map(usuarioDTO)
         val user = usuarioService.save(userSalvar)
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(user))
@@ -54,7 +55,7 @@ class UsuarioController(
     @PutMapping
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
-    fun update(@RequestBody usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
+    fun update(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
         val usuario = usuarioService.update(usuarioMapper.map(usuarioDTO))
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(usuario))
     }

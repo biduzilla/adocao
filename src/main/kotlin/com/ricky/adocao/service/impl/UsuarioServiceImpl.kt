@@ -1,7 +1,6 @@
 package com.ricky.adocao.service.impl
 
 import com.ricky.adocao.exception.NotFoundException
-import com.ricky.adocao.models.Pet
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
 import com.ricky.adocao.service.UsuarioService
