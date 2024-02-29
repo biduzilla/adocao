@@ -9,6 +9,7 @@ interface PetService {
     fun findAll(search:String?,pageable: Pageable): Page<Pet>
     fun findById(idPet:String):Pet
     fun findUsuarioByPet(pet: Pet): Usuario
+    fun update(pet:Pet):Pet
     fun save(pet: Pet, userId:String):Pet
     fun delete(pet: Pet)
     fun deleteById(idPet:String)

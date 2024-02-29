@@ -7,6 +7,7 @@ import com.ricky.adocao.repository.PetRepository
 import com.ricky.adocao.service.PetService
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
+import org.springframework.beans.BeanUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -31,6 +32,12 @@ class PetServiceImpl(
 
     override fun findUsuarioByPet(pet: Pet): Usuario {
         return petRepository.findUsuarioByPet(pet)
+    }
+
+    override fun update(pet: Pet): Pet {
+        val petRecuperado = findById(pet.id)
+        BeanUtils.copyProperties(pet, petRecuperado)
+        return save(petRecuperado, petRecuperado.usuario.id)
     }
 
     override fun save(pet: Pet, userId: String): Pet {

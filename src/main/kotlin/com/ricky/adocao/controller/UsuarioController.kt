@@ -55,11 +55,8 @@ class UsuarioController(
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun update(@RequestBody usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
-        val user = usuarioService.findById(usuarioDTO.id)
-        BeanUtils.copyProperties( usuarioDTO, user)
-        val usuarioSalvo = usuarioService.save(user)
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(usuarioSalvo))
+        val usuario = usuarioService.update(usuarioMapper.map(usuarioDTO))
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(usuario))
     }
 
     @DeleteMapping("{idUsuario}")

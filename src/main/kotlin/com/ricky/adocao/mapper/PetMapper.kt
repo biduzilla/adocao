@@ -2,27 +2,24 @@ package com.ricky.adocao.mapper
 
 import com.ricky.adocao.dto.PetDTO
 import com.ricky.adocao.models.Pet
-import com.ricky.adocao.service.PetService
+import com.ricky.adocao.service.UsuarioService
 import org.springframework.stereotype.Component
 
 @Component
-class PetDTOMapper(private val petService: PetService,
-    private val usuarioDTOMapper: UsuarioDTOMapper) : Mapper<Pet, PetDTO> {
-    override fun map(t: Pet): PetDTO {
-        val usuario = petService.findUsuarioByPet(t)
-        return PetDTO(
+class PetMapper(private val usuarioService: UsuarioService) : Mapper<PetDTO, Pet> {
+    override fun map(t: PetDTO): Pet {
+        return Pet(
             id = t.id,
             nome = t.nome,
             idade = t.idade,
             localizacao = t.localizacao,
-            usuario = usuarioDTOMapper.map(usuario),
+            usuario = usuarioService.findById(t.donoId),
             descricao = t.descricao,
             genero = t.genero,
             dataPublicacao = t.dataPublicacao,
             foto = t.foto,
             status = t.status,
-            tipoAnimal = t.tipoAnimal,
-            donoId = usuario.id
+            tipoAnimal = t.tipoAnimal
         )
     }
 }

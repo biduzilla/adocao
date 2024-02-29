@@ -11,7 +11,7 @@ data class PetDTO(
     var nome: String = "",
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
     var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
-    var usuario: Usuario = Usuario(),
+    var usuario: UsuarioDTO = UsuarioDTO(),
     var descricao: String = "",
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
     var dataPublicacao: Date = Date.from(Instant.now()),
