@@ -1,4 +1,6 @@
 spring:
+  flyway:
+    depends-on: entityManagerFactory
   datasource:
     username: toddy
     url: jdbc:h2:mem:testdb
@@ -16,3 +18,8 @@ spring:
         show_sql: 'true'
 #    hibernate:
 #      ddl-auto: update
+
+security:
+  jwt:
+    key: dGVuaG8gcXVlIHBhc3NlYXIgY29tIGVsZXM=
+    expiracao: '30'

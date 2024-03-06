@@ -10,5 +10,6 @@ create table PET (
     STATUS varchar(255),
     TIPO_ANIMAL varchar(255),
     USER_ID varchar(255) not null,
+    MICROCHIP varchar(255),
     foreign key(USER_ID) references USUARIO(USER_ID)
 );
