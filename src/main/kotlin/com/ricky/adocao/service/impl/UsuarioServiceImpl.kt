@@ -3,18 +3,21 @@ package com.ricky.adocao.service.impl
 import com.ricky.adocao.exception.NotFoundException
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
+import com.ricky.adocao.service.UserDetail
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
 import org.springframework.beans.BeanUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
 @Service
 class UsuarioServiceImpl(
     private val usuarioRepository: UsuarioRepository,
     private val i18n: I18n,
-) : UsuarioService {
+) : UsuarioService,UserDetailsService {
     override fun findAll(pageable: Pageable): Page<Usuario> {
         return usuarioRepository.findAll(pageable)
     }
@@ -40,5 +43,11 @@ class UsuarioServiceImpl(
 
     override fun deleteById(idUsuario: String) {
         usuarioRepository.deleteById(idUsuario)
+    }
+
+    override fun loadUserByUsername(username: String?): UserDetails {
+        val usuario = usuarioRepository.findByLogin(username)?: throw RuntimeException()
+
+        return UserDetail(usuario)
     }
 }

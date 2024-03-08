@@ -1,5 +1,6 @@
 package com.ricky.adocao.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity(name = "USUARIO")
@@ -23,4 +24,9 @@ data class Usuario(
 
     @Column(name = "TELEFONE", length = 10)
     var telefone: String = "",
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USUARIO_ROLE")
+    val role: List<Role> = mutableListOf()
 )

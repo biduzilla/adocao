@@ -7,7 +7,6 @@ import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.CacheConstants
 import jakarta.transaction.Transactional
 import jakarta.validation.Valid
-import org.springframework.beans.BeanUtils
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page

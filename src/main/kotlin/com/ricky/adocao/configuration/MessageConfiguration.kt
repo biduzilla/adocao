@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ResourceBundleMessageSource
 
 @Configuration
-class AppConfiguration {
+class MessageConfiguration {
 
     @Bean
     fun messageSource(): MessageSource {
