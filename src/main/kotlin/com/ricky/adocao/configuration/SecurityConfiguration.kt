@@ -13,11 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 import kotlin.jvm.Throws
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 class SecurityConfiguration(
     private val usuarioService: UsuarioServiceImpl,
     private val jwtService: JwtService
@@ -28,7 +29,6 @@ class SecurityConfiguration(
     }
 
     @Throws(Exception::class)
-    @Bean
     protected fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder())
     }
@@ -39,10 +39,13 @@ class SecurityConfiguration(
     }
 
     @Bean
-    fun configure(http: HttpSecurity): SecurityFilterChain {
+    fun configure(http: HttpSecurity): SecurityFilterChain  {
         http.authorizeHttpRequests {
-            it.requestMatchers("/usuario")
-                ?.hasAuthority("ADMIN")
+            it.requestMatchers("/usuario")?.hasAuthority("ADMIN")
+                ?.requestMatchers(antMatcher("/h2-console/**"))?.permitAll()
+                ?.requestMatchers(antMatcher("h2-console/**"))?.permitAll()
+                ?.requestMatchers(antMatcher("/h2-console/"))?.permitAll()
+                ?.requestMatchers(antMatcher("/h2-console"))?.permitAll()
                 ?.anyRequest()
                 ?.authenticated()
         }.sessionManagement {
@@ -50,6 +53,8 @@ class SecurityConfiguration(
         }.formLogin {
             it?.disable()
         }.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter::class.java)
+
+
 
         return http.build()
     }

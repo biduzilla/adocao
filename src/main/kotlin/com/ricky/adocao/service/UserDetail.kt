@@ -4,7 +4,7 @@ import com.ricky.adocao.models.Usuario
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserDetail(private val usuario: Usuario) : UserDetails {
-    override fun getAuthorities() = usuario.role
+    override fun getAuthorities() = usuario.roles
 
     override fun getPassword() = usuario.senha
 
