@@ -1,10 +1,13 @@
 package com.ricky.adocao.configuration
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ricky.adocao.security.JwtAuthFilter
 import com.ricky.adocao.security.JwtService
 import com.ricky.adocao.service.impl.UsuarioServiceImpl
+import com.ricky.adocao.utils.I18n
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -13,39 +16,54 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 import org.springframework.web.filter.OncePerRequestFilter
-import kotlin.jvm.Throws
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
     private val usuarioService: UsuarioServiceImpl,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val i18n: I18n,
+    private val objectMapper: ObjectMapper,
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
 
-    @Throws(Exception::class)
-    protected fun configure(auth: AuthenticationManagerBuilder) {
-        auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder())
-    }
 
     @Bean
     fun jwtFilter(): OncePerRequestFilter {
-        return JwtAuthFilter(jwtService, usuarioService)
+        return JwtAuthFilter(jwtService, usuarioService, i18n, objectMapper)
     }
 
     @Bean
-    fun configure(http: HttpSecurity): SecurityFilterChain  {
-        http.authorizeHttpRequests {
-            it.requestMatchers("/usuario")?.hasAuthority("ADMIN")
-                ?.requestMatchers(antMatcher("/h2-console/**"))?.permitAll()
-                ?.requestMatchers(antMatcher("h2-console/**"))?.permitAll()
-                ?.requestMatchers(antMatcher("/h2-console/"))?.permitAll()
-                ?.requestMatchers(antMatcher("/h2-console"))?.permitAll()
+    fun authenticationManager(
+        http: HttpSecurity,
+        passwordEncoder: PasswordEncoder,
+        userDetailsService: UsuarioServiceImpl
+    ): AuthenticationManager {
+        val authManagerBuild: AuthenticationManagerBuilder =
+            http.getSharedObject(AuthenticationManagerBuilder::class.java)
+
+        authManagerBuild
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder)
+
+        return authManagerBuild.build()
+    }
+
+    @Bean
+    fun configure(http: HttpSecurity): SecurityFilterChain {
+        http.csrf {
+            it.disable()
+        }.headers {
+            it.frameOptions { frame ->
+                frame.disable()
+            }
+        }.authorizeHttpRequests { authorize ->
+            authorize.requestMatchers("/usuario")?.hasAuthority("ADMIN")
+                ?.requestMatchers("/h2-console/**")?.permitAll()
                 ?.anyRequest()
                 ?.authenticated()
         }.sessionManagement {
@@ -53,8 +71,6 @@ class SecurityConfiguration(
         }.formLogin {
             it?.disable()
         }.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter::class.java)
-
-
 
         return http.build()
     }

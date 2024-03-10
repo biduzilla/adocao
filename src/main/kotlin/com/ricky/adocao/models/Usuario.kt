@@ -1,6 +1,5 @@
 package com.ricky.adocao.models
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity(name = "USUARIO")

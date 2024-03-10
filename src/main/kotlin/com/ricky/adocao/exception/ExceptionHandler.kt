@@ -41,6 +41,20 @@ class ExceptionHandler(private val i18n: I18n) {
         )
     }
 
+    @ExceptionHandler(TokenExpiradoException::class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    fun handleTokenExpirado(
+        exception: TokenExpiradoException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.FORBIDDEN.value(),
+            error = HttpStatus.FORBIDDEN.name,
+            message = i18n.getMessage("token.invalido"),
+            path = request.servletPath
+        )
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleValidationError(
