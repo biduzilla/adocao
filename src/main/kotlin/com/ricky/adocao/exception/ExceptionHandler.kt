@@ -27,6 +27,76 @@ class ExceptionHandler(private val i18n: I18n) {
         )
     }
 
+    @ExceptionHandler(EmailJaCadastradoException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleEmailJaCadastrado(
+        exception: EmailJaCadastradoException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
+    @ExceptionHandler(LoginJaCadastradoException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleLoginJaCadastrado(
+        exception: LoginJaCadastradoException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
+    @ExceptionHandler(SenhaIncorretaException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleSenhaIncorreta(
+        exception: SenhaIncorretaException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
+    @ExceptionHandler(SenhaCurtaException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleSenhaCurta(
+        exception: SenhaCurtaException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
+    @ExceptionHandler(EmailInvalidoException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleEmailInvalido(
+        exception: EmailInvalidoException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
     @ExceptionHandler(ExpiredJwtException::class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     fun handleExpiredJwt(
@@ -35,20 +105,6 @@ class ExceptionHandler(private val i18n: I18n) {
     ): ErrorView {
         return ErrorView(
             status = HttpStatus.NOT_FOUND.value(),
-            error = HttpStatus.FORBIDDEN.name,
-            message = i18n.getMessage("token.invalido"),
-            path = request.servletPath
-        )
-    }
-
-    @ExceptionHandler(TokenExpiradoException::class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    fun handleTokenExpirado(
-        exception: TokenExpiradoException,
-        request: HttpServletRequest
-    ): ErrorView {
-        return ErrorView(
-            status = HttpStatus.FORBIDDEN.value(),
             error = HttpStatus.FORBIDDEN.name,
             message = i18n.getMessage("token.invalido"),
             path = request.servletPath

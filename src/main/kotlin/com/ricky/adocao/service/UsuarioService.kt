@@ -1,11 +1,14 @@
 package com.ricky.adocao.service
 
+import com.ricky.adocao.dto.LoginDTO
+import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.models.Usuario
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface UsuarioService {
     fun findAll(pageable: Pageable): Page<Usuario>
+    fun login(loginDTO: LoginDTO): TokenDTO
     fun findById(idUser: String): Usuario
     fun update(usuario: Usuario): Usuario
     fun save(usuario: Usuario): Usuario
