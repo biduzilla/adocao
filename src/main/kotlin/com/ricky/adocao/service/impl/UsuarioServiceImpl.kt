@@ -3,13 +3,17 @@ package com.ricky.adocao.service.impl
 import com.ricky.adocao.dto.LoginDTO
 import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.exception.*
+import com.ricky.adocao.models.Role
+import org.springframework.security.core.userdetails.User;
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
 import com.ricky.adocao.security.JwtService
+import com.ricky.adocao.service.RoleService
 import com.ricky.adocao.service.UserDetail
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
 import org.springframework.beans.BeanUtils
+import org.springframework.context.annotation.Lazy
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.userdetails.UserDetails
@@ -23,8 +27,9 @@ import java.util.regex.Pattern
 class UsuarioServiceImpl(
     private val usuarioRepository: UsuarioRepository,
     private val i18n: I18n,
-    private val passwordEncoder: PasswordEncoder,
-    private val jwtService: JwtService
+    @Lazy private val passwordEncoder: PasswordEncoder,
+    private val jwtService: JwtService,
+    private val roleService: RoleService
 ) : UsuarioService, UserDetailsService {
     override fun findAll(pageable: Pageable): Page<Usuario> {
         return usuarioRepository.findAll(pageable)
@@ -34,15 +39,15 @@ class UsuarioServiceImpl(
         val usuario = usuarioRepository.findByLoginOrEmail(loginDTO.login, loginDTO.login)
             .orElseThrow { throw NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
 
-        val usuarioAutentificado = autentificar(usuario)
+        val usuarioAutentificado = autentificar(usuario, loginDTO.senha)
         val token = jwtService.generateToken(usuarioAutentificado)
 
         return TokenDTO(token = token, idUser = usuario.id, nome = usuario.nome)
     }
 
-    private fun autentificar(usuario: Usuario): UserDetails {
-        var userDetail = loadUserByUsername(usuario.email)
-        if (!passwordEncoder.matches(usuario.senha, userDetail.password)) {
+    private fun autentificar(usuario: Usuario, senha: String): UserDetails {
+        val userDetail = loadUserByUsername(usuario.login)
+        if (!passwordEncoder.matches(senha, userDetail.password)) {
             throw SenhaIncorretaException(i18n.getMessage("error.senha.invalida"))
         }
 
@@ -60,6 +65,7 @@ class UsuarioServiceImpl(
         return save(user)
     }
 
+
     override fun save(usuario: Usuario): Usuario {
         if (usuarioRepository.existsByLogin(login = usuario.login)) {
             throw LoginJaCadastradoException(i18n.getMessage("error.login.cadastrado"))
@@ -76,7 +82,9 @@ class UsuarioServiceImpl(
             throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))
         }
 
+        val role = roleService.findByNome("USER")
         usuario.senha = passwordEncoder.encode(usuario.senha)
+        usuario.roles = listOf(role)
         return usuarioRepository.save(usuario)
     }
 
@@ -89,7 +97,8 @@ class UsuarioServiceImpl(
     }
 
     override fun loadUserByUsername(username: String?): UserDetails {
-        val usuario = usuarioRepository.findByLogin(username) ?: throw RuntimeException()
+        val usuario =
+            usuarioRepository.findByLogin(username) ?: throw NotFoundException(i18n.getMessage("usuario.nao.encotrado"))
 
         return UserDetail(usuario)
     }

@@ -30,21 +30,22 @@ class JwtAuthFilter(
     ) {
         val authorization = request.getHeader("Authorization")
 
-        try {
-            val token = authorization.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
-            val isValid: Boolean = jwtService.isTokenValid(token)
-            if (isValid) {
-                val loginUser: String = jwtService.extractUserName(token)
-                val user = usuarioService.loadUserByUsername(loginUser)
-                val usuario = UsernamePasswordAuthenticationToken(user, null, user.authorities)
-                usuario.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = usuario
-
-                filterChain.doFilter(request, response)
+        if (authorization != null && authorization.startsWith("Bearer")) {
+            try {
+                val token = authorization.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1]
+                val isValid: Boolean = jwtService.isTokenValid(token)
+                if (isValid) {
+                    val loginUser: String = jwtService.extractUserName(token)
+                    val user = usuarioService.loadUserByUsername(loginUser)
+                    val usuario = UsernamePasswordAuthenticationToken(user, null, user.authorities)
+                    usuario.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    SecurityContextHolder.getContext().authentication = usuario
+                }
+            } catch (e: Exception) {
+                handleInvalidAuthorization(request, response)
             }
-        }catch (e:Exception){
-            handleInvalidAuthorization(request = request, response = response)
         }
+        filterChain.doFilter(request, response)
     }
 
     @Throws(IOException::class)

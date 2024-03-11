@@ -1,5 +1,7 @@
 package com.ricky.adocao.controller
 
+import com.ricky.adocao.dto.LoginDTO
+import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.dto.UsuarioDTO
 import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.mapper.UsuarioMapper
@@ -24,8 +26,7 @@ class UsuarioController(
     private val usuarioDTOMapper: UsuarioDTOMapper,
     private val usuarioMapper: UsuarioMapper,
 ) {
-
-    @GetMapping
+    @GetMapping("/find-all")
     @Cacheable(CacheConstants.USUARIOS_CACHE)
     fun findAll(
         @RequestParam(required = false, defaultValue = "0") page: Int,
@@ -37,12 +38,17 @@ class UsuarioController(
         return usuarioService.findAll(pageable).map { usuarioDTOMapper.map(it) }
     }
 
-    @GetMapping("/{idUser}")
+    @PostMapping("/login")
+    fun login(@RequestBody @Valid loginDTO: LoginDTO): TokenDTO {
+        return usuarioService.login(loginDTO)
+    }
+
+    @GetMapping("/get-user/{idUser}")
     fun findById(@PathVariable idUser: String): UsuarioDTO {
         return usuarioDTOMapper.map(usuarioService.findById(idUser))
     }
 
-    @PostMapping
+    @PostMapping("/save")
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun insert(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
@@ -51,7 +57,7 @@ class UsuarioController(
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(user))
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun update(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
@@ -59,12 +65,10 @@ class UsuarioController(
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(usuario))
     }
 
-    @DeleteMapping("{idUsuario}")
+    @DeleteMapping("/delete-user/{idUsuario}")
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun deleteById(@PathVariable idUsuario: String) {
         usuarioService.deleteById(idUsuario)
     }
-
-
 }

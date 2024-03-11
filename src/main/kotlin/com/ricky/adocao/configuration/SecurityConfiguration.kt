@@ -7,6 +7,7 @@ import com.ricky.adocao.service.impl.UsuarioServiceImpl
 import com.ricky.adocao.utils.I18n
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Lazy
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,7 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    private val usuarioService: UsuarioServiceImpl,
+    @Lazy private val usuarioService: UsuarioServiceImpl,
     private val jwtService: JwtService,
     private val i18n: I18n,
     private val objectMapper: ObjectMapper,
@@ -62,8 +63,16 @@ class SecurityConfiguration(
                 frame.disable()
             }
         }.authorizeHttpRequests { authorize ->
-            authorize.requestMatchers("/usuario")?.hasAuthority("ADMIN")
+            authorize
+                .requestMatchers("/usuario/login")?.permitAll()
+                ?.requestMatchers("/usuario/find-all")?.hasAnyRole("ADMIN", "USER")
+                ?.requestMatchers("/usuario/get-user/**")?.hasAnyRole("ADMIN", "USER")
+                ?.requestMatchers("/usuario/update")?.hasAnyRole("ADMIN", "USER")
+                ?.requestMatchers("/usuario/delete-user/**")?.hasAnyRole("ADMIN", "USER")
+                ?.requestMatchers("/usuario/save")?.permitAll()
                 ?.requestMatchers("/h2-console/**")?.permitAll()
+                ?.requestMatchers("/h2-console/")?.permitAll()
+                ?.requestMatchers("/h2-console")?.permitAll()
                 ?.anyRequest()
                 ?.authenticated()
         }.sessionManagement {

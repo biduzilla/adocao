@@ -1,7 +1,6 @@
 package com.ricky.adocao.security
 
 import io.jsonwebtoken.Claims
-import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
@@ -20,7 +19,6 @@ class JwtServiceImpl : JwtService {
     @Value("\${security.jwt.key}")
     private lateinit var key: String
 
-    @Throws(ExpiredJwtException::class)
     override fun extractUserName(token: String): String {
         return getClaims(token).subject
     }
@@ -37,7 +35,6 @@ class JwtServiceImpl : JwtService {
             .compact()
     }
 
-    @Throws(ExpiredJwtException::class)
     override fun isTokenValid(token: String): Boolean {
         val claims: Claims = getClaims(token)
         val data: Date = claims.expiration
@@ -49,7 +46,6 @@ class JwtServiceImpl : JwtService {
         return !LocalDateTime.now().isAfter(dataExpiracao)
     }
 
-    @Throws(ExpiredJwtException::class)
     fun getClaims(token: String?): Claims {
         return Jwts.parser()
             .setSigningKey(key)

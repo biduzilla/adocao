@@ -1,6 +1,10 @@
 package com.ricky.adocao.models
 
+import com.ricky.adocao.enums.RoleEnum
 import jakarta.persistence.*
+import lombok.Builder
+import lombok.NoArgsConstructor
+import org.springframework.security.core.GrantedAuthority
 
 @Entity(name = "USUARIO")
 data class Usuario(
@@ -30,6 +34,6 @@ data class Usuario(
         joinColumns = [JoinColumn(name = "USER_ID")],
         inverseJoinColumns = [JoinColumn(name = "ROLE_ID")]
     )
-    val roles: List<Role> = mutableListOf()
+    var roles: List<Role> = mutableListOf()
 
 )
