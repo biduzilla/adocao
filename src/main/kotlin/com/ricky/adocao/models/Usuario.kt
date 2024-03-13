@@ -1,10 +1,6 @@
 package com.ricky.adocao.models
 
-import com.ricky.adocao.enums.RoleEnum
 import jakarta.persistence.*
-import lombok.Builder
-import lombok.NoArgsConstructor
-import org.springframework.security.core.GrantedAuthority
 
 @Entity(name = "USUARIO")
 data class Usuario(

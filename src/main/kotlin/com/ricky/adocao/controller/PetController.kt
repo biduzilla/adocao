@@ -28,7 +28,7 @@ class PetController(
     @Cacheable(CacheConstants.PET_CACHE)
     fun findAll(
         @RequestParam(required = false, defaultValue = "0") page: Int,
-        @RequestParam(required = false) search: String,
+        @RequestParam(required = false) search: String?,
         @PageableDefault(
             size = 10
         ) paginacao: Pageable

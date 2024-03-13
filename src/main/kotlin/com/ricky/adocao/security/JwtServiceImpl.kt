@@ -46,10 +46,10 @@ class JwtServiceImpl : JwtService {
         return !LocalDateTime.now().isAfter(dataExpiracao)
     }
 
-    fun getClaims(token: String?): Claims {
+    private fun getClaims(token: String?): Claims {
         return Jwts.parser()
             .setSigningKey(key)
-            .parseClaimsJwt(token)
-            .body
+            .parseClaimsJws(token)
+            .body;
     }
 }

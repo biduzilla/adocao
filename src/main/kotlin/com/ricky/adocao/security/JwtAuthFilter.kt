@@ -43,6 +43,8 @@ class JwtAuthFilter(
                 }
             } catch (e: Exception) {
                 handleInvalidAuthorization(request, response)
+                e.printStackTrace()
+                return
             }
         }
         filterChain.doFilter(request, response)

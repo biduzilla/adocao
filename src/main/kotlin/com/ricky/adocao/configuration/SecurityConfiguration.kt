@@ -65,7 +65,7 @@ class SecurityConfiguration(
         }.authorizeHttpRequests { authorize ->
             authorize
                 .requestMatchers("/usuario/login")?.permitAll()
-                ?.requestMatchers("/usuario/find-all")?.hasAnyRole("ADMIN", "USER")
+                ?.requestMatchers("/usuario/find-all")?.hasAnyRole("ADMIN")
                 ?.requestMatchers("/usuario/get-user/**")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/update")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/delete-user/**")?.hasAnyRole("ADMIN", "USER")

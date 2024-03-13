@@ -3,8 +3,6 @@ package com.ricky.adocao.service.impl
 import com.ricky.adocao.dto.LoginDTO
 import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.exception.*
-import com.ricky.adocao.models.Role
-import org.springframework.security.core.userdetails.User;
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
 import com.ricky.adocao.security.JwtService

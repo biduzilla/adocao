@@ -1,9 +1,6 @@
 package com.ricky.adocao.service
 
-import com.ricky.adocao.enums.RoleEnum
 import com.ricky.adocao.models.Usuario
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class UserDetail(private val usuario: Usuario) : UserDetails {
