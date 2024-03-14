@@ -11,6 +11,10 @@ class I18n(private val messageSource: MessageSource) {
         return messageSource.getMessage(message, null, Locale.getDefault())
     }
 
+    fun getMessage(message: String,vararg args: Any): String {
+        return messageSource.getMessage(message, args, Locale.getDefault())
+    }
+
     fun getMessage(message: String, locale: Locale): String {
         return messageSource.getMessage(message, null, locale)
     }

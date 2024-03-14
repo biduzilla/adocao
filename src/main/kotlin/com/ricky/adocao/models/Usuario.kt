@@ -24,6 +24,9 @@ data class Usuario(
     @Column(name = "TELEFONE", length = 10)
     var telefone: String = "",
 
+    @Column(name="CODVERIFICACAO")
+    var codVerificacao:Int = 0,
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "USUARIO_ROLE",
