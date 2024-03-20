@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.random.Random
 
 @Service
 class UsuarioServiceImpl(
@@ -60,29 +61,32 @@ class UsuarioServiceImpl(
     override fun update(usuario: Usuario): Usuario {
         val user = findById(usuario.id)
         BeanUtils.copyProperties(usuario, user)
-        return save(user)
+        return save(user, true)
     }
 
 
-    override fun save(usuario: Usuario): Usuario {
-        if (usuarioRepository.existsByLogin(login = usuario.login)) {
-            throw LoginJaCadastradoException(i18n.getMessage("error.login.cadastrado"))
-        }
-        if (usuarioRepository.existsByEmail(usuario.email)) {
-            throw EmailJaCadastradoException(i18n.getMessage("error.email.cadastrado"))
+    override fun save(usuario: Usuario, verificar: Boolean): Usuario {
+        if (verificar) {
+            if (usuarioRepository.existsByLogin(login = usuario.login)) {
+                throw LoginJaCadastradoException(i18n.getMessage("error.login.cadastrado"))
+            }
+            if (usuarioRepository.existsByEmail(usuario.email)) {
+                throw EmailJaCadastradoException(i18n.getMessage("error.email.cadastrado"))
+            }
+
+            if (!validEmail(usuario.email)) {
+                throw EmailInvalidoException(i18n.getMessage("error.email.invalido"))
+            }
+
+            if (usuario.senha.toCharArray().size <= 8) {
+                throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))
+            }
+
+            val role = roleService.findByNome("USER")
+            usuario.senha = passwordEncoder.encode(usuario.senha)
+            usuario.roles = listOf(role)
         }
 
-        if (!validEmail(usuario.email)) {
-            throw EmailInvalidoException(i18n.getMessage("error.email.invalido"))
-        }
-
-        if (usuario.senha.toCharArray().size <= 8) {
-            throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))
-        }
-
-        val role = roleService.findByNome("USER")
-        usuario.senha = passwordEncoder.encode(usuario.senha)
-        usuario.roles = listOf(role)
         return usuarioRepository.save(usuario)
     }
 
@@ -92,6 +96,33 @@ class UsuarioServiceImpl(
 
     override fun deleteById(idUsuario: String) {
         usuarioRepository.deleteById(idUsuario)
+    }
+
+    override fun findByLoginOrEmail(login: String): Usuario {
+        return usuarioRepository.findByLoginOrEmail(login, login)
+            .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
+    }
+
+    override fun gerarCodVerificacao(): Int {
+        var cod: Int
+        do {
+            cod = geradorCodigo()
+        } while (usuarioRepository.existsByCodVerificacao(cod))
+        return cod
+    }
+
+    override fun findByCodVerificacao(cod: Int): Usuario {
+        return usuarioRepository.findByCodVerificacao(cod)
+            .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
+    }
+
+    override fun alterarSenha(cod: Int) {
+        TODO("Not yet implemented")
+    }
+
+    private fun geradorCodigo(): Int {
+        val random = Random(System.currentTimeMillis())
+        return random.nextInt(100000, 1000000)
     }
 
     override fun loadUserByUsername(username: String?): UserDetails {

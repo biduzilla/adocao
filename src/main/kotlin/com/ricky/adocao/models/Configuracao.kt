@@ -7,6 +7,7 @@ import jakarta.persistence.Id
 
 @Entity(name="CONFIGURACAO")
 data class Configuracao(
+
     @Id
     @Column(name = "CODCONFIGURACAO", columnDefinition = "int")
     val codConfiguracao: ConfiguracaoEnum,

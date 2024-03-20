@@ -5,6 +5,7 @@ import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.dto.UsuarioDTO
 import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.mapper.UsuarioMapper
+import com.ricky.adocao.service.EmailService
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.CacheConstants
 import jakarta.transaction.Transactional
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -25,6 +27,7 @@ class UsuarioController(
     private val usuarioService: UsuarioService,
     private val usuarioDTOMapper: UsuarioDTOMapper,
     private val usuarioMapper: UsuarioMapper,
+    private val emailService: EmailService
 ) {
     @GetMapping("/find-all")
     @Cacheable(CacheConstants.USUARIOS_CACHE)
@@ -53,7 +56,7 @@ class UsuarioController(
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun insert(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
         val userSalvar = usuarioMapper.map(usuarioDTO)
-        val user = usuarioService.save(userSalvar)
+        val user = usuarioService.save(userSalvar,true)
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(user))
     }
 
@@ -70,5 +73,21 @@ class UsuarioController(
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun deleteById(@PathVariable idUsuario: String) {
         usuarioService.deleteById(idUsuario)
+    }
+
+    @PostMapping("/reset-senha/{email}")
+    @Transactional
+    fun enviarEmailSenha(@PathVariable email: String) {
+        val user = usuarioService.findByLoginOrEmail(email)
+        val cod = usuarioService.gerarCodVerificacao()
+        user.codVerificacao = cod
+        usuarioService.save(usuario = user, verificar = false)
+        emailService.sendEmail(cod = cod.toString(), to = user.email)
+    }
+
+    @GetMapping("/alterar-senha/{cod}")
+    @Transactional
+    fun alterarSenha(@PathVariable cod:String){
+
     }
 }

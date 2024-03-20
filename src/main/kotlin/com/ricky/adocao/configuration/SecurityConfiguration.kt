@@ -70,6 +70,7 @@ class SecurityConfiguration(
                 ?.requestMatchers("/usuario/update")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/delete-user/**")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/save")?.permitAll()
+                ?.requestMatchers("/usuario/reset-senha/**")?.permitAll()
                 ?.requestMatchers("/h2-console/**")?.permitAll()
                 ?.requestMatchers("/h2-console/")?.permitAll()
                 ?.requestMatchers("/h2-console")?.permitAll()

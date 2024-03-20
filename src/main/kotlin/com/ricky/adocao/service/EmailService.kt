@@ -4,6 +4,7 @@ import com.ricky.adocao.enums.ConfiguracaoEnum
 import com.ricky.adocao.exception.EmailErrorException
 import com.ricky.adocao.utils.I18n
 import jakarta.mail.internet.MimeMessage
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -31,13 +32,14 @@ class EmailService(
         (mailSender as JavaMailSenderImpl).username = userName
         (mailSender as JavaMailSenderImpl).password = password
 
-        helper.setFrom(host)
+        helper.setFrom(userName)
     }
 
     fun sendEmail(to: String, cod: String) {
         val mimeMessage: MimeMessage = mailSender.createMimeMessage()
         val helper: MimeMessageHelper = MimeMessageHelper(mimeMessage, "UTF-8")
         val context = Context()
+
         inicializacao(helper)
         context.setVariable("message", i18n.getMessage("email.body", cod));
 

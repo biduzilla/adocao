@@ -11,7 +11,11 @@ interface UsuarioService {
     fun login(loginDTO: LoginDTO): TokenDTO
     fun findById(idUser: String): Usuario
     fun update(usuario: Usuario): Usuario
-    fun save(usuario: Usuario): Usuario
+    fun save(usuario: Usuario,verificar:Boolean): Usuario
     fun delete(usuario: Usuario)
     fun deleteById(idUsuario: String)
+    fun findByLoginOrEmail(login:String):Usuario
+    fun gerarCodVerificacao():Int
+    fun findByCodVerificacao(cod:Int):Usuario
+    fun alterarSenha(cod:Int)
 }
