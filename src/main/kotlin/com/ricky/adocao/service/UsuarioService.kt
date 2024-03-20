@@ -17,5 +17,5 @@ interface UsuarioService {
     fun findByLoginOrEmail(login:String):Usuario
     fun gerarCodVerificacao():Int
     fun findByCodVerificacao(cod:Int):Usuario
-    fun alterarSenha(cod:Int)
+    fun alterarSenha(cod:Int, senha:String)
 }

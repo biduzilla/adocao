@@ -78,9 +78,7 @@ class UsuarioServiceImpl(
                 throw EmailInvalidoException(i18n.getMessage("error.email.invalido"))
             }
 
-            if (usuario.senha.toCharArray().size <= 8) {
-                throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))
-            }
+            verificarSenha(usuario.senha)
 
             val role = roleService.findByNome("USER")
             usuario.senha = passwordEncoder.encode(usuario.senha)
@@ -116,8 +114,20 @@ class UsuarioServiceImpl(
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
 
-    override fun alterarSenha(cod: Int) {
-        TODO("Not yet implemented")
+    override fun alterarSenha(cod:Int, senha:String) {
+        verificarSenha(senha)
+        val user = usuarioRepository.findByCodVerificacao(cod)
+            .orElseThrow { NotFoundException(i18n.getMessage("cod.nao.encotrado")) }
+        user.codVerificacao = 0
+
+        user.senha = passwordEncoder.encode(senha)
+        usuarioRepository.save(user)
+    }
+
+    private fun verificarSenha(senha: String) {
+        if (senha.toCharArray().size <= 8) {
+            throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))
+        }
     }
 
     private fun geradorCodigo(): Int {
@@ -139,9 +149,4 @@ class UsuarioServiceImpl(
         val matcher: Matcher = pattern.matcher(email)
         return matcher.matches()
     }
-
-    private fun validSenha(senha: String): Boolean {
-        return senha.toCharArray().size > 8
-    }
-
 }

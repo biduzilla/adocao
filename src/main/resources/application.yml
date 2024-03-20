@@ -1,6 +1,4 @@
 spring:
-  thymeleaf:
-    prefix: classpath:/templates/
   flyway:
     depends-on: entityManagerFactory
   datasource:

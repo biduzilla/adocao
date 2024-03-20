@@ -1,10 +1,12 @@
 package com.ricky.adocao.controller
 
 import com.ricky.adocao.dto.LoginDTO
+import com.ricky.adocao.dto.ResetSenhaDTO
 import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.dto.UsuarioDTO
 import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.mapper.UsuarioMapper
+import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.service.EmailService
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.CacheConstants
@@ -56,7 +58,7 @@ class UsuarioController(
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun insert(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
         val userSalvar = usuarioMapper.map(usuarioDTO)
-        val user = usuarioService.save(userSalvar,true)
+        val user = usuarioService.save(userSalvar, true)
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(user))
     }
 
@@ -65,7 +67,7 @@ class UsuarioController(
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun update(@RequestBody @Valid usuarioDTO: UsuarioDTO): ResponseEntity<UsuarioDTO> {
         val usuario = usuarioService.update(usuarioMapper.map(usuarioDTO))
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTOMapper.map(usuario))
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioDTOMapper.map(usuario))
     }
 
     @DeleteMapping("/delete-user/{idUsuario}")
@@ -85,9 +87,13 @@ class UsuarioController(
         emailService.sendEmail(cod = cod.toString(), to = user.email)
     }
 
-    @GetMapping("/alterar-senha/{cod}")
+    @PutMapping("/alterar-senha")
     @Transactional
-    fun alterarSenha(@PathVariable cod:String){
-
+    @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
+    fun alterarSenha(@RequestBody @Valid resetSenhaDTO: ResetSenhaDTO) {
+        usuarioService.alterarSenha(
+            cod = resetSenhaDTO.cod.toInt(),
+            senha = resetSenhaDTO.senha
+        )
     }
 }
