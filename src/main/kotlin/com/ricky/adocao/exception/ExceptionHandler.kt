@@ -111,6 +111,20 @@ class ExceptionHandler(private val i18n: I18n) {
         )
     }
 
+    @ExceptionHandler(CodVerificacaoInvalidoException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleCodVerificacaoInvalidoException(
+        exception: CodVerificacaoInvalidoException,
+        request: HttpServletRequest
+    ): ErrorView {
+        return ErrorView(
+            status = HttpStatus.BAD_REQUEST.value(),
+            error = HttpStatus.BAD_REQUEST.name,
+            message = exception.message,
+            path = request.servletPath
+        )
+    }
+
     @ExceptionHandler(EmailErrorException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleEmailError(
@@ -120,7 +134,7 @@ class ExceptionHandler(private val i18n: I18n) {
         return ErrorView(
             status = HttpStatus.BAD_REQUEST.value(),
             error = HttpStatus.BAD_REQUEST.name,
-            message = i18n.getMessage("token.invalido"),
+            message = exception.message,
             path = request.servletPath
         )
     }

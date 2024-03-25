@@ -114,14 +114,20 @@ class UsuarioServiceImpl(
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
 
-    override fun alterarSenha(cod:Int, senha:String) {
+    override fun alterarSenha(email: String, senha: String) {
         verificarSenha(senha)
-        val user = usuarioRepository.findByCodVerificacao(cod)
-            .orElseThrow { NotFoundException(i18n.getMessage("cod.nao.encotrado")) }
+        val user = usuarioRepository.findByEmail(email)
+            .orElseThrow { NotFoundException(i18n.getMessage("email.nao.encotrado")) }
         user.codVerificacao = 0
 
         user.senha = passwordEncoder.encode(senha)
         usuarioRepository.save(user)
+    }
+
+    override fun verificarCod(cod: Int, email: String) {
+        if (!usuarioRepository.existsByCodVerificacaoAndEmail(cod, email)) {
+            throw CodVerificacaoInvalidoException(i18n.getMessage("cod.verificacao.invalido"))
+        }
     }
 
     private fun verificarSenha(senha: String) {

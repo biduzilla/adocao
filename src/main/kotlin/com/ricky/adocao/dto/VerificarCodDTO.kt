@@ -2,9 +2,9 @@ package com.ricky.adocao.dto
 
 import jakarta.validation.constraints.NotBlank
 
-data class ResetSenhaDTO(
+data class VerificarCodDTO(
+    @field:NotBlank(message = "{cod.obrigatorio}")
+    var cod:String = "",
     @field:NotBlank(message = "{email.obrigatorio}")
-    var email:String = "",
-    @field:NotBlank(message = "{senha.obrigatorio}")
-    var senha:String = ""
+    var email:String = ""
 )

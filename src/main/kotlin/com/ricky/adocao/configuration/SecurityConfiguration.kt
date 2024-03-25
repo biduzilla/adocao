@@ -8,6 +8,7 @@ import com.ricky.adocao.utils.I18n
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -69,9 +70,9 @@ class SecurityConfiguration(
                 ?.requestMatchers("/usuario/get-user/**")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/update")?.hasAnyRole("ADMIN", "USER")
                 ?.requestMatchers("/usuario/delete-user/**")?.hasAnyRole("ADMIN", "USER")
-                ?.requestMatchers("/usuario/save")?.permitAll()
                 ?.requestMatchers("/usuario/alterar-senha")?.permitAll()
-                ?.requestMatchers("/usuario/reset-senha/**")?.permitAll()
+                ?.requestMatchers(HttpMethod.POST,"/usuario/**")?.permitAll()
+                ?.requestMatchers(HttpMethod.GET,"/usuario/**")?.permitAll()
                 ?.requestMatchers("/h2-console/**")?.permitAll()
                 ?.requestMatchers("/h2-console/")?.permitAll()
                 ?.requestMatchers("/h2-console")?.permitAll()

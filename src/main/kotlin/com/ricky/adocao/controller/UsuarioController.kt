@@ -1,12 +1,8 @@
 package com.ricky.adocao.controller
 
-import com.ricky.adocao.dto.LoginDTO
-import com.ricky.adocao.dto.ResetSenhaDTO
-import com.ricky.adocao.dto.TokenDTO
-import com.ricky.adocao.dto.UsuarioDTO
+import com.ricky.adocao.dto.*
 import com.ricky.adocao.mapper.UsuarioDTOMapper
 import com.ricky.adocao.mapper.UsuarioMapper
-import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.service.EmailService
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.CacheConstants
@@ -20,7 +16,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -87,12 +82,20 @@ class UsuarioController(
         emailService.sendEmail(cod = cod.toString(), to = user.email)
     }
 
+    @GetMapping("verificar-cod")
+    fun verificarCod(@RequestBody @Valid verificarCodDTO: VerificarCodDTO) {
+        usuarioService.verificarCod(
+            cod = verificarCodDTO.cod.toInt(),
+            email = verificarCodDTO.email
+        )
+    }
+
     @PutMapping("/alterar-senha")
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
     fun alterarSenha(@RequestBody @Valid resetSenhaDTO: ResetSenhaDTO) {
         usuarioService.alterarSenha(
-            cod = resetSenhaDTO.cod.toInt(),
+            email = resetSenhaDTO.email,
             senha = resetSenhaDTO.senha
         )
     }
