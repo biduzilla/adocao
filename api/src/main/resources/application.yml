@@ -1,0 +1,25 @@
+spring:
+  flyway:
+    depends-on: entityManagerFactory
+  datasource:
+    username: toddy
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    password: toddy
+  h2:
+    console:
+      enabled: 'true'
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: 'true'
+        show_sql: 'true'
+#    hibernate:
+#      ddl-auto: update
+
+security:
+  jwt:
+    key: dGVuaG8gcXVlIHBhc3NlYXIgY29tIGVsZXM=
+    expiracao: '30'
