@@ -1,12 +1,9 @@
-package com.ricky.adocaoapp.domain.use_case
+package com.ricky.adocaoapp.domain.use_case.user
 
 import android.util.Log
 import com.ricky.adocaoapp.domain.models.Login
 import com.ricky.adocaoapp.domain.models.Token
 import com.ricky.adocaoapp.domain.repository.UserRepository
-import com.ricky.adocaoapp.utils.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UseCaseLogin @Inject constructor(private val userRepository: UserRepository) {
