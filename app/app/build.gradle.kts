@@ -76,5 +76,6 @@ dependencies {
     implementation(libs.bundles.coroutines)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.bundles.network)
+    implementation(libs.datastore.preferences)
 
 }
