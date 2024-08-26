@@ -114,12 +114,11 @@ class UsuarioServiceImpl(
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
 
-    override fun alterarSenha(email: String, senha: String) {
+    override fun alterarSenha(email: String, senha: String, cod:Int) {
+        val user = usuarioRepository.findByEmailAndCodVerificacao(email, cod)
+            .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrad")) }
         verificarSenha(senha)
-        val user = usuarioRepository.findByEmail(email)
-            .orElseThrow { NotFoundException(i18n.getMessage("email.nao.encotrado")) }
         user.codVerificacao = 0
-
         user.senha = passwordEncoder.encode(senha)
         usuarioRepository.save(user)
     }

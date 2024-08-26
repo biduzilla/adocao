@@ -28,6 +28,8 @@ interface UserAPI {
     suspend fun verifyCod(@Body verificarCod: VerificarCod): Response<Void>
 
     @PUT(Constants.USER_CHANGE_PASSWORD_ENDPOINT)
-    suspend fun changePassword(@Body resetSenha: ResetSenha): Response<Void>
+    suspend fun changePassword(
+        @Body resetSenha: ResetSenha,
+    ): Response<Void>
 
 }

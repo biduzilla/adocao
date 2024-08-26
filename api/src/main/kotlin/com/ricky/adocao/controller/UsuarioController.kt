@@ -93,10 +93,13 @@ class UsuarioController(
     @PutMapping("/alterar-senha")
     @Transactional
     @CacheEvict(value = [CacheConstants.USUARIOS_CACHE], allEntries = true)
-    fun alterarSenha(@RequestBody @Valid resetSenhaDTO: ResetSenhaDTO) {
+    fun alterarSenha(
+        @RequestBody @Valid resetSenhaDTO: ResetSenhaDTO
+    ) {
         usuarioService.alterarSenha(
             email = resetSenhaDTO.email,
-            senha = resetSenhaDTO.senha
+            senha = resetSenhaDTO.senha,
+            cod = resetSenhaDTO.cod
         )
     }
 }

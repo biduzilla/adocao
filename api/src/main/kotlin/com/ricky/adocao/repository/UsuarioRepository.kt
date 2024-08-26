@@ -9,8 +9,7 @@ interface UsuarioRepository : JpaRepository<Usuario, String> {
     fun existsByLogin(login: String): Boolean
     fun existsByEmail(email: String): Boolean
     fun findByLoginOrEmail(login: String, email: String): Optional<Usuario>
-    fun findByEmail(email: String): Optional<Usuario>
-
+    fun findByEmailAndCodVerificacao(email: String, cod:Int): Optional<Usuario>
     fun findByCodVerificacao(id: Int): Optional<Usuario>
     fun existsByCodVerificacaoAndEmail(id: Int, email: String): Boolean
     fun existsByCodVerificacao(id: Int): Boolean
