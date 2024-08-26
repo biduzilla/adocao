@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AdocaoApp</string>
+    <string name="cadastrar_animal">Cadastrar Pet</string>
+    <string name="campo_obrigatorio">Campo obrigatório</string>
 </resources>

@@ -1,18 +1,14 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
-    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.ricky.adocaoapp"
+    namespace = "com.ricky.meupet"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ricky.adocaoapp"
+        applicationId = "com.ricky.meupet"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -70,12 +66,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(libs.bundles.dagger.hilt)
-    kapt(libs.bundles.kapt.dagger.hilt)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.accompanist.navigation.animation)
-    implementation(libs.bundles.network)
-    implementation(libs.datastore.preferences)
-    implementation(libs.material.icons.extended)
 }

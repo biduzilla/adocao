@@ -11,6 +11,7 @@ composeBom = "2023.08.00"
 hilt = "2.48"
 coroutines = "1.7.3"
 retrofit = "2.9.0"
+icons = "1.6.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,9 +33,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.1.0" }
 
 #Dagger - Hilt
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
-kapt-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version = "hilt" }
+kapt-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 kapt-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version = "1.2.0" }
 
 # Coroutines
@@ -51,8 +52,11 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.9.3" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "4.9.0" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.0" }
 
+#Extended Icons
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons" }
+
 [bundles]
-dagger-hilt = ["hilt-android","hilt-navigation-compose"]
+dagger-hilt = ["hilt-android", "hilt-navigation-compose"]
 kapt-dagger-hilt = ["kapt-hilt-android-compiler", "kapt-hilt-compiler"]
 coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 network=["retrofit","converter-gson","okhttp","logging-interceptor","kotlinx-serialization-json"]
