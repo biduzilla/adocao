@@ -29,7 +29,7 @@ import com.ricky.adocaoapp.ui.theme.ErrorLight
 
 @Composable
 fun TextFieldCompose(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     value: String,
     isError: Boolean,
     @StringRes label: Int? = null,
@@ -40,7 +40,6 @@ fun TextFieldCompose(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         if (label != null) {
             Text(

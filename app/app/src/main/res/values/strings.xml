@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">AdocaoApp</string>
+    <string name="email">E-mail</string>
+    <string name="senha">Senha</string>
+    <string name="esqueci_senha">Esqueci a senha</string>
+    <string name="acessar">Acessar</string>
+    <string name="nao_tem_conta">Ainda não tem conta?</string>
+    <string name="criar_conta">Criar onta</string>
     <string name="cadastrar_animal">Cadastrar Pet</string>
     <string name="campo_obrigatorio">Campo obrigatório</string>
 </resources>
