@@ -3,6 +3,7 @@ package com.ricky.adocao.models
 import jakarta.persistence.*
 import lombok.Data
 import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 @Data
@@ -22,5 +23,5 @@ data class ChatMessage(
     @Column(name = "CONTENT")
     var content: String = "",
     @Column(name = "TIMESTAMP")
-    var timestamp: Date = Date.from(Instant.now())
+    var timestamp: LocalDate = LocalDate.now()
 )

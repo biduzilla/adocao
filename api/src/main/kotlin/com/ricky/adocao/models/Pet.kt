@@ -4,6 +4,7 @@ import com.ricky.adocao.enums.*
 import jakarta.persistence.*
 import lombok.Data
 import java.time.Instant
+import java.time.LocalDate
 import java.util.*
 
 @Entity
@@ -43,7 +44,7 @@ data class Pet(
 
     @Column(name = "DATA_PUBLICACAO")
     @Temporal(TemporalType.DATE)
-    var dataPublicacao: Date = Date.from(Instant.now()),
+    var dataPublicacao: LocalDate = LocalDate.now(),
 
     @Lob
     @Column(name = "FOTO")
