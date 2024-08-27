@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.auth.login
 
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

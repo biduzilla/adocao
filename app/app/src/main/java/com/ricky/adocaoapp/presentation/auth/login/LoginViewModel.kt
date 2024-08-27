@@ -8,6 +8,7 @@ import com.ricky.adocaoapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class LoginViewModel @Inject constructor(
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
-    private suspend fun login() {
+    private fun login() {
 
         val login = Login(
             login = _state.value.email,
@@ -30,7 +31,7 @@ class LoginViewModel @Inject constructor(
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
                         isLoading = false,
-                        error = result.message ?: ""
+                        error = result.message ?: "Error"
                     )
                 }
 
@@ -47,7 +48,7 @@ class LoginViewModel @Inject constructor(
                     )
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: LoginEvent) {

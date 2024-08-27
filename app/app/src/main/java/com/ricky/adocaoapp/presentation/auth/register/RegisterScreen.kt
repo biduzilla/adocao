@@ -91,7 +91,7 @@ fun RegisterScreen(
                         icon = Icons.Default.Person,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(RegisterEvent.OnChangeNome(it))
                     }
 
                     TextFieldCompose(
@@ -101,7 +101,7 @@ fun RegisterScreen(
                         icon = Icons.Default.Email,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(RegisterEvent.OnChangeEmail(it))
                     }
 
                     TextFieldCompose(
@@ -112,7 +112,7 @@ fun RegisterScreen(
                         keyboardType = KeyboardType.Phone,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(RegisterEvent.OnChangeTelefone(it))
                     }
 
                     TextFieldCompose(
@@ -122,7 +122,7 @@ fun RegisterScreen(
                         icon = Icons.Default.Key,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(RegisterEvent.OnChangeSenha(it))
                     }
 
                     TextFieldCompose(
@@ -130,9 +130,10 @@ fun RegisterScreen(
                         isError = state.onErrorConfirmarSenha,
                         label = R.string.confirm_senha,
                         icon = Icons.Default.Key,
-                        ime = ImeAction.Done
+                        ime = ImeAction.Done,
+                        errorText =  R.string.confirm_senha_error
                     ) {
-
+                        onEvent(RegisterEvent.OnChangeConfirmSenha(it))
                     }
 
                     if (state.loading) {
@@ -141,7 +142,9 @@ fun RegisterScreen(
                         Spacer(modifier = Modifier.height(48.dp))
                         Column {
                             Button(
-                                onClick = { },
+                                onClick = {
+                                    onEvent(RegisterEvent.CreateAccount)
+                                },
                                 modifier = Modifier
                                     .width(220.dp),
                                 shape = RoundedCornerShape(10.dp)
@@ -155,7 +158,6 @@ fun RegisterScreen(
                             }
                         }
                     }
-
                 }
             }
         }

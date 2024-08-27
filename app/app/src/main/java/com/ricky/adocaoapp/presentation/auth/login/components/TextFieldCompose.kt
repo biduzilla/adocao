@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,6 +38,7 @@ fun TextFieldCompose(
     modifier: Modifier = Modifier,
     value: String,
     isError: Boolean,
+    @StringRes errorText: Int? = null,
     @StringRes label: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     icon: ImageVector? = null,
@@ -64,7 +64,7 @@ fun TextFieldCompose(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 autoCorrect = true,
-                keyboardType = if (isPassword) KeyboardType.Password else keyboardType,
+                keyboardType = if (isPassword && hiddenPassword) KeyboardType.Password else keyboardType,
                 imeAction = ime
             ),
             label = {
@@ -74,10 +74,18 @@ fun TextFieldCompose(
                     )
                 }
             },
+            isError = isError,
+            supportingText = {
+                Text(
+                    text = stringResource(id = errorText ?: R.string.campo_obrigatorio),
+                    color = ErrorLight,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-
                 ),
             trailingIcon = {
                 if (isPassword) {
@@ -99,17 +107,6 @@ fun TextFieldCompose(
             }
 
         )
-        if (isError) {
-            Text(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp),
-                text = stringResource(id = R.string.campo_obrigatorio),
-                color = ErrorLight,
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.labelMedium
-            )
-        }
     }
 }
 
@@ -120,7 +117,8 @@ private fun TextFieldComposePrev() {
         modifier = Modifier.padding(16.dp),
         value = "value",
         isError = true,
-        label = R.string.cadastrar_animal
+        label = R.string.cadastrar_animal,
+        errorText = R.string.confirm_senha_error
     ) {
 
     }

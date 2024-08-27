@@ -25,7 +25,7 @@ class UserManager @Inject constructor(
         return changePasswordCase(resetSenha)
     }
 
-    suspend fun login(login: Login): Flow<Resource<Token>> {
+    fun login(login: Login): Flow<Resource<Token>> {
         return loginCase(login)
     }
 
