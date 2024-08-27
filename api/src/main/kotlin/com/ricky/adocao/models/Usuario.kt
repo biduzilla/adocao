@@ -12,9 +12,6 @@ data class Usuario(
     @Column(name = "NOME", length = 50)
     var nome: String = "",
 
-    @Column(name = "LOGIN", length = 50)
-    var login: String = "",
-
     @Column(name = "SENHA")
     var senha: String = "",
 

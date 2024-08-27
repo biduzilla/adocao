@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface UsuarioRepository : JpaRepository<Usuario, String> {
-    fun findByLogin(login: String?): Usuario?
-    fun existsByLogin(login: String): Boolean
+    fun findByEmail(email: String?): Usuario?
     fun existsByEmail(email: String): Boolean
-    fun findByLoginOrEmail(login: String, email: String): Optional<Usuario>
+    fun findByEmail(email: String): Optional<Usuario>
     fun findByEmailAndCodVerificacao(email: String, cod:Int): Optional<Usuario>
     fun findByCodVerificacao(id: Int): Optional<Usuario>
     fun existsByCodVerificacaoAndEmail(id: Int, email: String): Boolean

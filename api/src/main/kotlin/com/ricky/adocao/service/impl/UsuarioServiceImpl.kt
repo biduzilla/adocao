@@ -35,7 +35,7 @@ class UsuarioServiceImpl(
     }
 
     override fun login(loginDTO: LoginDTO): TokenDTO {
-        val usuario = usuarioRepository.findByLoginOrEmail(loginDTO.login, loginDTO.login)
+        val usuario = usuarioRepository.findByEmail(loginDTO.login)
             .orElseThrow { throw NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
 
         val usuarioAutentificado = autentificar(usuario, loginDTO.senha)
@@ -45,7 +45,7 @@ class UsuarioServiceImpl(
     }
 
     private fun autentificar(usuario: Usuario, senha: String): UserDetails {
-        val userDetail = loadUserByUsername(usuario.login)
+        val userDetail = loadUserByUsername(usuario.email)
         if (!passwordEncoder.matches(senha, userDetail.password)) {
             throw SenhaIncorretaException(i18n.getMessage("error.senha.invalida"))
         }
@@ -67,9 +67,6 @@ class UsuarioServiceImpl(
 
     override fun save(usuario: Usuario, verificar: Boolean): Usuario {
         if (verificar) {
-            if (usuarioRepository.existsByLogin(login = usuario.login)) {
-                throw LoginJaCadastradoException(i18n.getMessage("error.login.cadastrado"))
-            }
             if (usuarioRepository.existsByEmail(usuario.email)) {
                 throw EmailJaCadastradoException(i18n.getMessage("error.email.cadastrado"))
             }
@@ -97,7 +94,7 @@ class UsuarioServiceImpl(
     }
 
     override fun findByLoginOrEmail(login: String): Usuario {
-        return usuarioRepository.findByLoginOrEmail(login, login)
+        return usuarioRepository.findByEmail(login)
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
 
@@ -142,7 +139,7 @@ class UsuarioServiceImpl(
 
     override fun loadUserByUsername(username: String?): UserDetails {
         val usuario =
-            usuarioRepository.findByLogin(username) ?: throw NotFoundException(i18n.getMessage("usuario.nao.encotrado"))
+            usuarioRepository.findByEmail(username) ?: throw NotFoundException(i18n.getMessage("usuario.nao.encotrado"))
 
         return UserDetail(usuario)
     }
