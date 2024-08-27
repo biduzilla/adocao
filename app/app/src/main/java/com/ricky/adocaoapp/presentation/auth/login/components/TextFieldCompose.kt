@@ -6,12 +6,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,21 +42,18 @@ fun TextFieldCompose(
     @StringRes label: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     icon: ImageVector? = null,
+    isPassword: Boolean = false,
     ime: ImeAction = ImeAction.Next,
     onChange: (String) -> Unit
 ) {
+
+    var hiddenPassword by remember {
+        mutableStateOf(true)
+    }
+
     Column(
         modifier = modifier,
     ) {
-        if (label != null) {
-            Text(
-                text = stringResource(id = label),
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-            )
-        }
 
         TextField(
             modifier = Modifier
@@ -59,24 +64,40 @@ fun TextFieldCompose(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 autoCorrect = true,
-                keyboardType = keyboardType,
+                keyboardType = if (isPassword) KeyboardType.Password else keyboardType,
                 imeAction = ime
             ),
+            label = {
+                if (label != null) {
+                    Text(
+                        text = stringResource(id = label),
+                    )
+                }
+            },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
 
                 ),
-            leadingIcon = if (icon != null) {
+            trailingIcon = {
+                if (isPassword) {
+                    IconButton(onClick = { hiddenPassword = !hiddenPassword }) {
+                        val iconShow =
+                            if (hiddenPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                        Icon(imageVector = iconShow, contentDescription = null)
+                    }
+                }
+            },
+
+            leadingIcon = icon?.let {
                 {
                     Icon(
                         imageVector = icon,
                         contentDescription = if (label != null) stringResource(id = label) else null
                     )
                 }
-            } else {
-                null
-            },
+            }
+
         )
         if (isError) {
             Text(
