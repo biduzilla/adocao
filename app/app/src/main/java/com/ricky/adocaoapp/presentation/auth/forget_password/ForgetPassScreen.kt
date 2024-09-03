@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.auth.forget_password
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +19,6 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Numbers
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -32,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -40,14 +39,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
-import com.ricky.adocaoapp.presentation.auth.register.RegisterEvent
 
 @Composable
 fun ForgetPassScreen(
     state: ForgetPassState,
     onEvent: (ForgetPassEvent) -> Unit
 ) {
-    var scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    if (state.error.isNotBlank()) {
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    }
 
     Column(
         modifier = Modifier
@@ -98,7 +101,7 @@ fun ForgetPassScreen(
                         icon = Icons.Default.Email,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(ForgetPassEvent.OnChangeEmail(it))
                     }
 
                     if (state.isLoading) {
@@ -107,7 +110,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
-
+                                    onEvent(ForgetPassEvent.OnSendEmail)
                                 },
                                 modifier = Modifier
                                     .width(220.dp),
@@ -132,7 +135,7 @@ fun ForgetPassScreen(
                         errorText = R.string.cod_invalido,
                         ime = ImeAction.Next
                     ) {
-
+                        onEvent(ForgetPassEvent.OnChangeCod(it))
                     }
 
                     if (state.isLoading && state.isEmailSend) {
@@ -141,7 +144,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
-
+                                    onEvent(ForgetPassEvent.OnSendCod)
                                 },
                                 modifier = Modifier
                                     .width(220.dp),
@@ -164,6 +167,7 @@ fun ForgetPassScreen(
                         icon = Icons.Default.Key,
                         ime = ImeAction.Next
                     ) {
+                        onEvent(ForgetPassEvent.OnChangeSenha(it))
                     }
 
                     TextFieldCompose(
@@ -174,6 +178,7 @@ fun ForgetPassScreen(
                         ime = ImeAction.Done,
                         errorText = R.string.confirm_senha_error
                     ) {
+                        onEvent(ForgetPassEvent.OnChangeConfirmSenha(it))
                     }
 
                     if (state.isLoading && state.isCodVer) {
@@ -182,6 +187,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
+                                    onEvent(ForgetPassEvent.OnUpdatePassword)
                                 },
                                 modifier = Modifier
                                     .width(220.dp),
