@@ -5,6 +5,7 @@ data class ForgetPassState(
     var senha: String = "",
     var cod: String = "",
     var confirmSenha: String = "",
+    var error: String = "",
     var isLoading: Boolean = false,
     var isEmailSend: Boolean = false,
     var isCodVer: Boolean = false,
