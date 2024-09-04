@@ -49,15 +49,15 @@ fun LoginScreen(
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
     }
 
-    if(state.onLogin){
-
+    if (state.onLogin) {
+        Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show()
     }
 
     Column(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Surface(
             modifier = Modifier

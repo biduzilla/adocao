@@ -44,7 +44,7 @@ fun RegisterScreen(
 ) {
     Column(
         modifier = Modifier
-            .background(Color.Green)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         IconButton(
             modifier = Modifier
