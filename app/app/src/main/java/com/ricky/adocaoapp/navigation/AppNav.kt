@@ -5,10 +5,21 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.ricky.adocaoapp.presentation.auth.forget_password.ForgetPassScreen
+import com.ricky.adocaoapp.presentation.auth.forget_password.ForgetPassViewModel
+import com.ricky.adocaoapp.presentation.auth.login.LoginScreen
+import com.ricky.adocaoapp.presentation.auth.login.LoginViewModel
+import com.ricky.adocaoapp.presentation.auth.register.RegisterScreen
+import com.ricky.adocaoapp.presentation.auth.register.RegisterViewModel
+import com.ricky.adocaoapp.presentation.splash.SplashScreen
+import com.ricky.adocaoapp.presentation.splash.SplashViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -16,8 +27,32 @@ fun AppNav() {
     val navController = rememberNavController()
 
     AnimatedNavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
-        composableSlideHorizontally(Screens.SplashScreen.route){
+        composableSlideHorizontally(Screens.SplashScreen.route) {
+            val viewModel = hiltViewModel<SplashViewModel>()
+            val state by viewModel.state.collectAsState()
 
+            SplashScreen(state = state, navController = navController)
+        }
+
+        composableSlideHorizontally(Screens.LoginScreen.route) {
+            val viewModel = hiltViewModel<LoginViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            LoginScreen(state = state, onEvent = viewModel::onEvent)
+        }
+
+        composableSlideHorizontally(Screens.RegisterScreen.route) {
+            val viewModel = hiltViewModel<RegisterViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            RegisterScreen(state = state, onEvent = viewModel::onEvent)
+        }
+
+        composableSlideHorizontally(Screens.RegisterScreen.route) {
+            val viewModel = hiltViewModel<ForgetPassViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            ForgetPassScreen(state = state, onEvent = viewModel::onEvent)
         }
     }
 }
