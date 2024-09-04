@@ -27,9 +27,7 @@ fun SplashScreen(
     navController: NavController
 ) {
     if (state.isLoading) {
-        navController.navigate(Screens.LoginScreen.route) {
-
-        }
+        navController.navigate(Screens.LoginScreen.route)
     }
     Box(
         Modifier

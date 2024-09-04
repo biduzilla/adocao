@@ -37,11 +37,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 
 @Composable
 fun ForgetPassScreen(
+    navController: NavController,
     state: ForgetPassState,
     onEvent: (ForgetPassEvent) -> Unit
 ) {
@@ -52,6 +55,10 @@ fun ForgetPassScreen(
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
     }
 
+    if (state.isOk) {
+        navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+    }
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
@@ -60,7 +67,9 @@ fun ForgetPassScreen(
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(12.dp),
-            onClick = { }) {
+            onClick = {
+                navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+            }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
                 contentDescription = null
@@ -211,7 +220,12 @@ fun ForgetPassScreen(
 @Preview
 @Composable
 private fun ForgetPassPreview() {
-    ForgetPassScreen(state = ForgetPassState()) {
+    val context = LocalContext.current
+    val navController = NavController(context)
+    ForgetPassScreen(
+        navController,
+        state = ForgetPassState()
+    ) {
 
     }
 }

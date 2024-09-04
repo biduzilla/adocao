@@ -27,21 +27,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 
 @Composable
 fun RegisterScreen(
+    navController: NavController,
     state: RegisterState,
     onEvent: (RegisterEvent) -> Unit
 ) {
+
+    if (state.createOk) {
+        navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+    }
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
@@ -50,7 +57,9 @@ fun RegisterScreen(
             modifier = Modifier
                 .align(Alignment.Start)
                 .padding(12.dp),
-            onClick = { }) {
+            onClick = {
+                navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+            }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
                 contentDescription = null
@@ -131,7 +140,7 @@ fun RegisterScreen(
                         label = R.string.confirm_senha,
                         icon = Icons.Default.Key,
                         ime = ImeAction.Done,
-                        errorText =  R.string.confirm_senha_error
+                        errorText = R.string.confirm_senha_error
                     ) {
                         onEvent(RegisterEvent.OnChangeConfirmSenha(it))
                     }
@@ -168,7 +177,9 @@ fun RegisterScreen(
 @Preview
 @Composable
 private fun PreviewRegisterScreen() {
-    RegisterScreen(state = RegisterState()) {
+    val context = LocalContext.current
+    val navController = NavController(context)
+    RegisterScreen(navController, state = RegisterState()) {
 
     }
 }

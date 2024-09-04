@@ -38,21 +38,33 @@ fun AppNav() {
             val viewModel = hiltViewModel<LoginViewModel>()
             val state by viewModel.state.collectAsState()
 
-            LoginScreen(state = state, onEvent = viewModel::onEvent)
+            LoginScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
         }
 
         composableSlideHorizontally(Screens.RegisterScreen.route) {
             val viewModel = hiltViewModel<RegisterViewModel>()
             val state by viewModel.state.collectAsState()
 
-            RegisterScreen(state = state, onEvent = viewModel::onEvent)
+            RegisterScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
         }
 
         composableSlideHorizontally(Screens.RegisterScreen.route) {
             val viewModel = hiltViewModel<ForgetPassViewModel>()
             val state by viewModel.state.collectAsState()
 
-            ForgetPassScreen(state = state, onEvent = viewModel::onEvent)
+            ForgetPassScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
         }
     }
 }

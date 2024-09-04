@@ -34,11 +34,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 
 @Composable
 fun LoginScreen(
+    navController: NavController,
     state: LoginState,
     onEvent: (LoginEvent) -> Unit,
 ) {
@@ -97,7 +100,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(modifier = Modifier.align(Alignment.End), onClick = {
-
+                    navController.navigate(Screens.ForgetPasswordScreen.route)
                 }) {
                     Text(
                         text = stringResource(id = R.string.esqueci_senha),
@@ -113,7 +116,9 @@ fun LoginScreen(
                 } else {
                     Column {
                         Button(
-                            onClick = { },
+                            onClick = {
+                                onEvent(LoginEvent.OnLogin)
+                            },
                             modifier = Modifier
                                 .width(220.dp),
                             shape = RoundedCornerShape(10.dp)
@@ -133,7 +138,10 @@ fun LoginScreen(
                                 text = stringResource(id = R.string.nao_tem_conta),
                                 style = MaterialTheme.typography.labelLarge
                             )
-                            TextButton(onClick = { }) {
+                            TextButton(onClick = {
+                                navController.navigate(Screens.RegisterScreen.route)
+
+                            }) {
                                 Text(
                                     text = stringResource(id = R.string.criar_conta),
                                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -154,5 +162,7 @@ fun LoginScreen(
 @Preview
 @Composable
 private fun PreviewLoginScreen() {
-    LoginScreen(LoginState(true)) {}
+    val context = LocalContext.current
+    val navController = NavController(context)
+    LoginScreen(navController,LoginState(true)) {}
 }
