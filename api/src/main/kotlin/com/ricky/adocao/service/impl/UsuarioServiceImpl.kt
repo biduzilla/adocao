@@ -93,7 +93,7 @@ class UsuarioServiceImpl(
         usuarioRepository.deleteById(idUsuario)
     }
 
-    override fun findByLoginOrEmail(login: String): Usuario {
+    override fun findByEmail(login: String): Usuario {
         return usuarioRepository.findByEmail(login)
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
@@ -139,7 +139,7 @@ class UsuarioServiceImpl(
 
     override fun loadUserByUsername(username: String?): UserDetails {
         val usuario =
-            usuarioRepository.findByEmail(username) ?: throw NotFoundException(i18n.getMessage("usuario.nao.encotrado"))
+            usuarioRepository.loadByEmail(username) ?: throw NotFoundException(i18n.getMessage("usuario.nao.encotrado"))
 
         return UserDetail(usuario)
     }

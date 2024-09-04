@@ -2,9 +2,7 @@ package com.ricky.adocao.models
 
 import jakarta.persistence.*
 import lombok.Data
-import java.time.Instant
 import java.time.LocalDate
-import java.util.*
 
 @Data
 @Entity(name = "CHAT_MESSAGE")

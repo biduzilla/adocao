@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin
 class UsuarioController(
     private val usuarioService: UsuarioService,
     private val usuarioDTOMapper: UsuarioDTOMapper,
@@ -75,7 +76,7 @@ class UsuarioController(
     @PostMapping("/reset-senha/{email}")
     @Transactional
     fun enviarEmailSenha(@PathVariable email: String) {
-        val user = usuarioService.findByLoginOrEmail(email)
+        val user = usuarioService.findByEmail(email)
         val cod = usuarioService.gerarCodVerificacao()
         user.codVerificacao = cod
         usuarioService.save(usuario = user, verificar = false)

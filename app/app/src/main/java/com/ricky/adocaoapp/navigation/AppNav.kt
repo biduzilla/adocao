@@ -12,6 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ricky.adocaoapp.presentation.auth.forget_password.ForgetPassScreen
 import com.ricky.adocaoapp.presentation.auth.forget_password.ForgetPassViewModel
 import com.ricky.adocaoapp.presentation.auth.login.LoginScreen
@@ -24,7 +25,7 @@ import com.ricky.adocaoapp.presentation.splash.SplashViewModel
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNav() {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
 
     AnimatedNavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
         composableSlideHorizontally(Screens.SplashScreen.route) {
@@ -56,7 +57,7 @@ fun AppNav() {
             )
         }
 
-        composableSlideHorizontally(Screens.RegisterScreen.route) {
+        composableSlideHorizontally(Screens.ForgetPasswordScreen.route) {
             val viewModel = hiltViewModel<ForgetPassViewModel>()
             val state by viewModel.state.collectAsState()
 

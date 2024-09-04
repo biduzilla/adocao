@@ -68,13 +68,15 @@ fun ForgetPassScreen(
                 .align(Alignment.Start)
                 .padding(12.dp),
             onClick = {
-                navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+                navController.popBackStack()
             }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
-                contentDescription = null
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
         Column(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
@@ -83,8 +85,7 @@ fun ForgetPassScreen(
         ) {
             Surface(
                 modifier = Modifier
-                    .fillMaxHeight(0.9f)
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)
             ) {
                 Column(
@@ -103,10 +104,12 @@ fun ForgetPassScreen(
                         )
                     )
 
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     TextFieldCompose(
                         value = state.email,
                         isError = state.onErrorEmail,
-                        label = R.string.nome,
+                        label = R.string.email,
                         icon = Icons.Default.Email,
                         ime = ImeAction.Next
                     ) {
@@ -135,16 +138,18 @@ fun ForgetPassScreen(
                         }
                     }
 
-                    TextFieldCompose(
-                        value = state.cod,
-                        isError = state.onErrorCod,
-                        label = R.string.cod_invalido,
-                        icon = Icons.Default.Numbers,
-                        keyboardType = KeyboardType.Number,
-                        errorText = R.string.cod_invalido,
-                        ime = ImeAction.Next
-                    ) {
-                        onEvent(ForgetPassEvent.OnChangeCod(it))
+                    if (state.isEmailSend) {
+                        TextFieldCompose(
+                            value = state.cod,
+                            isError = state.onErrorCod,
+                            label = R.string.cod_invalido,
+                            icon = Icons.Default.Numbers,
+                            keyboardType = KeyboardType.Number,
+                            errorText = R.string.cod_invalido,
+                            ime = ImeAction.Next
+                        ) {
+                            onEvent(ForgetPassEvent.OnChangeCod(it))
+                        }
                     }
 
                     if (state.isLoading && state.isEmailSend) {
@@ -169,25 +174,27 @@ fun ForgetPassScreen(
                         }
                     }
 
-                    TextFieldCompose(
-                        value = state.senha,
-                        isError = state.onErrorSenha,
-                        label = R.string.senha,
-                        icon = Icons.Default.Key,
-                        ime = ImeAction.Next
-                    ) {
-                        onEvent(ForgetPassEvent.OnChangeSenha(it))
-                    }
+                    if (state.isCodVer) {
+                        TextFieldCompose(
+                            value = state.senha,
+                            isError = state.onErrorSenha,
+                            label = R.string.senha,
+                            icon = Icons.Default.Key,
+                            ime = ImeAction.Next
+                        ) {
+                            onEvent(ForgetPassEvent.OnChangeSenha(it))
+                        }
 
-                    TextFieldCompose(
-                        value = state.confirmSenha,
-                        isError = state.onErrorConfirmSenha,
-                        label = R.string.confirm_senha,
-                        icon = Icons.Default.Key,
-                        ime = ImeAction.Done,
-                        errorText = R.string.confirm_senha_error
-                    ) {
-                        onEvent(ForgetPassEvent.OnChangeConfirmSenha(it))
+                        TextFieldCompose(
+                            value = state.confirmSenha,
+                            isError = state.onErrorConfirmSenha,
+                            label = R.string.confirm_senha,
+                            icon = Icons.Default.Key,
+                            ime = ImeAction.Done,
+                            errorText = R.string.confirm_senha_error
+                        ) {
+                            onEvent(ForgetPassEvent.OnChangeConfirmSenha(it))
+                        }
                     }
 
                     if (state.isLoading && state.isCodVer) {

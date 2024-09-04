@@ -27,6 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,17 +78,20 @@ fun TextFieldCompose(
             },
             isError = isError,
             supportingText = {
-                Text(
-                    text = stringResource(id = errorText ?: R.string.campo_obrigatorio),
-                    color = ErrorLight,
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.labelMedium
-                )
+                if(isError){
+                    Text(
+                        text = stringResource(id = errorText ?: R.string.campo_obrigatorio),
+                        color = ErrorLight,
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
                 ),
+            visualTransformation = if (isPassword && hiddenPassword) PasswordVisualTransformation() else VisualTransformation.None,
             trailingIcon = {
                 if (isPassword) {
                     IconButton(onClick = { hiddenPassword = !hiddenPassword }) {

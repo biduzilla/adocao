@@ -8,7 +8,7 @@ class UserDetail(private val usuario: Usuario) : UserDetails {
 
     override fun getPassword() = usuario.senha
 
-    override fun getUsername() = usuario.login
+    override fun getUsername() = usuario.email
 
     override fun isAccountNonExpired() = true
 

@@ -1,9 +1,10 @@
 package com.ricky.adocaoapp.domain.use_case.user
 
+import com.google.gson.Gson
+import com.ricky.adocaoapp.domain.models.ErrorRequest
 import com.ricky.adocaoapp.domain.models.ResetSenha
 import com.ricky.adocaoapp.domain.repository.UserRepository
 import com.ricky.adocaoapp.utils.Resource
-import com.ricky.adocaoapp.utils.toErrorRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -20,9 +21,8 @@ class UseCaseChangePassword @Inject constructor(private val repository: UserRepo
                 if (result.isSuccessful) {
                     emit(Resource.Success(true))
                 } else {
-                    result.errorBody().toErrorRequest()?.let { error ->
-                        emit(Resource.Error("Error ${error.message}"))
-                    }
+                    val error = Gson().fromJson(result.errorBody()?.charStream(), ErrorRequest::class.java)
+                    emit(Resource.Error(error?.message ?: "Error desconhecido"))
                 }
             }
         } catch (e: HttpException) {

@@ -3,9 +3,7 @@ package com.ricky.adocao.models
 import com.ricky.adocao.enums.*
 import jakarta.persistence.*
 import lombok.Data
-import java.time.Instant
 import java.time.LocalDate
-import java.util.*
 
 @Entity
 @Data

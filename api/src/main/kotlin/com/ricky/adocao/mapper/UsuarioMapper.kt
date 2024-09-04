@@ -10,7 +10,6 @@ class UsuarioMapper : Mapper<UsuarioDTO, Usuario> {
         return Usuario(
             id = t.id,
             nome = t.nome,
-            login = t.login,
             senha = t.senha,
             email = t.email,
             telefone = t.telefone

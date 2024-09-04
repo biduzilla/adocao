@@ -80,7 +80,8 @@ class LoginViewModel @Inject constructor(
 
             is LoginEvent.OnChangeSenha -> {
                 _state.value = _state.value.copy(
-                    senha = event.senha, onErrorSenha = false,
+                    senha = event.senha,
+                    onErrorSenha = false,
                 )
             }
         }

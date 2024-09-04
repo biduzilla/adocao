@@ -14,7 +14,7 @@ interface UsuarioService {
     fun save(usuario: Usuario, verificar: Boolean): Usuario
     fun delete(usuario: Usuario)
     fun deleteById(idUsuario: String)
-    fun findByLoginOrEmail(login: String): Usuario
+    fun findByEmail(login: String): Usuario
     fun gerarCodVerificacao(): Int
     fun findByCodVerificacao(cod: Int): Usuario
     fun alterarSenha(email: String, senha: String, cod:Int)

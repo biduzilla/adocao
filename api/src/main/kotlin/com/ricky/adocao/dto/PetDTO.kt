@@ -3,8 +3,7 @@ package com.ricky.adocao.dto
 import com.ricky.adocao.enums.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
-import java.time.Instant
-import java.util.*
+import java.time.LocalDate
 
 data class PetDTO(
     var id: String = "",
@@ -20,7 +19,7 @@ data class PetDTO(
     var descricao: String = "",
     @field:NotEmpty(message = "{genero.obrigatorio}")
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
-    var dataPublicacao: Date = Date.from(Instant.now()),
+    var dataPublicacao: LocalDate = LocalDate.now(),
     var foto: ByteArray = ByteArray(0),
     @field:NotEmpty(message = "{status.obrigatorio}")
     var status: PetStatusEnum = PetStatusEnum.ACHADO,

@@ -1,6 +1,8 @@
 package com.ricky.adocaoapp.presentation.auth.register
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Email
@@ -25,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +43,7 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.utils.rememberImeState
 
 @Composable
 fun RegisterScreen(
@@ -49,6 +55,16 @@ fun RegisterScreen(
     if (state.createOk) {
         navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
     }
+
+    val scrollState = rememberScrollState()
+    val imeState = rememberImeState()
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value) {
+            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
@@ -58,29 +74,32 @@ fun RegisterScreen(
                 .align(Alignment.Start)
                 .padding(12.dp),
             onClick = {
-                navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+                navController.popBackStack()
             }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
-                contentDescription = null
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
         Column(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
                 .fillMaxSize()
-
+                .verticalScroll(scrollState)
         ) {
             Surface(
                 modifier = Modifier
-                    .fillMaxHeight(0.9f)
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .verticalScroll(scrollState)
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -148,7 +167,7 @@ fun RegisterScreen(
                     if (state.loading) {
                         CircularProgressIndicator()
                     } else {
-                        Spacer(modifier = Modifier.height(48.dp))
+                        Spacer(modifier = Modifier.height(26.dp))
                         Column {
                             Button(
                                 onClick = {
@@ -167,6 +186,7 @@ fun RegisterScreen(
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
