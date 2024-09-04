@@ -8,4 +8,6 @@ sealed interface ForgetPassEvent {
     data object OnSendEmail:ForgetPassEvent
     data object OnSendCod:ForgetPassEvent
     data object OnUpdatePassword:ForgetPassEvent
+
+    data object ClearError : ForgetPassEvent
 }

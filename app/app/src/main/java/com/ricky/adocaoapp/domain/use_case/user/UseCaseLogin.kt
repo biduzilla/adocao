@@ -26,9 +26,8 @@ class UseCaseLogin @Inject constructor(private val repository: UserRepository) {
                         emit(Resource.Error("Error inesperado"))
                     }
                 } else {
-                    //package:com.ricky.adocaoapp
                     val error = Gson().fromJson(result.errorBody()?.charStream(), ErrorRequest::class.java)
-                    emit(Resource.Error("Error ${error?.message ?: "desconhecido"}"))
+                    emit(Resource.Error(error?.message ?: "Errordesconhecido"))
                 }
 
             }

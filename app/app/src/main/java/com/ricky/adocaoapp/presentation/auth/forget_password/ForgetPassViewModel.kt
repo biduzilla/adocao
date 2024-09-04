@@ -207,6 +207,8 @@ class ForgetPassViewModel @Inject constructor(private val userManager: UserManag
                     }
                 }
             }
+
+            ForgetPassEvent.ClearError -> TODO()
         }
     }
 }

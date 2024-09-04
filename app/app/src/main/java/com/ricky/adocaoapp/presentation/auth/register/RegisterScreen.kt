@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.auth.register
 
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
@@ -52,10 +53,7 @@ fun RegisterScreen(
     onEvent: (RegisterEvent) -> Unit
 ) {
 
-    if (state.createOk) {
-        navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
-    }
-
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val imeState = rememberImeState()
 
@@ -63,6 +61,15 @@ fun RegisterScreen(
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
+    }
+
+    if (state.createOk) {
+        navController.popBackStack(route = Screens.LoginScreen.route, inclusive = true)
+    }
+
+    if (state.error.isNotBlank()) {
+        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+        onEvent(RegisterEvent.ClearError)
     }
 
     Column(
@@ -87,7 +94,6 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
         ) {
             Surface(
                 modifier = Modifier
@@ -148,6 +154,7 @@ fun RegisterScreen(
                         isError = state.onErrorSenha,
                         label = R.string.senha,
                         icon = Icons.Default.Key,
+                        isPassword = true,
                         ime = ImeAction.Next
                     ) {
                         onEvent(RegisterEvent.OnChangeSenha(it))
@@ -158,6 +165,7 @@ fun RegisterScreen(
                         isError = state.onErrorConfirmarSenha,
                         label = R.string.confirm_senha,
                         icon = Icons.Default.Key,
+                        isPassword = true,
                         ime = ImeAction.Done,
                         errorText = R.string.confirm_senha_error
                     ) {
@@ -167,7 +175,7 @@ fun RegisterScreen(
                     if (state.loading) {
                         CircularProgressIndicator()
                     } else {
-                        Spacer(modifier = Modifier.height(26.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
                         Column {
                             Button(
                                 onClick = {

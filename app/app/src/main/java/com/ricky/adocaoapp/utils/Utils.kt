@@ -8,9 +8,7 @@ fun formatPhoneNumber(phoneNumber: String): String {
             when (i) {
                 0 -> append('(')
                 2 -> append(") ")
-                5 -> append(' ')
-                6 -> append(' ')
-                9 -> append('-')
+                7 -> append('-')
             }
             append(paddedDigits[i])
             if (i == 10) break

@@ -151,6 +151,12 @@ class RegisterViewModel @Inject constructor(private val userCases: UserManager) 
                     )
                 }
             }
+
+            RegisterEvent.ClearError -> _state.update {
+                it.copy(
+                    error = ""
+                )
+            }
         }
     }
 }

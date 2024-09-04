@@ -84,6 +84,12 @@ class LoginViewModel @Inject constructor(
                     onErrorSenha = false,
                 )
             }
+
+            LoginEvent.ClearError -> {
+                _state.value = _state.value.copy(
+                    error = ""
+                )
+            }
         }
     }
 }

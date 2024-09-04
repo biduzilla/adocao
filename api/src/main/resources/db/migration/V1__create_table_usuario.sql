@@ -3,6 +3,6 @@ create table USUARIO (
     EMAIL varchar(50),
     NOME varchar(50),
     SENHA varchar(255),
-    TELEFONE varchar(10),
+    TELEFONE varchar(20),
     CODVERIFICACAO int
 );

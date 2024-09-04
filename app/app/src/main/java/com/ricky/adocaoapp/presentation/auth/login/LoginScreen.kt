@@ -65,6 +65,7 @@ fun LoginScreen(
 
     if (state.error.isNotBlank()) {
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+        onEvent(LoginEvent.ClearError)
     }
 
     if (state.onLogin) {

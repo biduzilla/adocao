@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.presentation.auth.forget_password
 
 import android.widget.Toast
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +43,7 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.utils.rememberImeState
 
 @Composable
 fun ForgetPassScreen(
@@ -48,11 +51,19 @@ fun ForgetPassScreen(
     state: ForgetPassState,
     onEvent: (ForgetPassEvent) -> Unit
 ) {
-    val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
+    val imeState = rememberImeState()
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value) {
+            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
 
     if (state.error.isNotBlank()) {
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+        onEvent(ForgetPassEvent.ClearError)
     }
 
     if (state.isOk) {

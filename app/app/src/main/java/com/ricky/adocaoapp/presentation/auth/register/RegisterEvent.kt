@@ -7,4 +7,5 @@ sealed interface RegisterEvent {
     data class OnChangeSenha(val senha: String) : RegisterEvent
     data class OnChangeConfirmSenha(val senha: String) : RegisterEvent
     data object CreateAccount : RegisterEvent
+    data object ClearError : RegisterEvent
 }

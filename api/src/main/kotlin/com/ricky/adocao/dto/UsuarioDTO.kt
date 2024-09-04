@@ -6,8 +6,6 @@ data class UsuarioDTO(
     var id: String = "",
     @field:NotBlank(message = "{nome.obrigatorio}")
     var nome: String = "",
-    @field:NotBlank(message = "{login.obrigatorio}")
-    var login: String = "",
     @field:NotBlank(message = "{senha.obrigatorio}")
     var senha:String = "",
     @field:NotBlank(message = "{email.obrigatorio}")
