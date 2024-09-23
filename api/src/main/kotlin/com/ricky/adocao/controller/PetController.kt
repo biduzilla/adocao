@@ -1,5 +1,6 @@
 package com.ricky.adocao.controller
 
+import com.ricky.adocao.dto.FiltroSearchDTO
 import com.ricky.adocao.dto.PetDTO
 import com.ricky.adocao.mapper.PetDTOMapper
 import com.ricky.adocao.mapper.PetMapper
@@ -28,12 +29,18 @@ class PetController(
     @Cacheable(CacheConstants.PET_CACHE)
     fun findAll(
         @RequestParam(required = false, defaultValue = "0") page: Int,
-        @RequestParam(required = false) search: String?,
-        @PageableDefault(
-            size = 10
-        ) paginacao: Pageable
+        @RequestParam(required = false) search: String,
+        @RequestParam(required = false) orderBy: String,
+        @RequestParam(defaultValue = "15") qtd: Int,
+        @RequestBody filtros: FiltroSearchDTO
     ): Page<PetDTO> {
-        val pageable = petService.findAll(search = search, pageable = paginacao)
+        val pageable = petService.findAll(
+            search = search,
+            orderBy = orderBy,
+            page = page,
+            qtd = qtd,
+            filtro = filtros
+        )
         return pageable.map { petDTOMapper.map(it) }
     }
 

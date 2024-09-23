@@ -67,12 +67,15 @@ fun ToppAppBarCompose(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Pets,
-                        contentDescription = title,
-                        modifier = Modifier.size(38.dp),
-                        tint = MaterialTheme.colorScheme.primaryContainer
-                    )
+                    IconButton(onClick = { onClickConfig }) {
+                        Icon(
+                            imageVector = Icons.Default.Pets,
+                            contentDescription = title,
+                            modifier = Modifier.size(38.dp),
+                            tint = MaterialTheme.colorScheme.primaryContainer
+                        )
+                    }
+
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge.copy(
@@ -102,10 +105,12 @@ fun ToppAppBarCompose(
             IconButton(modifier = Modifier.align(Alignment.End),
                 onClick = { expanded = !expanded }) {
                 Icon(
-                    imageVector = if (expanded) Icons.Filled.FilterList else Icons.Outlined.FilterList,
+                    imageVector = if (!expanded) Icons.Filled.FilterList else Icons.Outlined.FilterList,
                     contentDescription = null
                 )
             }
+
+
         }
     }
 }

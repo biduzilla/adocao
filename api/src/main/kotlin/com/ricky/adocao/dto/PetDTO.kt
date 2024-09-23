@@ -25,6 +25,8 @@ data class PetDTO(
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
     @field:NotEmpty(message = "{tipoAnimal.obrigatorio}")
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
+    @field:NotEmpty(message = "{tamanhoAnimal.obrigatorio}")
+    var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
     var donoId:String = "",
 ) {
     override fun equals(other: Any?): Boolean {

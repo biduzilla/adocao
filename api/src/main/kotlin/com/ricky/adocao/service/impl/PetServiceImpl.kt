@@ -1,5 +1,6 @@
 package com.ricky.adocao.service.impl
 
+import com.ricky.adocao.dto.FiltroSearchDTO
 import com.ricky.adocao.exception.NotFoundException
 import com.ricky.adocao.models.Pet
 import com.ricky.adocao.models.Usuario
@@ -7,8 +8,10 @@ import com.ricky.adocao.repository.PetRepository
 import com.ricky.adocao.service.PetService
 import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
+import com.ricky.adocao.utils.orderByToSort
 import org.springframework.beans.BeanUtils
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
@@ -18,12 +21,21 @@ class PetServiceImpl(
     private val usuarioService: UsuarioService,
     private val i18n: I18n
 ) : PetService {
-    override fun findAll(search: String?, pageable: Pageable): Page<Pet> {
-        search?.let {
-            return petRepository.findAllByNomeContaining(nome = search, pageable = pageable)
-        } ?: run {
-            return petRepository.findAll(pageable)
-        }
+    override fun findAll(
+        search: String,
+        orderBy: String,
+        page: Int,
+        qtd: Int,
+        filtro: FiltroSearchDTO
+    ): Page<Pet> {
+        val sort = orderByToSort(orderBy);
+        val pageable = PageRequest.of(page, qtd, sort);
+
+        return petRepository.findAllByFilters(
+            search = search,
+            filtro = filtro,
+            pageable = pageable
+        )
     }
 
     override fun findById(idPet: String): Pet {
