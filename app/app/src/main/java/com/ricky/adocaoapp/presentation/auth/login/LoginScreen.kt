@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,6 +58,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val imeState = rememberImeState()
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
@@ -89,13 +92,21 @@ fun LoginScreen(
                     .padding(horizontal = 16.dp)
                     .verticalScroll(scrollState),
             ) {
-                Spacer(modifier = Modifier.height(80.dp))
-                Image(
+                Spacer(modifier = Modifier.height(60.dp))
+                Icon(
+                    modifier = Modifier.size(200.dp),
                     imageVector = Icons.Default.Pets,
                     contentDescription = null,
-                    modifier = Modifier.size(200.dp)
+                    tint = MaterialTheme.colorScheme.primaryContainer
                 )
-                Spacer(modifier = Modifier.height(80.dp))
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                )
+                Spacer(modifier = Modifier.height(56.dp))
                 TextFieldCompose(
                     value = state.email,
                     isError = state.onErrorEmail,
@@ -120,6 +131,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(modifier = Modifier.align(Alignment.End), onClick = {
+                    focusManager.clearFocus()
                     navController.navigate(Screens.ForgetPasswordScreen.route)
                 }) {
                     Text(
@@ -137,6 +149,7 @@ fun LoginScreen(
                     Column {
                         Button(
                             onClick = {
+                                focusManager.clearFocus()
                                 onEvent(LoginEvent.OnLogin)
                             },
                             modifier = Modifier
@@ -164,6 +177,7 @@ fun LoginScreen(
                         style = MaterialTheme.typography.labelLarge
                     )
                     TextButton(onClick = {
+                        focusManager.clearFocus()
                         navController.navigate(Screens.RegisterScreen.route)
 
                     }) {

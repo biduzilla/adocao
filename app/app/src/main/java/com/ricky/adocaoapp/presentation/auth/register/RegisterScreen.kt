@@ -34,6 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,6 +57,7 @@ fun RegisterScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val imeState = rememberImeState()
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
@@ -81,6 +83,7 @@ fun RegisterScreen(
                 .align(Alignment.Start)
                 .padding(12.dp),
             onClick = {
+                focusManager.clearFocus()
                 navController.popBackStack()
             }) {
             Icon(
@@ -179,6 +182,7 @@ fun RegisterScreen(
                         Column {
                             Button(
                                 onClick = {
+                                    focusManager.clearFocus()
                                     onEvent(RegisterEvent.CreateAccount)
                                 },
                                 modifier = Modifier

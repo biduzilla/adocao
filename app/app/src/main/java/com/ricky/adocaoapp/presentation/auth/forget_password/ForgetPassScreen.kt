@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -54,6 +55,7 @@ fun ForgetPassScreen(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val imeState = rememberImeState()
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
@@ -80,6 +82,7 @@ fun ForgetPassScreen(
                 .padding(12.dp),
             onClick = {
                 navController.popBackStack()
+                focusManager.clearFocus()
             }) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
@@ -133,6 +136,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
+                                    focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnSendEmail)
                                 },
                                 modifier = Modifier
@@ -169,6 +173,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
+                                    focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnSendCod)
                                 },
                                 modifier = Modifier
@@ -214,6 +219,7 @@ fun ForgetPassScreen(
                         Column {
                             Button(
                                 onClick = {
+                                    focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnUpdatePassword)
                                 },
                                 modifier = Modifier

@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,14 +40,18 @@ import com.ricky.adocaoapp.ui.theme.ErrorLight
 fun TextFieldCompose(
     modifier: Modifier = Modifier,
     value: String,
-    isError: Boolean,
+    isError: Boolean = false,
     @StringRes errorText: Int? = null,
     @StringRes label: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     icon: ImageVector? = null,
     isPassword: Boolean = false,
     ime: ImeAction = ImeAction.Next,
-    onChange: (String) -> Unit
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+    ),
+    onChange: (String) -> Unit,
 ) {
 
     var hiddenPassword by remember {
@@ -78,7 +83,7 @@ fun TextFieldCompose(
             },
             isError = isError,
             supportingText = {
-                if(isError){
+                if (isError) {
                     Text(
                         text = stringResource(id = errorText ?: R.string.campo_obrigatorio),
                         color = ErrorLight,
@@ -87,10 +92,7 @@ fun TextFieldCompose(
                     )
                 }
             },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                ),
+            colors = colors,
             visualTransformation = if (isPassword && hiddenPassword) PasswordVisualTransformation() else VisualTransformation.None,
             trailingIcon = {
                 if (isPassword) {
@@ -123,8 +125,6 @@ private fun TextFieldComposePrev() {
         value = "value",
         isError = true,
         label = R.string.cadastrar_animal,
-        errorText = R.string.confirm_senha_error
-    ) {
-
-    }
+        errorText = R.string.confirm_senha_error,
+        onChange = {})
 }
