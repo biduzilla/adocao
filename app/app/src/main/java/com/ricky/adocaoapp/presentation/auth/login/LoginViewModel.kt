@@ -2,6 +2,7 @@ package com.ricky.adocaoapp.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.models.Login
 import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.utils.Resource
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userCase: UserManager
+    private val userCase: UserManager,
+    private val dataStoreUtil: DataStoreUtil
 ) : ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
@@ -42,6 +44,9 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
+                    result.data?.let {
+                        dataStoreUtil.saveToken(result.data)
+                    }
                     _state.value = _state.value.copy(
                         isLoading = false,
                         onLogin = true

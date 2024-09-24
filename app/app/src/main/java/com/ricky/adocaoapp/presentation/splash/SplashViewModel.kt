@@ -3,7 +3,6 @@ package com.ricky.adocaoapp.presentation.splash
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.ViewModel
-import com.ricky.adocaoapp.presentation.splash.SplashState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

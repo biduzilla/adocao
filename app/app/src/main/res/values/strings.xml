@@ -18,4 +18,19 @@
     <string name="cadastrar">Cadastrar</string>
     <string name="cadastrar_animal">Cadastrar Pet</string>
     <string name="campo_obrigatorio">Campo obrigatório</string>
+    <string name="limpar_filtros">Limpar filtros</string>
+
+    <string name="gato">Gato</string>
+    <string name="cachorro">Cachorro</string>
+    <string name="achado">Achado</string>
+    <string name="perdido">Perdido</string>
+    <string name="adocao">Adoção</string>
+    <string name="grande">Grande</string>
+    <string name="medio">Médio</string>
+    <string name="pequeno">Pequeno</string>
+    <string name="filhote">Filhote</string>
+    <string name="adulto">Adulto</string>
+    <string name="idoso">Idoso</string>
+    <string name="macho">Macho</string>
+    <string name="femea">Fêmea</string>
 </resources>
