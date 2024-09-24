@@ -10,5 +10,6 @@ object Constants {
     const val USER_VERIFY_CODE_ENDPOINT: String = "/usuario/verificar-cod"
     const val USER_CHANGE_PASSWORD_ENDPOINT: String = "/usuario/alterar-senha"
     const val USER_TOKEN: String = "userToken"
+    const val PET_ENDPOINT: String = "/pet"
 
 }
