@@ -10,6 +10,7 @@ import com.ricky.adocaoapp.domain.use_case.user.UseCaseLogin
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseResetPassword
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseSave
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseVerifyCod
+import com.ricky.adocaoapp.domain.use_case.user.UseRefreshToken
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,7 +20,8 @@ class UserManager @Inject constructor(
     private val loginCase: UseCaseLogin,
     private val resetPasswordCase: UseCaseResetPassword,
     private val saveCase: UseCaseSave,
-    private val verifyCodCase: UseCaseVerifyCod
+    private val verifyCodCase: UseCaseVerifyCod,
+    private val refreshToken: UseRefreshToken
 ) {
     fun changePassword(resetSenha: ResetSenha): Flow<Resource<Boolean>> {
         return changePasswordCase(resetSenha)
@@ -41,5 +43,7 @@ class UserManager @Inject constructor(
         return verifyCodCase(verificarCod)
     }
 
-
+    fun refreshToken(token: Token): Flow<Resource<Token>> {
+        return refreshToken(token)
+    }
 }

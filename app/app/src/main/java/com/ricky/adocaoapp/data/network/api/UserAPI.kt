@@ -1,4 +1,4 @@
-package com.ricky.adocaoapp.data.network
+package com.ricky.adocaoapp.data.network.api
 
 import com.ricky.adocaoapp.domain.models.Login
 import com.ricky.adocaoapp.domain.models.ResetSenha
@@ -20,6 +20,9 @@ interface UserAPI {
 
     @POST(Constants.USER_SAVE_ENDPOINT)
     suspend fun save(@Body usuario: Usuario): Response<Usuario>
+
+    @POST(Constants.USER_REFRESH_TOKEN_ENDPOINT)
+    suspend fun refreshToken(@Body token: Token): Response<Token>
 
     @POST("${Constants.USER_RESET_PASSWORD_ENDPOINT}/{email}")
     suspend fun resetPassword(@Path("email") email: String): Response<Void>

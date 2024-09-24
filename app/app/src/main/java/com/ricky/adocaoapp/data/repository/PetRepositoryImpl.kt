@@ -1,6 +1,6 @@
 package com.ricky.adocaoapp.data.repository
 
-import com.ricky.adocaoapp.data.network.PetApi
+import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.repository.PetRepository

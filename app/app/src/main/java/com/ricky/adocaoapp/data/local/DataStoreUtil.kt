@@ -7,6 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import com.ricky.adocaoapp.domain.models.Token
 import com.ricky.adocaoapp.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,8 +28,9 @@ class DataStoreUtil(private val context: Context) {
         }
     }
 
-    suspend fun saveToken(token: String) {
-        context.dataStore.edit { p -> p[TOKEN] = token }
+    suspend fun saveToken(token: Token) {
+        val json = Gson().toJson(token)
+        context.dataStore.edit { p -> p[TOKEN] = json }
     }
 
     fun getTheme(): Flow<Boolean> {
@@ -36,8 +39,15 @@ class DataStoreUtil(private val context: Context) {
         }
     }
 
-    fun getToken(): Flow<String> {
-        return context.dataStore.data.map { p -> p[TOKEN] ?: "" }
+    fun getToken(): Flow<Token?> {
+        return context.dataStore.data.map { preferences ->
+            val json = preferences[TOKEN] ?: ""
+            if (json.isNotEmpty()) {
+                Gson().fromJson(json, Token::class.java)
+            } else {
+                null
+            }
+        }
     }
 
 

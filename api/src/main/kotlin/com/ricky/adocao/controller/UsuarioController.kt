@@ -44,6 +44,11 @@ class UsuarioController(
         return usuarioService.login(loginDTO)
     }
 
+    @PostMapping("/refresh-token")
+    fun refreshToken(@RequestBody token: TokenDTO): TokenDTO {
+        return usuarioService.refreshToken(token)
+    }
+
     @GetMapping("/get-user/{idUser}")
     fun findById(@PathVariable idUser: String): UsuarioDTO {
         return usuarioDTOMapper.map(usuarioService.findById(idUser))

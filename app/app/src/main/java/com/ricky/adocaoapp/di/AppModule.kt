@@ -1,6 +1,6 @@
 package com.ricky.adocaoapp.di
 
-import com.ricky.adocaoapp.data.network.UserAPI
+import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.repository.UserRepositoryImpl
 import com.ricky.adocaoapp.domain.repository.UserRepository
 import com.ricky.adocaoapp.utils.Constants

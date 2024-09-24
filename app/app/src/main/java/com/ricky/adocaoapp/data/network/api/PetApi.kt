@@ -1,4 +1,4 @@
-package com.ricky.adocaoapp.data.network
+package com.ricky.adocaoapp.data.network.api
 
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.Pet

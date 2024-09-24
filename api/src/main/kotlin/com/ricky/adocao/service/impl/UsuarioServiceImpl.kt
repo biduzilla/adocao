@@ -28,7 +28,7 @@ class UsuarioServiceImpl(
     private val i18n: I18n,
     @Lazy private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
-    private val roleService: RoleService
+    private val roleService: RoleService,
 ) : UsuarioService, UserDetailsService {
     override fun findAll(pageable: Pageable): Page<Usuario> {
         return usuarioRepository.findAll(pageable)
@@ -111,7 +111,7 @@ class UsuarioServiceImpl(
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrado")) }
     }
 
-    override fun alterarSenha(email: String, senha: String, cod:Int) {
+    override fun alterarSenha(email: String, senha: String, cod: Int) {
         val user = usuarioRepository.findByEmailAndCodVerificacao(email, cod)
             .orElseThrow { NotFoundException(i18n.getMessage("usuario.nao.encotrad")) }
         verificarSenha(senha)
@@ -124,6 +124,17 @@ class UsuarioServiceImpl(
         if (!usuarioRepository.existsByCodVerificacaoAndEmail(cod, email)) {
             throw CodVerificacaoInvalidoException(i18n.getMessage("cod.verificacao.invalido"))
         }
+    }
+
+    override fun refreshToken(tokenDTO: TokenDTO): TokenDTO {
+        val user = findById(tokenDTO.idUser)
+        val userDetail = loadUserByUsername(user.email)
+        val token = jwtService.generateToken(userDetail)
+        return TokenDTO(
+            token = token,
+            idUser = tokenDTO.idUser,
+            nome = tokenDTO.nome
+        )
     }
 
     private fun verificarSenha(senha: String) {

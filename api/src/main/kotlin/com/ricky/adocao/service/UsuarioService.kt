@@ -19,4 +19,5 @@ interface UsuarioService {
     fun findByCodVerificacao(cod: Int): Usuario
     fun alterarSenha(email: String, senha: String, cod:Int)
     fun verificarCod(cod: Int, email: String)
+    fun refreshToken(tokenDTO: TokenDTO):TokenDTO
 }
