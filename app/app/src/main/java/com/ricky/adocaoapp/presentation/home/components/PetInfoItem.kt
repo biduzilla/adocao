@@ -36,22 +36,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
-import com.ricky.adocaoapp.domain.enums.PetStatusEnum
-import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.utils.pet1
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PetItem(pet: Pet) {
+fun PetInfoItem(
+    modifier: Modifier = Modifier,
+    pet: Pet
+) {
 
 //    val bitmap = byteArrayToBitmap(pet.foto)
 //    val foto = BitmapPainter(bitmap.asImageBitmap())
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(10.dp),
         shape = RoundedCornerShape(50.dp),
@@ -63,7 +64,7 @@ fun PetItem(pet: Pet) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .size(300.dp)
+                    .size(250.dp)
                     .clip(
                         RoundedCornerShape(
                             topStart = 50.dp,
@@ -75,42 +76,24 @@ fun PetItem(pet: Pet) {
                 painter = painterResource(id = R.drawable.blue_dog),
                 contentDescription = pet.nome
             )
-            Column(Modifier.padding(16.dp)) {
+            Column(
+                Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
                 Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Min),
+                    Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(modifier = Modifier.weight(2.5f),verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            text = pet.nome,
-                            style = MaterialTheme.typography.displaySmall.copy(
-                                fontWeight = FontWeight.Bold
-                            )
+                    Text(
+                        text = pet.nome,
+                        style = MaterialTheme.typography.displaySmall.copy(
+                            fontWeight = FontWeight.Bold
                         )
-                        Column() {
-                            FlowRow(
-                                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                verticalArrangement = Arrangement.spacedBy(6.dp)
-                            ) {
-                                Tag(text = pet.status.value)
-                                SexoTag(sexo = pet.genero)
-                                Tag(text = pet.tamanho.value)
-                                Tag(text = pet.tipoAnimal.value)
-                                Tag(text = pet.idade.value)
-
-                            }
-                        }
-                    }
+                    )
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Top,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .weight(1f)
-                            .padding(top=12.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.padding(top=2.dp)
                     ) {
                         Text(
                             text = pet.localizacao.toString(),
@@ -126,6 +109,17 @@ fun PetItem(pet: Pet) {
                         }
 
                     }
+                }
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Tag(text = pet.status.value)
+                    SexoTag(sexo = pet.genero)
+                    Tag(text = pet.tamanho.value)
+                    Tag(text = pet.tipoAnimal.value)
+                    Tag(text = pet.idade.value)
+
                 }
             }
         }
@@ -192,5 +186,5 @@ fun Tag(
 @Preview
 @Composable
 private fun PetItemPrev() {
-    PetItem(pet = pet1)
+    PetInfoItem(pet = pet1)
 }
