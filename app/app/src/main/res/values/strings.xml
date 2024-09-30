@@ -19,6 +19,7 @@
     <string name="cadastrar_animal">Cadastrar Pet</string>
     <string name="campo_obrigatorio">Campo obrigatório</string>
     <string name="limpar_filtros">Limpar filtros</string>
+    <string name="bem_vindo">Bem vindo</string>
 
     <string name="gato">Gato</string>
     <string name="cachorro">Cachorro</string>

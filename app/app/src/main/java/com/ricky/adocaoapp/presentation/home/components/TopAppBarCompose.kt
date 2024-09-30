@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material3.Button
@@ -41,17 +38,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.domain.models.FiltroSearch
-import com.ricky.adocaoapp.presentation.auth.login.LoginEvent
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 
 @Composable
 fun ToppAppBarCompose(
     modifier: Modifier = Modifier,
-    title: String,
     search: String,
-    onVoltar: () -> Unit,
     onChangePesquisa: (String) -> Unit,
-    onClickConfig: () -> Unit,
     onChangeFiltro: (FiltroSearch) -> Unit
 ) {
 
@@ -79,38 +72,6 @@ fun ToppAppBarCompose(
                 ),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { onClickConfig }) {
-                        Icon(
-                            imageVector = Icons.Default.Pets,
-                            contentDescription = title,
-                            modifier = Modifier.size(38.dp),
-                            tint = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    }
-
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-                IconButton(onClick = onVoltar) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.Logout,
-                        contentDescription = title
-                    )
-                }
-            }
             TextFieldCompose(
                 value = search,
                 colors = TextFieldDefaults.colors(
@@ -131,26 +92,28 @@ fun ToppAppBarCompose(
                 )
             }
 
-            FiltroSection(expanded = expanded, filtro = filtro) { onChangeFiltro(it) }
+            if (expanded) {
+                FiltroSection(expanded = expanded, filtro = filtro) { onChangeFiltro(it) }
 
-            Button(
-                onClick = {
-                    filtro = FiltroSearch()
-                },
-                modifier = Modifier
-                    .width(220.dp)
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Text(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    text = stringResource(id = R.string.limpar_filtros),
-                    style = MaterialTheme.typography.titleLarge
-                        .copy(fontWeight = FontWeight.Bold)
-                )
+                Button(
+                    onClick = {
+                        filtro = FiltroSearch()
+                    },
+                    modifier = Modifier
+                        .width(220.dp)
+                        .align(Alignment.CenterHorizontally),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        text = stringResource(id = R.string.limpar_filtros),
+                        style = MaterialTheme.typography.titleLarge
+                            .copy(fontWeight = FontWeight.Bold)
+                    )
+                }
             }
         }
     }
@@ -181,150 +144,149 @@ fun FiltroSection(
     filtro: FiltroSearch,
     onChangeFiltro: (FiltroSearch) -> Unit
 ) {
-    if (!expanded) {
-        Column(
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FiltroCheckboxRow(
-                    labelId = R.string.cachorro,
-                    checked = filtro.isCat,
-                    onCheckedChange = {
-                        filtro.isCat = !filtro.isCat
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.gato,
-                    checked = filtro.isDog,
-                    onCheckedChange = {
-                        filtro.isDog = !filtro.isDog
-                        onChangeFiltro(filtro)
-                    }
-                )
-            }
+            FiltroCheckboxRow(
+                labelId = R.string.cachorro,
+                checked = filtro.isCat,
+                onCheckedChange = {
+                    filtro.isCat = !filtro.isCat
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.gato,
+                checked = filtro.isDog,
+                onCheckedChange = {
+                    filtro.isDog = !filtro.isDog
+                    onChangeFiltro(filtro)
+                }
+            )
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FiltroCheckboxRow(
-                    labelId = R.string.achado,
-                    checked = filtro.isAchado,
-                    onCheckedChange = {
-                        filtro.isAchado = !filtro.isAchado
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.perdido,
-                    checked = filtro.isPerdido,
-                    onCheckedChange = {
-                        filtro.isPerdido = !filtro.isPerdido
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.adocao,
-                    checked = filtro.isAdotar,
-                    onCheckedChange = {
-                        filtro.isAdotar = !filtro.isAdotar
-                        onChangeFiltro(filtro)
-                    }
-                )
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            FiltroCheckboxRow(
+                labelId = R.string.achado,
+                checked = filtro.isAchado,
+                onCheckedChange = {
+                    filtro.isAchado = !filtro.isAchado
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.perdido,
+                checked = filtro.isPerdido,
+                onCheckedChange = {
+                    filtro.isPerdido = !filtro.isPerdido
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.adocao,
+                checked = filtro.isAdotar,
+                onCheckedChange = {
+                    filtro.isAdotar = !filtro.isAdotar
+                    onChangeFiltro(filtro)
+                }
+            )
+        }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FiltroCheckboxRow(
-                    labelId = R.string.pequeno,
-                    checked = filtro.isPequeno,
-                    onCheckedChange = {
-                        filtro.isPequeno = !filtro.isPequeno
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.medio,
-                    checked = filtro.isMedio,
-                    onCheckedChange = {
-                        filtro.isMedio = !filtro.isMedio
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.grande,
-                    checked = filtro.isGrande,
-                    onCheckedChange = {
-                        filtro.isGrande = !filtro.isGrande
-                        onChangeFiltro(filtro)
-                    }
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FiltroCheckboxRow(
-                    labelId = R.string.macho,
-                    checked = filtro.isMacho,
-                    onCheckedChange = {
-                        filtro.isMacho = !filtro.isMacho
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.femea,
-                    checked = filtro.isFemea,
-                    onCheckedChange = {
-                        filtro.isFemea = !filtro.isFemea
-                        onChangeFiltro(filtro)
-                    }
-                )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            FiltroCheckboxRow(
+                labelId = R.string.pequeno,
+                checked = filtro.isPequeno,
+                onCheckedChange = {
+                    filtro.isPequeno = !filtro.isPequeno
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.medio,
+                checked = filtro.isMedio,
+                onCheckedChange = {
+                    filtro.isMedio = !filtro.isMedio
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.grande,
+                checked = filtro.isGrande,
+                onCheckedChange = {
+                    filtro.isGrande = !filtro.isGrande
+                    onChangeFiltro(filtro)
+                }
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            FiltroCheckboxRow(
+                labelId = R.string.macho,
+                checked = filtro.isMacho,
+                onCheckedChange = {
+                    filtro.isMacho = !filtro.isMacho
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.femea,
+                checked = filtro.isFemea,
+                onCheckedChange = {
+                    filtro.isFemea = !filtro.isFemea
+                    onChangeFiltro(filtro)
+                }
+            )
 
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                FiltroCheckboxRow(
-                    labelId = R.string.filhote,
-                    checked = filtro.isFilhote,
-                    onCheckedChange = {
-                        filtro.isFilhote = !filtro.isFilhote
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.adulto,
-                    checked = filtro.isAdulto,
-                    onCheckedChange = {
-                        filtro.isAdulto = !filtro.isAdulto
-                        onChangeFiltro(filtro)
-                    }
-                )
-                FiltroCheckboxRow(
-                    labelId = R.string.idoso,
-                    checked = filtro.isIdoso,
-                    onCheckedChange = {
-                        filtro.isIdoso = !filtro.isIdoso
-                        onChangeFiltro(filtro)
-                    }
-                )
-            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            FiltroCheckboxRow(
+                labelId = R.string.filhote,
+                checked = filtro.isFilhote,
+                onCheckedChange = {
+                    filtro.isFilhote = !filtro.isFilhote
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.adulto,
+                checked = filtro.isAdulto,
+                onCheckedChange = {
+                    filtro.isAdulto = !filtro.isAdulto
+                    onChangeFiltro(filtro)
+                }
+            )
+            FiltroCheckboxRow(
+                labelId = R.string.idoso,
+                checked = filtro.isIdoso,
+                onCheckedChange = {
+                    filtro.isIdoso = !filtro.isIdoso
+                    onChangeFiltro(filtro)
+                }
+            )
         }
     }
+
 }
 
 
 @Preview
 @Composable
 private fun ToppAppBarComposePrev() {
-    ToppAppBarCompose(Modifier, "Ola teste", "", {}, { }, {}, {})
+    ToppAppBarCompose(Modifier, "Ola teste", {}, {})
 }
