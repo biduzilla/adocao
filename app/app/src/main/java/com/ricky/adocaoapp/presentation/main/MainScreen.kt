@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.presentation.home.HomeEvent
 import com.ricky.adocaoapp.presentation.home.components.ToppAppBarCompose
+import com.ricky.adocaoapp.presentation.main.components.BottomBar
 import com.ricky.adocaoapp.presentation.main.components.MainTopBar
 
 @Composable
@@ -17,6 +19,8 @@ fun MainScreen(
     state: MainState,
     onEvent: (MainEvent) -> Unit
 ) {
+    val navControllerBottom = rememberNavController()
+
     Scaffold(
         topBar = {
             MainTopBar(
@@ -24,6 +28,9 @@ fun MainScreen(
                 onSair = { onEvent(MainEvent.OnSair) },
                 onClickConfig = { },
             )
+        },
+        bottomBar = {
+            BottomBar(navController = navControllerBottom)
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
