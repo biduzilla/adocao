@@ -9,11 +9,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.ricky.adocaoapp.presentation.home.components.ToppAppBarCompose
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
     state: HomeState,
     onEvent: (HomeEvent) -> Unit
 ) {
@@ -42,5 +45,6 @@ fun HomeScreen(
 @Preview
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(HomeState()) {}
+    val context = LocalContext.current
+    HomeScreen(NavController(context), HomeState()) {}
 }

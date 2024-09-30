@@ -1,7 +1,9 @@
-package com.ricky.adocao.enums
+package com.ricky.adocaoapp.domain.enums
 
-enum class PetIdadeEnum {
-    FILHOTE,
-    ADULTO,
-    IDOSO;
+import com.ricky.adocaoapp.domain.enums.EnumWithValue
+
+enum class PetIdadeEnum(override val value: String):EnumWithValue {
+    FILHOTE("Filhote"),
+    ADULTO("Adulto"),
+    IDOSO("Idoso");
 }

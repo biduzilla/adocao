@@ -77,5 +77,6 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.bundles.network)
     implementation(libs.datastore.preferences)
+    implementation(libs.coil.compose)
     implementation(libs.material.icons.extended)
 }

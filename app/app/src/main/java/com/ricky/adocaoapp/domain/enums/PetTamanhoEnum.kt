@@ -1,8 +1,10 @@
-package com.ricky.adocao.enums
+package com.ricky.adocaoapp.domain.enums
 
-enum class PetTamanhoEnum {
-    PEQUENO,
-    MEDIO,
-    GRANDE,
+import com.ricky.adocaoapp.domain.enums.EnumWithValue
+
+enum class PetTamanhoEnum(override val value: String) : EnumWithValue {
+    PEQUENO("Pequeno"),
+    MEDIO("Médio"),
+    GRANDE("Grande"),
 
 }

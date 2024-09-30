@@ -12,6 +12,7 @@ hilt = "2.48"
 coroutines = "1.7.3"
 retrofit = "2.9.0"
 icons = "1.6.7"
+coil = "2.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,16 +56,19 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 #Extended Icons
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons" }
 
+#coil-compose
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
 [bundles]
 dagger-hilt = ["hilt-android", "hilt-navigation-compose"]
 kapt-dagger-hilt = ["kapt-hilt-android-compiler", "kapt-hilt-compiler"]
 coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
-network=["retrofit","converter-gson","okhttp","logging-interceptor","kotlinx-serialization-json"]
+network = ["retrofit", "converter-gson", "okhttp", "logging-interceptor", "kotlinx-serialization-json"]
 
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 

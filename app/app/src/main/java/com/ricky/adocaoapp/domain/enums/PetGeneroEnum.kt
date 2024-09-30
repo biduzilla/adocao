@@ -1,4 +1,4 @@
-package com.ricky.adocao.enums
+package com.ricky.adocaoapp.domain.enums
 
 enum class PetGeneroEnum {
     MACHO,
@@ -6,8 +6,8 @@ enum class PetGeneroEnum {
 
     override fun toString(): String {
         return when(this){
-            MACHO -> "PET_GENERO_MACHO"
-            FEMEA -> "PET_GENERO_FEMEA"
+            MACHO -> "Macho"
+            FEMEA -> "Fêmea"
         }
     }
 
