@@ -17,7 +17,7 @@ sealed class Screens(val route:String) {
         route="forget_password"
     )
 
-    data object HomeScreen:Screens(
-        route="home_password"
+    data object MainScreen:Screens(
+        route="main"
     )
 }
