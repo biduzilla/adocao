@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,8 @@ fun ToppAppBarCompose(
     modifier: Modifier = Modifier,
     search: String,
     onChangePesquisa: (String) -> Unit,
-    onChangeFiltro: (FiltroSearch) -> Unit
+    onChangeFiltro: (FiltroSearch) -> Unit,
+    onSearch: () -> Unit,
 ) {
 
     var filtro = FiltroSearch()
@@ -80,7 +82,12 @@ fun ToppAppBarCompose(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
-                icon = Icons.Default.Search
+                icon = Icons.Default.Search,
+                ime = ImeAction.Next,
+                onDone = {
+                    onSearch()
+                },
+                label = R.string.pesquisar
             ) {
                 onChangePesquisa(it)
             }
@@ -288,5 +295,5 @@ fun FiltroSection(
 @Preview
 @Composable
 private fun ToppAppBarComposePrev() {
-    ToppAppBarCompose(Modifier, "Ola teste", {}, {})
+    ToppAppBarCompose(Modifier, "Ola teste", {}, {},{})
 }

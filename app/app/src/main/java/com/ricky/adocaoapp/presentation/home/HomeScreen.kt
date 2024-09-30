@@ -36,13 +36,17 @@ fun HomeScreen(
             ToppAppBarCompose(
                 search = state.search,
                 onChangePesquisa = { onEvent(HomeEvent.OnChangePesquisa(it)) },
-                onChangeFiltro = { onEvent(HomeEvent.OnChangeFiltro(it)) })
+                onChangeFiltro = { onEvent(HomeEvent.OnChangeFiltro(it)) },
+                onSearch = { onEvent(HomeEvent.OnSearch) }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {},
                 shape = CircleShape,
-                modifier = Modifier.padding(16.dp).size(70.dp),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(70.dp),
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {

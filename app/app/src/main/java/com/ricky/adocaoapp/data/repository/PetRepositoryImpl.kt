@@ -14,7 +14,7 @@ class PetRepositoryImpl @Inject constructor(private val api: PetApi) : PetReposi
         orderBy: String?,
         qtd: Int,
         filtros: FiltroSearch
-    ): Response<Pet> = api.getAll(page, search, orderBy, qtd, filtros)
+    ): Response<List<Pet>> = api.getAll(page, search, orderBy, qtd, filtros)
 
     override suspend fun getById(id: String): Response<Pet> = api.getById(id)
 

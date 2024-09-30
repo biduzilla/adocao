@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -47,13 +49,15 @@ fun TextFieldCompose(
     icon: ImageVector? = null,
     isPassword: Boolean = false,
     ime: ImeAction = ImeAction.Next,
+    onDone: () -> Unit = {},
+    onNext: () -> Unit = {},
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
     ),
     onChange: (String) -> Unit,
 ) {
-
+    val focusManager = LocalFocusManager.current
     var hiddenPassword by remember {
         mutableStateOf(true)
     }
@@ -72,8 +76,14 @@ fun TextFieldCompose(
                 capitalization = KeyboardCapitalization.Sentences,
                 autoCorrect = true,
                 keyboardType = if (isPassword && hiddenPassword) KeyboardType.Password else keyboardType,
-                imeAction = ime
+                imeAction = ime,
             ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    onDone()
+                },
+                onNext = { onNext() }),
             label = {
                 if (label != null) {
                     Text(

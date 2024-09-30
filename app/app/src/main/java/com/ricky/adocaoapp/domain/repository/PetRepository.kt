@@ -9,8 +9,9 @@ interface PetRepository {
         page: Int = 0,
         search: String?,
         orderBy: String?,
-        qtd: Int = 15, filtros: FiltroSearch
-    ): Response<Pet>
+        qtd: Int = 15,
+        filtros: FiltroSearch
+    ): Response<List<Pet>>
 
     suspend fun getById(id: String): Response<Pet>
 

@@ -20,7 +20,7 @@ interface PetApi {
         @Query("search") search: String?,
         @Query("orderBy") orderBy: String?,
         @Query("qtd") qtd: Int = 15, @Body filtros: FiltroSearch
-    ): Response<Pet>
+    ): Response<List<Pet>>
 
     @GET("${Constants.PET_ENDPOINT}/{id}")
     suspend fun getById(@Path("id")id:String):Response<Pet>
