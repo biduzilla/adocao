@@ -11,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetById @Inject constructor(private val repository: PetRepository) {
+class PetCaseGetById @Inject constructor(private val repository: PetRepository) {
     operator fun invoke(id: String): Flow<Resource<Pet>> = flow {
         try {
             emit(Resource.Loading())

@@ -2,6 +2,7 @@ package com.ricky.adocaoapp.data.repository
 
 import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.domain.models.FiltroSearch
+import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import retrofit2.Response
@@ -14,7 +15,7 @@ class PetRepositoryImpl @Inject constructor(private val api: PetApi) : PetReposi
         orderBy: String?,
         qtd: Int,
         filtros: FiltroSearch
-    ): Response<List<Pet>> = api.getAll(page, search, orderBy, qtd, filtros)
+    ): Response<PagePet> = api.getAll(page, search, orderBy, qtd, filtros)
 
     override suspend fun getById(id: String): Response<Pet> = api.getById(id)
 

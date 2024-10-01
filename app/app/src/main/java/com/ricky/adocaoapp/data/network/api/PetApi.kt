@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.data.network.api
 
 import com.ricky.adocaoapp.domain.models.FiltroSearch
+import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.utils.Constants
 import retrofit2.Response
@@ -20,7 +21,7 @@ interface PetApi {
         @Query("search") search: String?,
         @Query("orderBy") orderBy: String?,
         @Query("qtd") qtd: Int = 15, @Body filtros: FiltroSearch
-    ): Response<List<Pet>>
+    ): Response<PagePet>
 
     @GET("${Constants.PET_ENDPOINT}/{id}")
     suspend fun getById(@Path("id")id:String):Response<Pet>

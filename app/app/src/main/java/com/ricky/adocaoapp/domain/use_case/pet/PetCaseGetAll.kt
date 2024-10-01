@@ -3,8 +3,7 @@ package com.ricky.adocaoapp.domain.use_case.pet
 import com.google.gson.Gson
 import com.ricky.adocaoapp.domain.models.ErrorRequest
 import com.ricky.adocaoapp.domain.models.FiltroSearch
-import com.ricky.adocaoapp.domain.models.Pet
-import com.ricky.adocaoapp.domain.models.ResetSenha
+import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -13,14 +12,14 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetAll @Inject constructor(private val repository: PetRepository) {
+class PetCaseGetAll @Inject constructor(private val repository: PetRepository) {
     operator fun invoke(
         page: Int = 0,
         search: String?,
         orderBy: String?,
         qtd: Int = 15,
         filtros: FiltroSearch
-    ): Flow<Resource<List<Pet>?>> = flow {
+    ): Flow<Resource<PagePet>> = flow {
         try {
             emit(Resource.Loading())
 
@@ -31,8 +30,12 @@ class GetAll @Inject constructor(private val repository: PetRepository) {
                 qtd = qtd,
                 filtros = filtros
             ).let { result ->
-                if (result.isSuccessful && result.body() != null) {
-                    emit(Resource.Success(result.body()))
+                if (result.isSuccessful) {
+                    result.body()?.let { pets ->
+                        emit(Resource.Success(pets))
+                    } ?: run {
+                        emit(Resource.Error("Error inesperado"))
+                    }
                 } else {
                     val error =
                         Gson().fromJson(result.errorBody()?.charStream(), ErrorRequest::class.java)

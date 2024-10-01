@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.home.components.PetInfoItem
+import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.presentation.home.components.TopAppBarCompose
 
 @Composable
@@ -41,6 +42,11 @@ fun HomeScreen(
     state: HomeState,
     onEvent: (HomeEvent) -> Unit
 ) {
+
+    ToastError(error = state.error) {
+        onEvent(HomeEvent.ClearError)
+    }
+
     Scaffold(
         topBar = {
             TopAppBarCompose(

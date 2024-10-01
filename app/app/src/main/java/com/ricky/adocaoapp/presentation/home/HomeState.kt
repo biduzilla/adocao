@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.home
 
+import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.Usuario
 
@@ -9,4 +10,8 @@ data class HomeState(
     val loadMoreVisible: Boolean = true,
     var pets:List<Pet> = emptyList(),
     var search:String = "",
+    var usuario: Usuario = Usuario(),
+    var filtroSearch: FiltroSearch = FiltroSearch(),
+    val page: Int = 1,
+    val error:String = ""
 )

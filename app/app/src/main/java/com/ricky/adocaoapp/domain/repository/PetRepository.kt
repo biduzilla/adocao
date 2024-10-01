@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.domain.repository
 
 import com.ricky.adocaoapp.domain.models.FiltroSearch
+import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
 import retrofit2.Response
 
@@ -11,7 +12,7 @@ interface PetRepository {
         orderBy: String?,
         qtd: Int = 15,
         filtros: FiltroSearch
-    ): Response<List<Pet>>
+    ): Response<PagePet>
 
     suspend fun getById(id: String): Response<Pet>
 

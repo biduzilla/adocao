@@ -7,4 +7,5 @@ sealed interface HomeEvent {
     data class OnChangePesquisa(val pesquisa: String) : HomeEvent
     data object OnSearch : HomeEvent
     data object OnLoadMore : HomeEvent
+    data object ClearError : HomeEvent
 }

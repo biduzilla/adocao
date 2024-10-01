@@ -21,7 +21,6 @@ class UserManager @Inject constructor(
     private val resetPasswordCase: UseCaseResetPassword,
     private val saveCase: UseCaseSave,
     private val verifyCodCase: UseCaseVerifyCod,
-    private val refreshToken: UseRefreshToken
 ) {
     fun changePassword(resetSenha: ResetSenha): Flow<Resource<Boolean>> {
         return changePasswordCase(resetSenha)
@@ -41,9 +40,5 @@ class UserManager @Inject constructor(
 
     fun verifyCod(verificarCod: VerificarCod): Flow<Resource<Boolean>> {
         return verifyCodCase(verificarCod)
-    }
-
-    fun refreshToken(token: Token): Flow<Resource<Token>> {
-        return refreshToken(token)
     }
 }
