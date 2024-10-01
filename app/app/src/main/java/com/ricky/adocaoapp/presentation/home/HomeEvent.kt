@@ -6,4 +6,5 @@ sealed interface HomeEvent {
     data class OnChangeFiltro(val filtro: FiltroSearch) : HomeEvent
     data class OnChangePesquisa(val pesquisa: String) : HomeEvent
     data object OnSearch : HomeEvent
+    data object OnLoadMore : HomeEvent
 }

@@ -42,7 +42,7 @@ import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 
 @Composable
-fun ToppAppBarCompose(
+fun TopAppBarCompose(
     modifier: Modifier = Modifier,
     search: String,
     onChangePesquisa: (String) -> Unit,
@@ -294,6 +294,6 @@ fun FiltroSection(
 
 @Preview
 @Composable
-private fun ToppAppBarComposePrev() {
-    ToppAppBarCompose(Modifier, "Ola teste", {}, {},{})
+private fun TopAppBarComposePrev() {
+    TopAppBarCompose(Modifier, "Ola teste", {}, {},{})
 }
