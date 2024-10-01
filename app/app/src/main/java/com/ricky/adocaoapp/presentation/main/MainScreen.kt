@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.BottomNav
 import com.ricky.adocaoapp.presentation.main.components.BottomBar
 import com.ricky.adocaoapp.presentation.main.components.MainTopBar
 
@@ -35,7 +36,10 @@ fun MainScreen(
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-
+            BottomNav(
+                navHostController = navControllerBottom,
+                navController = navController
+            )
         }
     }
 }
