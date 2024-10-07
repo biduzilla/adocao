@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.data.repository
 
+import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.domain.models.Login
 import com.ricky.adocaoapp.domain.models.ResetSenha
@@ -10,7 +11,10 @@ import com.ricky.adocaoapp.domain.repository.UserRepository
 import retrofit2.Response
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(private val api: UserAPI) : UserRepository {
+class UserRepositoryImpl @Inject constructor(
+    private val api: UserAPI,
+    private val refreshTokenAPI: RefreshTokenAPI
+) : UserRepository {
     override suspend fun login(login: Login): Response<Token> = api.login(login)
 
     override suspend fun save(usuario: Usuario): Response<Usuario> = api.save(usuario)
@@ -23,5 +27,5 @@ class UserRepositoryImpl @Inject constructor(private val api: UserAPI) : UserRep
     override suspend fun changePassword(resetSenha: ResetSenha): Response<Void> =
         api.changePassword(resetSenha)
 
-    override suspend fun refreshToken(token: Token): Response<Token> = api.refreshToken(token)
+    override suspend fun refreshToken(token: Token): Response<Token> = refreshTokenAPI.refreshToken(token)
 }

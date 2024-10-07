@@ -35,6 +35,9 @@ import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.home.components.PetInfoItem
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.presentation.home.components.TopAppBarCompose
+import com.ricky.adocaoapp.utils.pet1
+import com.ricky.adocaoapp.utils.pet2
+import com.ricky.adocaoapp.utils.pet3
 
 @Composable
 fun HomeScreen(
@@ -89,7 +92,7 @@ fun HomeScreen(
 
         } else {
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                items(state.pets) { item ->
+                items(listOf(pet1)) { item ->
                     PetInfoItem(
                         pet = item,
                         modifier = Modifier

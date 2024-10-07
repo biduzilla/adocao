@@ -21,8 +21,6 @@ interface UserAPI {
     @POST(Constants.USER_SAVE_ENDPOINT)
     suspend fun save(@Body usuario: Usuario): Response<Usuario>
 
-    @POST(Constants.USER_REFRESH_TOKEN_ENDPOINT)
-    suspend fun refreshToken(@Body token: Token): Response<Token>
 
     @POST("${Constants.USER_RESET_PASSWORD_ENDPOINT}/{email}")
     suspend fun resetPassword(@Path("email") email: String): Response<Void>

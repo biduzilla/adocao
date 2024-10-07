@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +22,9 @@ import com.ricky.adocaoapp.presentation.auth.login.LoginEvent
 fun BtnCompose(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    @StringRes title: Int
+    @StringRes title: Int,
+    color: Color =MaterialTheme.colorScheme.primary,
+    textColor:Color = Color.White
 ) {
     val focusManager = LocalFocusManager.current
     Button(
@@ -30,7 +34,10 @@ fun BtnCompose(
         },
         modifier = modifier
             .width(220.dp),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = color
+        )
     ) {
         Text(
             modifier = Modifier.padding(vertical = 4.dp),

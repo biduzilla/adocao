@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.di
 
 import com.ricky.adocaoapp.data.network.api.PetApi
+import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.network.interceptor.AuthInterceptor
 import com.ricky.adocaoapp.data.repository.PetRepositoryImpl
@@ -23,7 +24,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun proviteUserApi(authInterceptor: AuthInterceptor): UserAPI {
+    fun provideUserApi(authInterceptor: AuthInterceptor): UserAPI {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
@@ -38,7 +39,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provitePetApi(authInterceptor: AuthInterceptor): PetApi {
+    fun providePetApi(authInterceptor: AuthInterceptor): PetApi {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
@@ -53,9 +54,20 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideRefreshToken(): RefreshTokenAPI {
+        return Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RefreshTokenAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
     fun provideUserRepository(
-        api: UserAPI
-    ): UserRepository = UserRepositoryImpl(api)
+        api: UserAPI,
+        refreshTokenAPI: RefreshTokenAPI
+    ): UserRepository = UserRepositoryImpl(api, refreshTokenAPI)
 
     @Singleton
     @Provides
