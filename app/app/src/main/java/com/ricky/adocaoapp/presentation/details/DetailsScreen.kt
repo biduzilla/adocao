@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.presentation.details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -131,7 +133,9 @@ fun DetailsScreen(
                                 .copy(fontWeight = FontWeight.Bold)
                         )
                     }
+
                     Text(
+                        modifier = Modifier.weight(1f),
                         text = state.pet.descricao,
                         style = MaterialTheme.typography.bodyLarge
                             .copy(fontWeight = FontWeight.Bold)
@@ -139,8 +143,8 @@ fun DetailsScreen(
 
                     BtnCompose(
                         modifier = Modifier
-                            .align(Alignment.End)
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.CenterHorizontally)
+                            .padding(bottom = 16.dp),
                         onClick = { },
                         title = R.string.chat,
                         color = MaterialTheme.colorScheme.primaryContainer,
