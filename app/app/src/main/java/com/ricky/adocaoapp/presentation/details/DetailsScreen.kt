@@ -38,15 +38,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
+import com.ricky.adocaoapp.presentation.home.HomeEvent
+import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.utils.pet1
 
 @Composable
 fun DetailsScreen(
     navController: NavController,
-    state: DetailsState
+    state: DetailsState,
+    onEvent:(DetailsEvent)->Unit
 ) {
     //    val bitmap = byteArrayToBitmap(pet.foto)
 //    val foto = BitmapPainter(bitmap.asImageBitmap())
+
+    ToastError(error = state.error) {
+        onEvent(DetailsEvent.ClearError)
+    }
 
     val scrollState = rememberScrollState()
     Box(modifier = Modifier.fillMaxSize()) {
@@ -178,6 +185,7 @@ private fun DetailsScreenPrev() {
     val navController = NavController(context)
     DetailsScreen(
         navController = navController,
-        state = DetailsState(pet = pet1)
+        state = DetailsState(pet = pet1),
+        {}
     )
 }

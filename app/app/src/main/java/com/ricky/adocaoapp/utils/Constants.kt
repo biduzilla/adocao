@@ -13,4 +13,6 @@ object Constants {
     const val USER_TOKEN: String = "userToken"
     const val PET_ENDPOINT: String = "/pet"
 
+    const val PARAM_PET_ID = "petId"
+
 }
