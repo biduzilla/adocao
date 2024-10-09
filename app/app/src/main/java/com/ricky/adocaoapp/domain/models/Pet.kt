@@ -1,11 +1,11 @@
 package com.ricky.adocaoapp.domain.models
 
-import com.ricky.adocao.enums.PetCidadeEnum
+import com.ricky.adocao.enums.PetTipoAnimalEnum
+import com.ricky.adocaoapp.domain.enums.PetCidadeEnum
 import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.enums.PetIdadeEnum
 import com.ricky.adocaoapp.domain.enums.PetStatusEnum
 import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
-import com.ricky.adocao.enums.PetTipoAnimalEnum
 import java.time.LocalDate
 
 data class Pet(
@@ -18,6 +18,7 @@ data class Pet(
     var usuario: Usuario = Usuario(),
     var descricao: String = "",
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
+    var tipo: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     var dataPublicacao: LocalDate = LocalDate.now(),
     var foto: ByteArray = ByteArray(0),
     var status: PetStatusEnum = PetStatusEnum.ACHADO,

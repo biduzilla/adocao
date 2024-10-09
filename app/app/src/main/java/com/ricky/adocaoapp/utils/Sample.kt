@@ -1,7 +1,7 @@
 package com.ricky.adocaoapp.utils
 
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.ricky.adocao.enums.*
+import com.ricky.adocao.enums.PetTipoAnimalEnum
+import com.ricky.adocaoapp.domain.enums.PetCidadeEnum
 import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.enums.PetIdadeEnum
 import com.ricky.adocaoapp.domain.enums.PetStatusEnum

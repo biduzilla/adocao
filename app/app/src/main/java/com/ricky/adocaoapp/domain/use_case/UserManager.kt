@@ -10,7 +10,6 @@ import com.ricky.adocaoapp.domain.use_case.user.UseCaseLogin
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseResetPassword
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseSave
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseVerifyCod
-import com.ricky.adocaoapp.domain.use_case.user.UseRefreshToken
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

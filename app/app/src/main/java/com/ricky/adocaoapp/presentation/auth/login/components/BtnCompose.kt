@@ -15,8 +15,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.ricky.adocaoapp.R
-import com.ricky.adocaoapp.presentation.auth.login.LoginEvent
 
 @Composable
 fun BtnCompose(
