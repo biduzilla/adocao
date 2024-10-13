@@ -9,6 +9,11 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 fun formatPhoneNumber(phoneNumber: String): String {
     val digits = phoneNumber.filter { it.isDigit() }
@@ -98,4 +103,21 @@ fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
         e.printStackTrace()
         null
     }
+}
+
+fun calcularDistancia(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+    val r = 6371.0
+
+    val lat1Rad = Math.toRadians(lat1)
+    val lon1Rad = Math.toRadians(lon1)
+    val lat2Rad = Math.toRadians(lat2)
+    val lon2Rad = Math.toRadians(lon2)
+
+    val deltaLat = lat2Rad - lat1Rad
+    val deltaLon = lon2Rad - lon1Rad
+
+    val a = sin(deltaLat / 2).pow(2) + cos(lat1Rad) * cos(lat2Rad) * sin(deltaLon / 2).pow(2)
+    val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return r * c
 }

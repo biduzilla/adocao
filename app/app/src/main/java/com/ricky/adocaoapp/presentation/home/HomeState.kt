@@ -13,5 +13,7 @@ data class HomeState(
     var usuario: Usuario = Usuario(),
     var filtroSearch: FiltroSearch = FiltroSearch(),
     val page: Int = 1,
-    val error:String = ""
+    val error:String = "",
+    var lat:Double = 0.0,
+    var long:Double = 0.0,
 )

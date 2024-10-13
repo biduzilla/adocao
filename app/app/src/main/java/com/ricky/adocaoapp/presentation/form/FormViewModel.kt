@@ -8,7 +8,6 @@ import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.use_case.PetManager
-import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.utils.Constants
 import com.ricky.adocaoapp.utils.Resource
 import com.ricky.adocaoapp.utils.bitmapToByteArray
@@ -26,7 +25,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormViewModel @Inject constructor(
-    private val userManager: UserManager,
     private val petManager: PetManager,
     savedStateHandle: SavedStateHandle,
     private val dataStoreUtil: DataStoreUtil,
