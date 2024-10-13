@@ -79,4 +79,5 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.coil.compose)
     implementation(libs.material.icons.extended)
+    implementation(libs.services.location)
 }

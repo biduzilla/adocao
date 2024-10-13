@@ -12,8 +12,8 @@ data class PetDTO(
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
     @field:NotEmpty(message = "{localizacao.obrigatorio}")
     var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
-    var lat: Long,
-    var long: Long,
+    var lat: Double,
+    var long: Double,
     var usuario: UsuarioDTO = UsuarioDTO(),
     @field:NotBlank(message = "{descricao.obrigatorio}")
     var descricao: String = "",
@@ -27,6 +27,7 @@ data class PetDTO(
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     @field:NotEmpty(message = "{tamanhoAnimal.obrigatorio}")
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
+    var microChip: String = "",
     var donoId:String = "",
 ) {
     override fun equals(other: Any?): Boolean {

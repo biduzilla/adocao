@@ -24,10 +24,10 @@ data class Pet(
     var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
 
     @Column(name = "LATITUDE")
-    var lat: Long,
+    var lat: Double,
 
     @Column(name = "LONGITUDE")
-    var long: Long,
+    var long: Double,
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)

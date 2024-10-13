@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.presentation.form
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.climacompose.domain.location.LocationTracker
 import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.Usuario
@@ -28,13 +29,15 @@ class FormViewModel @Inject constructor(
     private val userManager: UserManager,
     private val petManager: PetManager,
     savedStateHandle: SavedStateHandle,
-    private val dataStoreUtil: DataStoreUtil
+    private val dataStoreUtil: DataStoreUtil,
+    private val locationTracker: LocationTracker
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FormState())
     val state = _state.asStateFlow()
 
     init {
+        getLoc()
         savedStateHandle.get<String>(Constants.PARAM_PET_ID)?.let { petId ->
             loadPet(petId)
         } ?: run {
@@ -100,7 +103,9 @@ class FormViewModel @Inject constructor(
                     status = _state.value.status,
                     tamanho = _state.value.tamanho,
                     donoId = _state.value.userId,
-                    microChip = _state.value.microChip
+                    microChip = _state.value.microChip,
+                    lat = _state.value.lat,
+                    long = _state.value.long,
                 )
 
                 if (_state.value.isUpdate) {
@@ -281,6 +286,27 @@ class FormViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun getLoc() {
+        viewModelScope.launch {
+            locationTracker.getCurrentLocation()?.let { location ->
+                _state.update {
+                    it.copy(
+                        lat = location.latitude,
+                        long = location.longitude
+                    )
+                }
+            } ?: kotlin.run {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = "Não consegui receber sua posição atual. Tenha certeza que a permissão de acessar a localização está garantida"
+                    )
+                }
+            }
+        }
+
     }
 
     private fun loadPet(petId: String) {

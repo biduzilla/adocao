@@ -16,6 +16,8 @@ data class FormState(
     var userId:String = "",
     var descricao:String ="",
     var microChip: String = "",
+    var lat:Double = 0.0,
+    var long:Double = 0.0,
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
     var cidade: PetCidadeEnum = PetCidadeEnum.AGUAS_CLARAS,
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
