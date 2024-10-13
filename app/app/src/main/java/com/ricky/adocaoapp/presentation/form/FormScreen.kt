@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -287,6 +288,15 @@ fun FormScreen(
                         list = PetTamanhoEnum.entries.toTypedArray()
                     ) {
                         onEvent(FormEvent.OnChangeTamanho(it))
+                    }
+
+                    TextFieldCompose(
+                        value = state.microChip,
+                        isError = state.onErrorMicroChip,
+                        label = R.string.nome,
+                        icon = Icons.Default.Memory
+                    ) {
+                        onEvent(FormEvent.OnChangeMicroChip(it))
                     }
 
                     if (state.isLoading) {

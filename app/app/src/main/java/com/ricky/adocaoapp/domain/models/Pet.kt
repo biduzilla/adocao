@@ -18,12 +18,12 @@ data class Pet(
     var usuario: Usuario = Usuario(),
     var descricao: String = "",
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
-    var tipo: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     var dataPublicacao: LocalDate = LocalDate.now(),
     var foto: ByteArray = ByteArray(0),
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
+    var microChip: String = "",
     var donoId: String = "",
     var distancia: String = ""
 ) {

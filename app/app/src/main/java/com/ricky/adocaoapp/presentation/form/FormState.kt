@@ -10,8 +10,12 @@ import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 
 data class FormState(
     var isUpdate:Boolean = false,
+    var error:String="",
     var nome: String = "",
+    var petId:String = "",
+    var userId:String = "",
     var descricao:String ="",
+    var microChip: String = "",
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
     var cidade: PetCidadeEnum = PetCidadeEnum.AGUAS_CLARAS,
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
@@ -24,7 +28,8 @@ data class FormState(
     var isShowDialogRemover: Boolean = false,
     var onErrorNome: Boolean = false,
     var onErrorDescricao: Boolean = false,
+    var onErrorMicroChip: Boolean = false,
     var onErrorPhoto: Boolean = false,
     var isOk: Boolean = false,
-    var isLoading: Boolean = false,
+    var isLoading: Boolean = true,
 )
