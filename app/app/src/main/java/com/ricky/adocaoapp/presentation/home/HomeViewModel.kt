@@ -32,7 +32,12 @@ class HomeViewModel @Inject constructor(
     private fun getLoc() {
         viewModelScope.launch {
             locationTracker.getCurrentLocation()?.let { location ->
-
+                _state.update {
+                    it.copy(
+                        lat = location.latitude,
+                        long = location.longitude
+                    )
+                }
             } ?: kotlin.run {
                 _state.update {
                     it.copy(

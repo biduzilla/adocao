@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.climacompose.domain.location.LocationTracker
+import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetById
 import com.ricky.adocaoapp.utils.Constants
@@ -23,7 +24,8 @@ class DetailsViewModel @Inject constructor(
     private val petCaseGetById: PetCaseGetById,
     private val userManager: UserManager,
     private val saveStateHandle: SavedStateHandle,
-    private val locationTracker: LocationTracker
+    private val locationTracker: LocationTracker,
+    private val dataStoreUtil: DataStoreUtil,
 ) :
     ViewModel() {
     private val _state = MutableStateFlow(DetailsState())
@@ -33,6 +35,16 @@ class DetailsViewModel @Inject constructor(
         getLoc()
         saveStateHandle.get<String>(Constants.PARAM_PET_ID)?.let { petId ->
             loadPet(petId)
+        }
+
+        viewModelScope.launch {
+            dataStoreUtil.getToken().collect {
+                _state.update {
+                    it.copy(
+                        userId = it.userId
+                    )
+                }
+            }
         }
     }
 

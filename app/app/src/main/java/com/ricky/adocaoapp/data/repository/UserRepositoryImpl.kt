@@ -13,7 +13,6 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val api: UserAPI,
-    private val refreshTokenAPI: RefreshTokenAPI
 ) : UserRepository {
     override suspend fun login(login: Login): Response<Token> = api.login(login)
 
@@ -27,5 +26,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun changePassword(resetSenha: ResetSenha): Response<Void> =
         api.changePassword(resetSenha)
 
-    override suspend fun refreshToken(token: Token): Response<Token> = refreshTokenAPI.refreshToken(token)
+    override suspend fun getById(idUser: String): Response<Usuario> = api.getById(idUser)
+
+
 }

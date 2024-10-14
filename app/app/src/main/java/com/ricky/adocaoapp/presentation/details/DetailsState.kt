@@ -5,7 +5,7 @@ import com.ricky.adocaoapp.domain.models.Usuario
 
 data class DetailsState(
     val pet: Pet = Pet(),
-    val usuario: Usuario = Usuario(),
+    val userId: String="",
     val error: String = "",
     val isLoading: Boolean = false
 )

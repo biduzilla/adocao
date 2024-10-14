@@ -12,6 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.BottomNav
+import com.ricky.adocaoapp.navigation.Screens
+import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.presentation.main.components.BottomBar
 import com.ricky.adocaoapp.presentation.main.components.MainTopBar
 
@@ -22,6 +24,18 @@ fun MainScreen(
     onEvent: (MainEvent) -> Unit
 ) {
     val navControllerBottom = rememberNavController()
+
+    ToastError(error = state.error) {
+        onEvent(MainEvent.ClearError)
+    }
+
+    if(state.onSair){
+        navController.navigate(Screens.LoginScreen.route){
+            popUpTo(navController.graph.startDestinationId){
+                inclusive=true
+            }
+        }
+    }
 
     Scaffold(
         topBar = {

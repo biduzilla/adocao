@@ -73,12 +73,6 @@ class FormViewModel @Inject constructor(
                     )
                     return
                 }
-                if (_state.value.microChip.trim().isBlank()) {
-                    _state.value = FormState(
-                        onErrorMicroChip = true
-                    )
-                    return
-                }
 
 
                 if (_state.value.foto == null) {
@@ -101,7 +95,6 @@ class FormViewModel @Inject constructor(
                     status = _state.value.status,
                     tamanho = _state.value.tamanho,
                     donoId = _state.value.userId,
-                    microChip = _state.value.microChip,
                     lat = _state.value.lat,
                     long = _state.value.long,
                 )
@@ -277,10 +270,9 @@ class FormViewModel @Inject constructor(
                 )
             }
 
-            is FormEvent.OnChangeMicroChip -> {
+            FormEvent.ClearError -> {
                 _state.value = _state.value.copy(
-                    microChip = event.chip,
-                    onErrorMicroChip = false
+                    error = ""
                 )
             }
         }

@@ -18,8 +18,15 @@ import com.ricky.adocaoapp.presentation.auth.login.LoginScreen
 import com.ricky.adocaoapp.presentation.auth.login.LoginViewModel
 import com.ricky.adocaoapp.presentation.auth.register.RegisterScreen
 import com.ricky.adocaoapp.presentation.auth.register.RegisterViewModel
+import com.ricky.adocaoapp.presentation.details.DetailsScreen
+import com.ricky.adocaoapp.presentation.details.DetailsViewModel
+import com.ricky.adocaoapp.presentation.form.FormScreen
+import com.ricky.adocaoapp.presentation.form.FormViewModel
+import com.ricky.adocaoapp.presentation.main.MainScreen
+import com.ricky.adocaoapp.presentation.main.MainViewModel
 import com.ricky.adocaoapp.presentation.splash.SplashScreen
 import com.ricky.adocaoapp.presentation.splash.SplashViewModel
+import com.ricky.adocaoapp.utils.Constants
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -56,11 +63,66 @@ fun AppNav() {
             )
         }
 
+        composableSlideHorizontally(Screens.RegisterScreen.route+ "/{${Constants.PARAM_USER_ID}}") {
+            val viewModel = hiltViewModel<RegisterViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            RegisterScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
         composableSlideHorizontally(Screens.ForgetPasswordScreen.route) {
             val viewModel = hiltViewModel<ForgetPassViewModel>()
             val state by viewModel.state.collectAsState()
 
             ForgetPassScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composableSlideHorizontally(Screens.Details.route + "/{${Constants.PARAM_PET_ID}}") {
+            val viewModel = hiltViewModel<DetailsViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            DetailsScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composableSlideHorizontally(Screens.Form.route + "/{${Constants.PARAM_PET_ID}}") {
+            val viewModel = hiltViewModel<FormViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            FormScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composableSlideHorizontally(Screens.Form.route,) {
+            val viewModel = hiltViewModel<FormViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            FormScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composableSlideHorizontally(Screens.MainScreen.route,) {
+            val viewModel = hiltViewModel<MainViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            MainScreen(
                 navController = navController,
                 state = state,
                 onEvent = viewModel::onEvent

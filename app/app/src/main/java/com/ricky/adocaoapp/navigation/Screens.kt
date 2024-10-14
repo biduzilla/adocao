@@ -20,4 +20,12 @@ sealed class Screens(val route:String) {
     data object MainScreen:Screens(
         route="main"
     )
+
+    data object Details:Screens(
+        route="details"
+    )
+
+    data object Form:Screens(
+        route="form"
+    )
 }

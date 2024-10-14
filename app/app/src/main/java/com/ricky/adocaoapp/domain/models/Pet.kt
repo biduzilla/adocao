@@ -23,7 +23,6 @@ data class Pet(
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
-    var microChip: String = "",
     var donoId: String = "",
     var distancia: String = ""
 ) {

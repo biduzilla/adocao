@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.utils.byteArrayToBitmap
 import com.ricky.adocaoapp.utils.pet1
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -45,8 +48,8 @@ fun PetInfoItem(
     pet: Pet
 ) {
 
-//    val bitmap = byteArrayToBitmap(pet.foto)
-//    val foto = BitmapPainter(bitmap.asImageBitmap())
+    val bitmap = byteArrayToBitmap(pet.foto)
+    val foto = BitmapPainter(bitmap.asImageBitmap())
 
     Card(
         modifier = modifier
@@ -70,7 +73,8 @@ fun PetInfoItem(
                     ),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.CenterStart,
-                painter = painterResource(id = R.drawable.blue_dog),
+                painter = foto,
+//                painter = painterResource(id = R.drawable.blue_dog),
                 contentDescription = pet.nome
             )
             Column(
@@ -90,7 +94,7 @@ fun PetInfoItem(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.padding(top=2.dp)
+                        modifier = Modifier.padding(top = 2.dp)
                     ) {
                         Text(
                             text = pet.localizacao.toString(),

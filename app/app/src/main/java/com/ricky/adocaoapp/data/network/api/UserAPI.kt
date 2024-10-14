@@ -33,4 +33,9 @@ interface UserAPI {
         @Body resetSenha: ResetSenha,
     ): Response<Void>
 
+    @GET("${Constants.USER_GET_BY_ID}/{idUser}")
+    suspend fun getById(
+        @Path("idUser") idUser:String
+    ): Response<Usuario>
+
 }

@@ -11,9 +11,9 @@ import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 
 sealed interface FormEvent {
     data object ShowBottomSheet : FormEvent
+    data object ClearError : FormEvent
     data class OnChangeNome(val nome: String) : FormEvent
     data class OnChangeDescricao(val descricao: String) : FormEvent
-    data class OnChangeMicroChip(val chip: String) : FormEvent
     data class OnChangeIdade(val idade: PetIdadeEnum) : FormEvent
     data class OnChangeCidade(val cidade: PetCidadeEnum) : FormEvent
     data class OnChangeGenero(val genero: PetGeneroEnum) : FormEvent

@@ -69,7 +69,7 @@ fun LoginScreen(
     }
 
     if (state.onLogin) {
-        Toast.makeText(context, "OK", Toast.LENGTH_SHORT).show()
+        navController.navigate(Screens.MainScreen.route)
     }
 
     Column(

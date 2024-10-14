@@ -14,4 +14,6 @@ data class RegisterState(
     var onErrorSenha: Boolean = false,
     var onErrorConfirmarSenha: Boolean = false,
     var createOk: Boolean = false,
+    var isLoading:Boolean = false,
+    var isUpdate:Boolean = false
 )

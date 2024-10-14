@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.home.components.PetInfoItem
 import com.ricky.adocaoapp.presentation.home.components.ToastError
@@ -56,7 +57,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = { navController.navigate(Screens.Form.route) },
                 shape = CircleShape,
                 modifier = Modifier
                     .padding(16.dp)
@@ -92,7 +93,7 @@ fun HomeScreen(
                         pet = item,
                         modifier = Modifier
                             .padding(16.dp)
-                            .clickable { }
+                            .clickable { navController.navigate(Screens.Details.route + "/${item.id}") }
                     )
                 }
                 if (state.isLoadingMore) {

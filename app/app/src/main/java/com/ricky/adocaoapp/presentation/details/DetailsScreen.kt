@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -28,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,8 +39,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.home.components.ToastError
+import com.ricky.adocaoapp.utils.byteArrayToBitmap
 import com.ricky.adocaoapp.utils.pet1
 
 @Composable
@@ -46,7 +51,7 @@ fun DetailsScreen(
     state: DetailsState,
     onEvent: (DetailsEvent) -> Unit
 ) {
-    //    val bitmap = byteArrayToBitmap(pet.foto)
+//    val bitmap = byteArrayToBitmap(state.pet.foto)
 //    val foto = BitmapPainter(bitmap.asImageBitmap())
 
     ToastError(error = state.error) {
@@ -75,6 +80,7 @@ fun DetailsScreen(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.CenterStart,
                     painter = painterResource(id = R.drawable.blue_dog),
+//                    painter = foto,
                     contentDescription = state.pet.nome
                 )
             }
@@ -117,7 +123,7 @@ fun DetailsScreen(
                                     style = MaterialTheme.typography.titleLarge
                                 )
 
-                                if (state.pet.lat != 0L && state.pet.long != 0L) {
+                                if (state.pet.lat != 0.0 && state.pet.long != 0.0) {
                                     Row {
                                         Icon(
                                             imageVector = Icons.Default.Map,
@@ -173,18 +179,33 @@ fun DetailsScreen(
                 }
             }
             Column {
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.Start)
+                Row(
+                    Modifier
+                        .fillMaxWidth()
                         .padding(12.dp),
-                    onClick = {
-                        navController.popBackStack()
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                    if (state.pet.donoId == state.userId)
+                        IconButton(
+                            onClick = {
+                                navController.navigate(Screens.Form.route + "/${state.pet.id}")
+                            }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                 }
             }
         }

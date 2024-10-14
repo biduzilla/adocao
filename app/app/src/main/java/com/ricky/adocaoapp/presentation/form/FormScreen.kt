@@ -63,9 +63,11 @@ import com.ricky.adocaoapp.domain.enums.PetStatusEnum
 import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.presentation.details.DetailsEvent
 import com.ricky.adocaoapp.presentation.form.components.DialogRemover
 import com.ricky.adocaoapp.presentation.form.components.DropdownCompose
 import com.ricky.adocaoapp.presentation.form.components.ModalBottomSheetCompose
+import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.utils.getTempUri
 import com.ricky.adocaoapp.utils.rememberImeState
 
@@ -113,6 +115,10 @@ fun FormScreen(
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
+    }
+
+    ToastError(error = state.error) {
+        onEvent(FormEvent.ClearError)
     }
 
     if (state.onErrorPhoto) {
@@ -288,15 +294,6 @@ fun FormScreen(
                         list = PetTamanhoEnum.entries.toTypedArray()
                     ) {
                         onEvent(FormEvent.OnChangeTamanho(it))
-                    }
-
-                    TextFieldCompose(
-                        value = state.microChip,
-                        isError = state.onErrorMicroChip,
-                        label = R.string.nome,
-                        icon = Icons.Default.Memory
-                    ) {
-                        onEvent(FormEvent.OnChangeMicroChip(it))
                     }
 
                     if (state.isLoading) {

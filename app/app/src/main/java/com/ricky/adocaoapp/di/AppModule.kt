@@ -1,17 +1,25 @@
 package com.ricky.adocaoapp.di
 
+import android.app.Application
+import android.content.Context
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.network.interceptor.AuthInterceptor
 import com.ricky.adocaoapp.data.repository.PetRepositoryImpl
+import com.ricky.adocaoapp.data.repository.TokenRepositoryImpl
 import com.ricky.adocaoapp.data.repository.UserRepositoryImpl
 import com.ricky.adocaoapp.domain.repository.PetRepository
+import com.ricky.adocaoapp.domain.repository.TokenRepository
 import com.ricky.adocaoapp.domain.repository.UserRepository
 import com.ricky.adocaoapp.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -21,6 +29,28 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideDataStoreUtil(@ApplicationContext context: Context): DataStoreUtil {
+        return DataStoreUtil(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFusedLocationProviderClient(app: Application): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(app)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRefreshToken(): RefreshTokenAPI {
+        return Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RefreshTokenAPI::class.java)
+    }
 
     @Singleton
     @Provides
@@ -54,20 +84,15 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRefreshToken(): RefreshTokenAPI {
-        return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(RefreshTokenAPI::class.java)
-    }
+    fun provideUserRepository(
+        api: UserAPI,
+    ): UserRepository = UserRepositoryImpl(api)
 
     @Singleton
     @Provides
-    fun provideUserRepository(
-        api: UserAPI,
-        refreshTokenAPI: RefreshTokenAPI
-    ): UserRepository = UserRepositoryImpl(api, refreshTokenAPI)
+    fun provideTokenRepository(
+        api: RefreshTokenAPI,
+    ): TokenRepository = TokenRepositoryImpl(api)
 
     @Singleton
     @Provides

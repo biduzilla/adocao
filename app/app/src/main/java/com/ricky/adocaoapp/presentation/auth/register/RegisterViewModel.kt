@@ -1,9 +1,11 @@
 package com.ricky.adocaoapp.presentation.auth.register
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.use_case.UserManager
+import com.ricky.adocaoapp.utils.Constants
 import com.ricky.adocaoapp.utils.Resource
 import com.ricky.adocaoapp.utils.formatPhoneNumber
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,10 +17,59 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val userCases: UserManager) : ViewModel() {
+class RegisterViewModel @Inject constructor(private val userCases: UserManager,
+private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
+
+    init {
+        savedStateHandle.get<String>(Constants.PARAM_USER_ID)?.let { userId ->
+            loadUser(userId)
+            _state.update {
+                it.copy(
+                    isUpdate = true
+                )
+            }
+        }
+    }
+
+    private fun loadUser(userId:String){
+        userCases.getById(userId).onEach {result->
+            when (result) {
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        error = result.message ?: "Error"
+                    )
+                }
+
+                is Resource.Loading -> {
+                    _state.value = _state.value.copy(
+                        isLoading = true,
+                    )
+                }
+
+                is Resource.Success -> {
+                    result.data?.let { user ->
+                        _state.update {
+                            it.copy(
+                                nome = user.nome,
+                                email = user.email,
+                                telefone = user.telefone,
+                            )
+                        }
+
+                    }
+                    _state.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     private fun createAccount() {
         val user = Usuario(
