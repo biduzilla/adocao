@@ -88,7 +88,7 @@ fun HomeScreen(
 
         } else {
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                items(listOf(pet1)) { item ->
+                items(state.pets) { item ->
                     PetInfoItem(
                         pet = item,
                         modifier = Modifier

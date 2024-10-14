@@ -50,4 +50,6 @@
     <string name="status">Status</string>
     <string name="camera">Câmera</string>
     <string name="galeria">Galeria</string>
+
+    <string name="fileprovider">com.ricky.adocaoapp.components.fileprovider</string>
 </resources>

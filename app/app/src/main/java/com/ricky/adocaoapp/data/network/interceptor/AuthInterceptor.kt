@@ -20,7 +20,7 @@ class AuthInterceptor @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             dataStoreUtil.getToken().collect {
                 it?.let {
-                    token = it.token
+                    token = "Bearer ${it.token}"
                 }
             }
         }
@@ -42,7 +42,7 @@ class AuthInterceptor @Inject constructor(
                 .addHeader("Authorization", token)
                 .build()
             val responseToken = chain.proceed(newRequest)
-            return if (responseToken.code == 401) {
+            return if (responseToken.code == 403) {
                 responseToken.close()
                 return refreshToken(chain)
             } else {
