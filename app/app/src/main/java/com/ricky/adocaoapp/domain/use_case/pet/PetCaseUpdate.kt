@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.domain.use_case.pet
 import com.google.gson.Gson
 import com.ricky.adocaoapp.domain.models.ErrorRequest
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class PetCaseUpdate @Inject constructor(private val repository: PetRepository) {
-    operator fun invoke(pet: Pet): Flow<Resource<Pet>> = flow {
+    operator fun invoke(pet: PetRequest): Flow<Resource<Pet>> = flow {
         try {
             emit(Resource.Loading())
 

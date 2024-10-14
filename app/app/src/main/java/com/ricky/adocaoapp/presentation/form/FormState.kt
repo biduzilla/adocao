@@ -7,6 +7,7 @@ import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.enums.PetIdadeEnum
 import com.ricky.adocaoapp.domain.enums.PetStatusEnum
 import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
+import com.ricky.adocaoapp.domain.models.Usuario
 
 data class FormState(
     var isUpdate:Boolean = false,
@@ -31,5 +32,6 @@ data class FormState(
     var onErrorDescricao: Boolean = false,
     var onErrorPhoto: Boolean = false,
     var isOk: Boolean = false,
-    var isLoading: Boolean = true,
+    var isLoading: Boolean = false,
+    var usuario:Usuario = Usuario()
 )

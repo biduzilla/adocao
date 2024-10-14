@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.data.network.api
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -40,10 +41,10 @@ interface PetApi {
     suspend fun getById(@Path("id")id:String):Response<Pet>
 
     @POST(Constants.PET_ENDPOINT)
-    suspend fun save(@Body pet:Pet):Response<Pet>
+    suspend fun save(@Body pet: PetRequest):Response<Pet>
 
     @PUT(Constants.PET_ENDPOINT)
-    suspend fun update(@Body pet:Pet):Response<Pet>
+    suspend fun update(@Body pet:PetRequest):Response<Pet>
 
     @DELETE("${Constants.PET_ENDPOINT}/{id}")
     suspend fun deleteById(@Path("id")id:String):Response<Void>

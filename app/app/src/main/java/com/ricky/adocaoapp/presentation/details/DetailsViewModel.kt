@@ -3,7 +3,6 @@ package com.ricky.adocaoapp.presentation.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.climacompose.domain.location.LocationTracker
 import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetById
@@ -24,7 +23,6 @@ class DetailsViewModel @Inject constructor(
     private val petCaseGetById: PetCaseGetById,
     private val userManager: UserManager,
     private val saveStateHandle: SavedStateHandle,
-    private val locationTracker: LocationTracker,
     private val dataStoreUtil: DataStoreUtil,
 ) :
     ViewModel() {
@@ -60,31 +58,34 @@ class DetailsViewModel @Inject constructor(
 
     private fun getLoc() {
         viewModelScope.launch {
-            locationTracker.getCurrentLocation()?.let { location ->
-                val pet = _state.value.pet
-                pet.distancia = "%.2f km".format(
-                    calcularDistancia(
-                        lat1 = location.latitude,
-                        lon1 = location.longitude,
-                        lat2 = pet.lat,
-                        lon2 = pet.long
-                    )
-                )
+            dataStoreUtil.getLat().collect { lat ->
                 _state.update {
                     it.copy(
-                        pet = pet
-                    )
-                }
-            } ?: kotlin.run {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Não consegui receber sua posição atual. Tenha certeza que a permissão de acessar a localização está garantida"
+                        lat = lat,
                     )
                 }
             }
         }
+        viewModelScope.launch {
+            dataStoreUtil.getLong().collect { long ->
+                _state.update {
+                    it.copy(
+                        long = long,
+                    )
+                }
 
+                val pet = _state.value.pet
+                pet.distancia = "%.2f km".format(
+                    calcularDistancia(
+                        lat1 = _state.value.lat,
+                        lon1 = _state.value.lat,
+                        lat2 = pet.lat,
+                        lon2 = pet.long
+                    )
+                )
+
+            }
+        }
     }
 
     private fun loadPet(petId: String) {

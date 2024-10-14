@@ -4,6 +4,7 @@ import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import retrofit2.Response
 import javax.inject.Inject
@@ -33,9 +34,9 @@ class PetRepositoryImpl @Inject constructor(private val api: PetApi) : PetReposi
 
     override suspend fun getById(id: String): Response<Pet> = api.getById(id)
 
-    override suspend fun save(pet: Pet): Response<Pet> = api.save(pet)
+    override suspend fun save(pet: PetRequest): Response<Pet> = api.save(pet)
 
-    override suspend fun update(pet: Pet): Response<Pet> = api.update(pet)
+    override suspend fun update(pet: PetRequest): Response<Pet> = api.update(pet)
 
     override suspend fun deleteById(id: String): Response<Void> = api.deleteById(id)
 }

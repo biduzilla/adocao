@@ -21,11 +21,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
@@ -42,6 +47,15 @@ fun HomeScreen(
     onEvent: (HomeEvent) -> Unit
 ) {
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+           onEvent(HomeEvent.Resume)
+        }
+    }
+
     ToastError(error = state.error) {
         onEvent(HomeEvent.ClearError)
     }
@@ -52,7 +66,9 @@ fun HomeScreen(
                 search = state.search,
                 onChangePesquisa = { onEvent(HomeEvent.OnChangePesquisa(it)) },
                 onChangeFiltro = { onEvent(HomeEvent.OnChangeFiltro(it)) },
-                onSearch = { onEvent(HomeEvent.OnSearch) }
+                onSearch = { onEvent(HomeEvent.OnSearch) },
+                filtro = state.filtroSearch,
+                onClearFiltro = {onEvent(HomeEvent.ClearFiltro)}
             )
         },
         floatingActionButton = {

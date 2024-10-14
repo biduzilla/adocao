@@ -8,4 +8,6 @@ sealed interface HomeEvent {
     data object OnSearch : HomeEvent
     data object OnLoadMore : HomeEvent
     data object ClearError : HomeEvent
+    data object ClearFiltro : HomeEvent
+    data object Resume : HomeEvent
 }

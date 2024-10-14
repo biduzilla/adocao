@@ -31,11 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.utils.byteArrayToBitmap
@@ -97,15 +95,15 @@ fun PetInfoItem(
                         modifier = Modifier.padding(top = 2.dp)
                     ) {
                         Text(
-                            text = pet.localizacao.toString(),
-                            style = MaterialTheme.typography.titleMedium
+                            text = pet.localizacao.value,
+                            style = MaterialTheme.typography.titleSmall
                         )
                         Row {
                             Icon(imageVector = Icons.Default.Map, contentDescription = null)
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = pet.distancia,
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleSmall
                             )
                         }
 
@@ -117,7 +115,7 @@ fun PetInfoItem(
                 ) {
                     Tag(text = pet.status.value)
                     SexoTag(sexo = pet.genero)
-                    Tag(text = pet.tamanho.value)
+                    Tag(text = pet.tamanho.name)
                     Tag(text = pet.tipoAnimal.value)
                     Tag(text = pet.idade.value)
 
@@ -130,13 +128,13 @@ fun PetInfoItem(
 @Composable
 fun SexoTag(sexo: PetGeneroEnum, modifier: Modifier = Modifier) {
     val isDark = isSystemInDarkTheme()
-    val color = if (sexo == PetGeneroEnum.MACHO) Color.Blue else Color.Red
+    val color = if (sexo == PetGeneroEnum.MACHO) Color.Blue else Color.Magenta
 
     Box(
         modifier = modifier
             .wrapContentSize()
             .clip(RoundedCornerShape(12.dp))
-            .background(Color.White)
+            .background(color)
     ) {
         Text(
             text = sexo.toString(),
@@ -146,7 +144,7 @@ fun SexoTag(sexo: PetGeneroEnum, modifier: Modifier = Modifier) {
                 end = 12.dp,
                 bottom = 6.dp
             ),
-            color = color,
+            color = MaterialTheme.colorScheme.onPrimary,
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Bold
             )
@@ -158,8 +156,8 @@ fun SexoTag(sexo: PetGeneroEnum, modifier: Modifier = Modifier) {
 fun Tag(
     modifier: Modifier = Modifier,
     text: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface, // Usar cor do tema
-    textColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer, // Usar cor do tema
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
 
     ) {
     Box(

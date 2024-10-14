@@ -1,13 +1,15 @@
 package com.ricky.adocaoapp.presentation.form
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.climacompose.domain.location.LocationTracker
 import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.use_case.PetManager
+import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.utils.Constants
 import com.ricky.adocaoapp.utils.Resource
 import com.ricky.adocaoapp.utils.bitmapToByteArray
@@ -27,8 +29,8 @@ import javax.inject.Inject
 class FormViewModel @Inject constructor(
     private val petManager: PetManager,
     savedStateHandle: SavedStateHandle,
+    private val userManager: UserManager,
     private val dataStoreUtil: DataStoreUtil,
-    private val locationTracker: LocationTracker
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FormState())
@@ -36,14 +38,20 @@ class FormViewModel @Inject constructor(
 
     init {
         getLoc()
+        viewModelScope.launch {
+            dataStoreUtil.getToken().collect{
+                it?.let {
+                    loadUser(it.idUser)
+                }
+            }
+        }
         savedStateHandle.get<String>(Constants.PARAM_PET_ID)?.let { petId ->
-            loadPet(petId)
-        } ?: run {
             _state.update {
                 it.copy(
                     isLoading = true
                 )
             }
+            loadPet(petId)
         }
 
         viewModelScope.launch {
@@ -82,19 +90,17 @@ class FormViewModel @Inject constructor(
                     return
                 }
 
-                val pet = Pet(
+                val pet = PetRequest(
                     nome = _state.value.nome,
                     idade = _state.value.idade,
                     localizacao = _state.value.cidade,
-                    usuario = Usuario(id = _state.value.userId),
                     descricao = _state.value.descricao,
                     genero = _state.value.genero,
                     tipoAnimal = _state.value.especie,
                     foto = bitmapToByteArray(_state.value.foto!!),
-                    dataPublicacao = LocalDate.now(),
                     status = _state.value.status,
                     tamanho = _state.value.tamanho,
-                    donoId = _state.value.userId,
+                    donoId = _state.value.usuario.id,
                     lat = _state.value.lat,
                     long = _state.value.long,
                 )
@@ -124,30 +130,31 @@ class FormViewModel @Inject constructor(
                                 )
                             }
                         }
-                    }
-                }
-                petManager.save(pet).onEach { result ->
-                    when (result) {
-                        is Resource.Error -> {
-                            _state.value = FormState(
-                                isLoading = false,
-                                error = result.message ?: "Error Inesperado"
-                            )
-                        }
+                    }.launchIn(viewModelScope)
+                }else{
+                    petManager.save(pet).onEach { result ->
+                        when (result) {
+                            is Resource.Error -> {
+                                _state.value = FormState(
+                                    isLoading = false,
+                                    error = result.message ?: "Error Inesperado"
+                                )
+                            }
 
-                        is Resource.Loading -> {
-                            _state.value = FormState(
-                                isLoading = true
-                            )
-                        }
+                            is Resource.Loading -> {
+                                _state.value = FormState(
+                                    isLoading = true
+                                )
+                            }
 
-                        is Resource.Success -> {
-                            _state.value = FormState(
-                                isLoading = false,
-                                isOk = true
-                            )
+                            is Resource.Success -> {
+                                _state.value = FormState(
+                                    isLoading = false,
+                                    isOk = true
+                                )
+                            }
                         }
-                    }
+                    }.launchIn(viewModelScope)
                 }
             }
 
@@ -278,25 +285,59 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun getLoc() {
-        viewModelScope.launch {
-            locationTracker.getCurrentLocation()?.let { location ->
-                _state.update {
-                    it.copy(
-                        lat = location.latitude,
-                        long = location.longitude
+    private fun loadUser(idUser:String) {
+        userManager.getById(idUser).onEach { result ->
+            when (result) {
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false,
+                        error = result.message ?: "Error"
                     )
                 }
-            } ?: kotlin.run {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Não consegui receber sua posição atual. Tenha certeza que a permissão de acessar a localização está garantida"
+
+                is Resource.Loading -> {
+                    _state.value = _state.value.copy(
+                        isLoading = true,
                     )
+                }
+
+                is Resource.Success -> {
+                    result.data?.let { user ->
+                        _state.update {
+                            it.copy(
+                                usuario = user,
+                                isLoading = false
+                            )
+                        }
+
+                    }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
+    }
 
+    private fun getLoc() {
+        viewModelScope.launch {
+            dataStoreUtil.getLat().collect { lat ->
+                _state.update {
+                    it.copy(
+                        lat = lat,
+                    )
+                }
+                Log.i("infoteste", "lat: $lat")
+            }
+        }
+        viewModelScope.launch {
+            dataStoreUtil.getLong().collect { long ->
+                _state.update {
+                    it.copy(
+                        long = long,
+                    )
+                }
+
+                Log.i("infoteste", "long: $long")
+            }
+        }
     }
 
     private fun loadPet(petId: String) {
@@ -327,7 +368,7 @@ class FormViewModel @Inject constructor(
                             especie = it.tipoAnimal,
                             status = it.status,
                             tamanho = it.tamanho,
-                            foto = byteArrayToBitmap(it.foto),
+                            foto = byteArrayToBitmap(it.foto.toByteArray()),
                             petId = it.id,
                             isUpdate = true,
                         )

@@ -111,11 +111,11 @@ fun FormScreen(
             }
         }
 
-    LaunchedEffect(key1 = imeState.value) {
-        if (imeState.value) {
-            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
-        }
-    }
+//    LaunchedEffect(key1 = imeState.value) {
+//        if (imeState.value) {
+//            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+//        }
+//    }
 
     ToastError(error = state.error) {
         onEvent(FormEvent.ClearError)

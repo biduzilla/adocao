@@ -12,7 +12,7 @@ data class HomeState(
     var search:String = "",
     var usuario: Usuario = Usuario(),
     var filtroSearch: FiltroSearch = FiltroSearch(),
-    val page: Int = 1,
+    val page: Int = 0,
     val error:String = "",
     var lat:Double = 0.0,
     var long:Double = 0.0,

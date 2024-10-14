@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.domain.use_case
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseDeleteById
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetAll
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetById
@@ -39,11 +40,11 @@ class PetManager @Inject constructor(
         return petCaseGetById(id)
     }
 
-    fun save(pet: Pet): Flow<Resource<Pet>> {
+    fun save(pet: PetRequest): Flow<Resource<Pet>> {
         return petCasePost(pet)
     }
 
-    fun update(pet: Pet): Flow<Resource<Pet>> {
+    fun update(pet: PetRequest): Flow<Resource<Pet>> {
         return petCaseUpdate(pet)
     }
 

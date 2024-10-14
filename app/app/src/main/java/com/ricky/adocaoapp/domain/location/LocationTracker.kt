@@ -1,4 +1,4 @@
-package com.example.climacompose.domain.location
+package com.ricky.adocaoapp.domain.location
 
 import android.location.Location
 

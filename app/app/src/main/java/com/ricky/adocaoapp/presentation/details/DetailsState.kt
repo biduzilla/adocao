@@ -7,5 +7,7 @@ data class DetailsState(
     val pet: Pet = Pet(),
     val userId: String="",
     val error: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val lat:Double = 0.0,
+    val long:Double = 0.0,
 )

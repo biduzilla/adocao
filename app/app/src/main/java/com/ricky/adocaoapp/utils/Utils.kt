@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import androidx.core.content.FileProvider
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -35,6 +36,12 @@ fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
     return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
 }
 
+fun byteArrayToBitmap(img: String): Bitmap {
+    val cleanBase64 = img.replace("data:image/jpeg;base64,", "")
+    val byteArray = Base64.decode(cleanBase64, Base64.DEFAULT)
+
+    return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+}
 
 fun bitmapToByteArray(
     bitmap: Bitmap,
@@ -88,7 +95,7 @@ fun Context.getTempUri(): Uri? {
     )
     return FileProvider.getUriForFile(
         this,
-        "com.ricky.controle_pet.components.fileprovider",
+        "com.ricky.adocaoapp.fileprovider",
         file
     )
 }

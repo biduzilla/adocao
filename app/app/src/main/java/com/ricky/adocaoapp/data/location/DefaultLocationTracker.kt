@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.ContextCompat
-import com.example.climacompose.domain.location.LocationTracker
+import com.ricky.adocaoapp.domain.location.LocationTracker
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject

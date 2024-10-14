@@ -51,5 +51,6 @@
     <string name="camera">Câmera</string>
     <string name="galeria">Galeria</string>
 
-    <string name="fileprovider">com.ricky.adocaoapp.components.fileprovider</string>
+    <string name="fileprovider">com.ricky.adocaoapp.fileprovider</string>
+
 </resources>

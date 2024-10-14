@@ -1,9 +1,11 @@
 package com.ricky.adocaoapp.data.local
 
 import android.content.Context
+import android.location.Location
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -20,6 +22,8 @@ class DataStoreUtil(private val context: Context) {
 
         val THEME_KEY = booleanPreferencesKey(Constants.IS_DARK_MODE)
         val TOKEN = stringPreferencesKey(Constants.USER_TOKEN)
+        val LAT = doublePreferencesKey(Constants.USER_LAT)
+        val LONG = doublePreferencesKey(Constants.USER_LONG)
     }
 
     suspend fun saveTheme(isDark: Boolean) {
@@ -31,6 +35,18 @@ class DataStoreUtil(private val context: Context) {
     suspend fun saveToken(token: Token) {
         val json = Gson().toJson(token)
         context.dataStore.edit { p -> p[TOKEN] = json }
+    }
+
+    suspend fun saveLat(lat: Double) {
+        context.dataStore.edit { preferences ->
+            preferences[LAT] = lat
+        }
+    }
+
+    suspend fun saveLong(long: Double) {
+        context.dataStore.edit { preferences ->
+            preferences[LONG] = long
+        }
     }
 
     fun getTheme(): Flow<Boolean> {
@@ -50,5 +66,16 @@ class DataStoreUtil(private val context: Context) {
         }
     }
 
+    fun getLat(): Flow<Double> {
+        return context.dataStore.data.map { preferences ->
+            preferences[LAT] ?: 0.0
+        }
+    }
+
+    fun getLong(): Flow<Double> {
+        return context.dataStore.data.map { preferences ->
+            preferences[LONG] ?: 0.0
+        }
+    }
 
 }

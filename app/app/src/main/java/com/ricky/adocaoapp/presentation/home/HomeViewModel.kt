@@ -1,8 +1,10 @@
 package com.ricky.adocaoapp.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.climacompose.domain.location.LocationTracker
+import com.ricky.adocaoapp.data.local.DataStoreUtil
+import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.use_case.PetManager
 import com.ricky.adocaoapp.utils.Resource
 import com.ricky.adocaoapp.utils.calcularDistancia
@@ -18,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val petManager: PetManager,
-    private val locationTracker: LocationTracker
+    private val dataStoreUtil: DataStoreUtil
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -26,31 +28,32 @@ class HomeViewModel @Inject constructor(
 
     init {
         getLoc()
-        loadMore()
+        loadMore(false)
     }
 
     private fun getLoc() {
         viewModelScope.launch {
-            locationTracker.getCurrentLocation()?.let { location ->
+            dataStoreUtil.getLat().collect { lat ->
                 _state.update {
                     it.copy(
-                        lat = location.latitude,
-                        long = location.longitude
-                    )
-                }
-            } ?: kotlin.run {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "Não consegui receber sua posição atual. Tenha certeza que a permissão de acessar a localização está garantida"
+                        lat = lat,
                     )
                 }
             }
         }
+        viewModelScope.launch {
+            dataStoreUtil.getLong().collect { long ->
+                _state.update {
+                    it.copy(
+                        long = long,
+                    )
+                }
 
+            }
+        }
     }
 
-    private fun loadMore() {
+    private fun loadMore(isFiltro:Boolean) {
         petManager.getAll(
             page = _state.value.page,
             search = _state.value.search,
@@ -74,7 +77,7 @@ class HomeViewModel @Inject constructor(
                     result.data?.let { pagePet ->
                         _state.update {
                             it.copy(
-                                pets = _state.value.pets + pagePet.content
+                                pets = if(isFiltro) pagePet.content else _state.value.pets + pagePet.content
                             )
                         }
                         setDistancia()
@@ -88,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    private fun setDistancia(){
+    private fun setDistancia() {
         val updatedPets = _state.value.pets.map { pet ->
             pet.copy(
                 distancia = "%.2f km".format(
@@ -115,6 +118,7 @@ class HomeViewModel @Inject constructor(
                         filtroSearch = event.filtro
                     )
                 }
+                loadMore(true)
             }
 
             is HomeEvent.OnChangePesquisa -> {
@@ -131,11 +135,11 @@ class HomeViewModel @Inject constructor(
                         page = _state.value.page + 1
                     )
                 }
-                loadMore()
+                loadMore(false)
             }
 
             HomeEvent.OnSearch -> {
-                loadMore()
+                loadMore(true)
             }
 
             HomeEvent.ClearError -> {
@@ -144,6 +148,18 @@ class HomeViewModel @Inject constructor(
                         error = ""
                     )
                 }
+            }
+
+            HomeEvent.ClearFiltro -> {
+                _state.update {
+                    it.copy(
+                        filtroSearch = FiltroSearch()
+                    )
+                }
+            }
+
+            HomeEvent.Resume -> {
+                loadMore(true)
             }
         }
     }

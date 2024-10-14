@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.domain.repository
 import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
+import com.ricky.adocaoapp.domain.models.PetRequest
 import retrofit2.Response
 
 interface PetRepository {
@@ -16,9 +17,9 @@ interface PetRepository {
 
     suspend fun getById(id: String): Response<Pet>
 
-    suspend fun save(pet: Pet): Response<Pet>
+    suspend fun save(pet: PetRequest): Response<Pet>
 
-    suspend fun update(pet: Pet): Response<Pet>
+    suspend fun update(pet: PetRequest): Response<Pet>
 
     suspend fun deleteById(id: String): Response<Void>
 }

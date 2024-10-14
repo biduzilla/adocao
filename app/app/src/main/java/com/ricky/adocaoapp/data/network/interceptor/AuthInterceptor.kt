@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.data.network.interceptor
 
+import android.util.Log
 import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.use_case.user.UseRefreshToken
 import kotlinx.coroutines.CoroutineScope

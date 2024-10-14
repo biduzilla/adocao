@@ -1,7 +1,7 @@
 package com.ricky.adocaoapp.di
 
 import com.ricky.adocaoapp.data.location.DefaultLocationTracker
-import com.example.climacompose.domain.location.LocationTracker
+import com.ricky.adocaoapp.domain.location.LocationTracker
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -3,6 +3,7 @@ package com.ricky.adocaoapp.presentation.home.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,8 @@ import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,10 +50,15 @@ fun TopAppBarCompose(
     search: String,
     onChangePesquisa: (String) -> Unit,
     onChangeFiltro: (FiltroSearch) -> Unit,
+    onClearFiltro: () -> Unit,
     onSearch: () -> Unit,
+    filtro: FiltroSearch
 ) {
 
-    var filtro = FiltroSearch()
+    var filtros by remember {
+        mutableStateOf(filtro)
+    }
+
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -100,11 +108,16 @@ fun TopAppBarCompose(
             }
 
             if (expanded) {
-                FiltroSection(expanded = expanded, filtro = filtro) { onChangeFiltro(it) }
+                FiltroSection(filtro = filtros) {
+                    onChangeFiltro(it)
+                    filtros = it
+                }
 
                 Button(
                     onClick = {
-                        filtro = FiltroSearch()
+                        onClearFiltro()
+                        filtros =FiltroSearch()
+                        onChangeFiltro(filtros)
                     },
                     modifier = Modifier
                         .width(220.dp)
@@ -139,7 +152,11 @@ fun FiltroCheckboxRow(
     ) {
         Checkbox(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colorScheme.primaryContainer,
+                uncheckedColor = MaterialTheme.colorScheme.onPrimary
+            )
         )
         Text(text = stringResource(id = labelId))
     }
@@ -147,7 +164,6 @@ fun FiltroCheckboxRow(
 
 @Composable
 fun FiltroSection(
-    expanded: Boolean,
     filtro: FiltroSearch,
     onChangeFiltro: (FiltroSearch) -> Unit
 ) {
@@ -161,18 +177,16 @@ fun FiltroSection(
         ) {
             FiltroCheckboxRow(
                 labelId = R.string.cachorro,
-                checked = filtro.isCat,
+                checked = filtro.isDog,
                 onCheckedChange = {
-                    filtro.isCat = !filtro.isCat
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isDog = it))
                 }
             )
             FiltroCheckboxRow(
                 labelId = R.string.gato,
-                checked = filtro.isDog,
+                checked = filtro.isCat,
                 onCheckedChange = {
-                    filtro.isDog = !filtro.isDog
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isCat = it))
                 }
             )
         }
@@ -185,24 +199,21 @@ fun FiltroSection(
                 labelId = R.string.achado,
                 checked = filtro.isAchado,
                 onCheckedChange = {
-                    filtro.isAchado = !filtro.isAchado
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isAchado = it))
                 }
             )
             FiltroCheckboxRow(
                 labelId = R.string.perdido,
                 checked = filtro.isPerdido,
                 onCheckedChange = {
-                    filtro.isPerdido = !filtro.isPerdido
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isPerdido = it))
                 }
             )
             FiltroCheckboxRow(
                 labelId = R.string.adocao,
                 checked = filtro.isAdotar,
                 onCheckedChange = {
-                    filtro.isAdotar = !filtro.isAdotar
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isAdotar = it))
                 }
             )
         }
@@ -215,24 +226,21 @@ fun FiltroSection(
                 labelId = R.string.pequeno,
                 checked = filtro.isPequeno,
                 onCheckedChange = {
-                    filtro.isPequeno = !filtro.isPequeno
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isPequeno = it))
                 }
             )
             FiltroCheckboxRow(
                 labelId = R.string.medio,
                 checked = filtro.isMedio,
                 onCheckedChange = {
-                    filtro.isMedio = !filtro.isMedio
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isMedio = it))
                 }
             )
             FiltroCheckboxRow(
                 labelId = R.string.grande,
                 checked = filtro.isGrande,
                 onCheckedChange = {
-                    filtro.isGrande = !filtro.isGrande
-                    onChangeFiltro(filtro)
+                    onChangeFiltro(filtro.copy(isGrande = it))
                 }
             )
         }
@@ -244,7 +252,6 @@ fun FiltroSection(
                 labelId = R.string.macho,
                 checked = filtro.isMacho,
                 onCheckedChange = {
-                    filtro.isMacho = !filtro.isMacho
                     onChangeFiltro(filtro)
                 }
             )
@@ -252,7 +259,6 @@ fun FiltroSection(
                 labelId = R.string.femea,
                 checked = filtro.isFemea,
                 onCheckedChange = {
-                    filtro.isFemea = !filtro.isFemea
                     onChangeFiltro(filtro)
                 }
             )
@@ -266,7 +272,6 @@ fun FiltroSection(
                 labelId = R.string.filhote,
                 checked = filtro.isFilhote,
                 onCheckedChange = {
-                    filtro.isFilhote = !filtro.isFilhote
                     onChangeFiltro(filtro)
                 }
             )
@@ -274,7 +279,6 @@ fun FiltroSection(
                 labelId = R.string.adulto,
                 checked = filtro.isAdulto,
                 onCheckedChange = {
-                    filtro.isAdulto = !filtro.isAdulto
                     onChangeFiltro(filtro)
                 }
             )
@@ -282,7 +286,6 @@ fun FiltroSection(
                 labelId = R.string.idoso,
                 checked = filtro.isIdoso,
                 onCheckedChange = {
-                    filtro.isIdoso = !filtro.isIdoso
                     onChangeFiltro(filtro)
                 }
             )
@@ -295,5 +298,5 @@ fun FiltroSection(
 @Preview
 @Composable
 private fun TopAppBarComposePrev() {
-    TopAppBarCompose(Modifier, "Ola teste", {}, {},{})
+    TopAppBarCompose(Modifier, "Ola teste", {}, {}, {}, {}, FiltroSearch())
 }
