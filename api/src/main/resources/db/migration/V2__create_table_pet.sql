@@ -6,7 +6,7 @@ create table PET (
     GENERO varchar(255),
     IDADE varchar(255),
     LOCALIZACAO DOUBLE,
-    LATATITUDE DOUBLE,
+    LATITUDE DOUBLE,
     LONGITUDE bigint,
     NOME varchar(255),
     STATUS varchar(255),

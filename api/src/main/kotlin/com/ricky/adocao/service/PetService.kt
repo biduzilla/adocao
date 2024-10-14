@@ -8,8 +8,8 @@ import org.springframework.data.domain.Pageable
 
 interface PetService {
     fun findAll(
-        search: String,
-        orderBy: String,
+        search: String?,
+        orderBy: String?,
         page: Int,
         qtd: Int,
         filtro: FiltroSearchDTO

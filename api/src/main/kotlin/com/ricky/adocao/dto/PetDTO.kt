@@ -3,6 +3,7 @@ package com.ricky.adocao.dto
 import com.ricky.adocao.enums.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import java.time.LocalDate
 
 data class PetDTO(
@@ -10,22 +11,22 @@ data class PetDTO(
     @field:NotBlank(message = "{nome.obrigatorio}")
     var nome: String = "",
     var idade: PetIdadeEnum = PetIdadeEnum.ADULTO,
-    @field:NotEmpty(message = "{localizacao.obrigatorio}")
+    @NotNull(message = "{localizacao.obrigatorio}")
     var localizacao: PetCidadeEnum = PetCidadeEnum.NUCLEO_BANDEIRANTE,
     var lat: Double,
     var long: Double,
     var usuario: UsuarioDTO = UsuarioDTO(),
     @field:NotBlank(message = "{descricao.obrigatorio}")
     var descricao: String = "",
-    @field:NotEmpty(message = "{genero.obrigatorio}")
+    @NotNull(message = "{genero.obrigatorio}")
     var genero: PetGeneroEnum = PetGeneroEnum.FEMEA,
     var dataPublicacao: LocalDate = LocalDate.now(),
     var foto: ByteArray = ByteArray(0),
-    @field:NotEmpty(message = "{status.obrigatorio}")
+    @NotNull(message = "{status.obrigatorio}")
     var status: PetStatusEnum = PetStatusEnum.ACHADO,
-    @field:NotEmpty(message = "{tipoAnimal.obrigatorio}")
+    @NotNull(message = "{tipoAnimal.obrigatorio}")
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
-    @field:NotEmpty(message = "{tamanhoAnimal.obrigatorio}")
+    @NotNull(message = "{tamanhoAnimal.obrigatorio}")
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
     var donoId:String = "",
 ) {

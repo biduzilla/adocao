@@ -3,10 +3,10 @@ package com.ricky.adocao.utils
 import org.springframework.data.domain.Sort
 
 
-fun orderByToSort(orderBy: String): Sort {
+fun orderByToSort(orderBy: String?): Sort {
     var sort: Sort? = null
 
-    if (isNullOrEmpty(orderBy)) {
+    if (orderBy == null) {
         sort = Sort.by(Sort.Direction.DESC, "dataPublicacao")
     } else {
         val aux = orderBy.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

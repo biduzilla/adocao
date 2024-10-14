@@ -22,8 +22,8 @@ class PetServiceImpl(
     private val i18n: I18n
 ) : PetService {
     override fun findAll(
-        search: String,
-        orderBy: String,
+        search: String?,
+        orderBy: String?,
         page: Int,
         qtd: Int,
         filtro: FiltroSearchDTO

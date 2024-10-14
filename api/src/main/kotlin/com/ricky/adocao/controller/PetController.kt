@@ -27,8 +27,8 @@ class PetController(
     @Cacheable(CacheConstants.PET_CACHE)
     fun findAll(
         @RequestParam(required = false, defaultValue = "0") page: Int,
-        @RequestParam(required = false) search: String,
-        @RequestParam(required = false) orderBy: String,
+        @RequestParam(required = false) search: String?,
+        @RequestParam(required = false) orderBy: String?,
         @RequestParam(defaultValue = "15") qtd: Int,
         @RequestParam(defaultValue = "false")isDog:Boolean,
         @RequestParam(defaultValue = "false") isCat:Boolean,
