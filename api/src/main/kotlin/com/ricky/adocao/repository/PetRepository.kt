@@ -27,7 +27,6 @@ interface PetRepository : JpaRepository<Pet, String> {
                 "AND (:#{#filtro.isMacho} = false OR p.genero = 'MACHO')"+
                 "AND (:#{#filtro.isFemea} = false OR p.genero = 'FEMEA')"+
                 "AND (:#{#filtro.isFilhote} = false OR p.idade = 'FILHOTE')"+
-                "AND (:#{#filtro.isJovem} = false OR p.idade = 'JOVEM')"+
                 "AND (:#{#filtro.isAdulto} = false OR p.idade = 'ADULTO')"+
                 "AND (:#{#filtro.isIdoso} = false OR p.idade = 'IDOSO')"
     )

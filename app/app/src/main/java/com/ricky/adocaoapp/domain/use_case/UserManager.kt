@@ -21,7 +21,7 @@ class UserManager @Inject constructor(
     private val resetPasswordCase: UseCaseResetPassword,
     private val saveCase: UseCaseSave,
     private val verifyCodCase: UseCaseVerifyCod,
-    private val getById: UseCaseGetById
+    private val getByIdCase: UseCaseGetById
 ) {
     fun changePassword(resetSenha: ResetSenha): Flow<Resource<Boolean>> {
         return changePasswordCase(resetSenha)
@@ -44,6 +44,6 @@ class UserManager @Inject constructor(
     }
 
     fun getById(idUser: String): Flow<Resource<Usuario>> {
-        return getById(idUser)
+        return getByIdCase(idUser)
     }
 }

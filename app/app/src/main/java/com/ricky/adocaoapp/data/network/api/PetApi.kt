@@ -20,7 +20,20 @@ interface PetApi {
         @Query("page") page: Int = 0,
         @Query("search") search: String?,
         @Query("orderBy") orderBy: String?,
-        @Query("qtd") qtd: Int = 15, @Body filtros: FiltroSearch
+        @Query("qtd") qtd: Int = 15,
+        @Query("isDog") isDog:Boolean,
+        @Query("isCat") isCat:Boolean,
+        @Query("isAchado") isAchado:Boolean,
+        @Query("isAdotar") isAdotar:Boolean,
+        @Query("isPerdido") isPerdido:Boolean,
+        @Query("isGrande") isGrande:Boolean,
+        @Query("isMedio") isMedio:Boolean,
+        @Query("isPequeno") isPequeno:Boolean,
+        @Query("isMacho") isMacho:Boolean,
+        @Query("isFemea") isFemea:Boolean,
+        @Query("isFilhote") isFilhote:Boolean,
+        @Query("isAdulto") isAdulto:Boolean,
+        @Query("isIdoso") isIdoso:Boolean,
     ): Response<PagePet>
 
     @GET("${Constants.PET_ENDPOINT}/{id}")

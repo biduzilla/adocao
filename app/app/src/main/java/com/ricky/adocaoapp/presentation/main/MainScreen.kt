@@ -42,7 +42,7 @@ fun MainScreen(
             MainTopBar(
                 title = "${stringResource(id = R.string.bem_vindo)} ${state.usuario.nome}",
                 onSair = { onEvent(MainEvent.OnSair) },
-                onClickConfig = { },
+                onClickConfig = { navController.navigate(Screens.RegisterScreen.route+"/${state.usuario.id}")},
             )
         },
         bottomBar = {

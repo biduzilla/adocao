@@ -30,8 +30,35 @@ class PetController(
         @RequestParam(required = false) search: String,
         @RequestParam(required = false) orderBy: String,
         @RequestParam(defaultValue = "15") qtd: Int,
-        @RequestBody filtros: FiltroSearchDTO
+        @RequestParam(defaultValue = "false")isDog:Boolean,
+        @RequestParam(defaultValue = "false") isCat:Boolean,
+        @RequestParam(defaultValue = "false") isAchado:Boolean,
+        @RequestParam(defaultValue = "false") isAdotar:Boolean,
+        @RequestParam(defaultValue = "false") isPerdido:Boolean,
+        @RequestParam(defaultValue = "false") isGrande:Boolean,
+        @RequestParam(defaultValue = "false") isMedio:Boolean,
+        @RequestParam(defaultValue = "false") isPequeno:Boolean,
+        @RequestParam(defaultValue = "false") isMacho:Boolean,
+        @RequestParam(defaultValue = "false") isFemea:Boolean,
+        @RequestParam(defaultValue = "false") isFilhote:Boolean,
+        @RequestParam(defaultValue = "false") isAdulto:Boolean,
+        @RequestParam(defaultValue = "false") isIdoso:Boolean,
     ): Page<PetDTO> {
+        val filtros = FiltroSearchDTO(
+            isDog = isDog,
+            isCat = isCat,
+            isAchado = isAchado,
+            isAdotar = isAdotar,
+            isPerdido = isPerdido,
+            isGrande = isGrande,
+            isMedio = isMedio,
+            isPequeno = isPequeno,
+            isMacho = isMacho,
+            isFemea = isFemea,
+            isFilhote = isFilhote,
+            isAdulto = isAdulto,
+            isIdoso = isIdoso
+        )
         val pageable = petService.findAll(
             search = search,
             orderBy = orderBy,

@@ -21,6 +21,7 @@ fun BtnCompose(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     @StringRes title: Int,
+    titleString:String? = null,
     color: Color =MaterialTheme.colorScheme.primary,
     textColor:Color = Color.White
 ) {
@@ -39,7 +40,7 @@ fun BtnCompose(
     ) {
         Text(
             modifier = Modifier.padding(vertical = 4.dp),
-            text = stringResource(id = title),
+            text = titleString ?: stringResource(id = title),
             style = MaterialTheme.typography.titleLarge
                 .copy(fontWeight = FontWeight.Bold)
         )

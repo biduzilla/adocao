@@ -108,7 +108,8 @@ fun LoginScreen(
                     value = state.email,
                     isError = state.onErrorEmail,
                     label = R.string.email,
-                    icon = Icons.Default.Email
+                    icon = Icons.Default.Email,
+                    keyboardType = KeyboardType.Email
                 ) {
                     onEvent(LoginEvent.OnChangeEmail(it))
                 }

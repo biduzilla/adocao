@@ -39,14 +39,14 @@ private val savedStateHandle: SavedStateHandle) : ViewModel() {
             when (result) {
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
-                        isLoading = false,
+                        loading  = false,
                         error = result.message ?: "Error"
                     )
                 }
 
                 is Resource.Loading -> {
                     _state.value = _state.value.copy(
-                        isLoading = true,
+                        loading = true,
                     )
                 }
 
@@ -63,7 +63,7 @@ private val savedStateHandle: SavedStateHandle) : ViewModel() {
                     }
                     _state.update {
                         it.copy(
-                            isLoading = false
+                            loading = false
                         )
                     }
                 }

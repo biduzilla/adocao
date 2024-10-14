@@ -26,7 +26,7 @@ class PetManager @Inject constructor(
         qtd: Int = 15,
         filtros: FiltroSearch
     ): Flow<Resource<PagePet>> {
-        return getAll(
+        return petCaseGetAll(
             page = page,
             search = search,
             orderBy = orderBy,

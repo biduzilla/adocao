@@ -59,9 +59,6 @@ data class Pet(
     @Column(name = "TAMANHO_ANIMAL")
     @Enumerated(EnumType.STRING)
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
-
-    @Column(name = "MICROCHIP")
-    var microChip: String = "",
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

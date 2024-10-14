@@ -27,7 +27,6 @@ data class PetDTO(
     var tipoAnimal: PetTipoAnimalEnum = PetTipoAnimalEnum.CACHORRO,
     @field:NotEmpty(message = "{tamanhoAnimal.obrigatorio}")
     var tamanho: PetTamanhoEnum = PetTamanhoEnum.MEDIO,
-    var microChip: String = "",
     var donoId:String = "",
 ) {
     override fun equals(other: Any?): Boolean {

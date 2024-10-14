@@ -12,7 +12,6 @@ data class FiltroSearchDTO(
     val isMacho: Boolean = false,
     val isFemea: Boolean = false,
     val isFilhote:Boolean = false,
-    val isJovem:Boolean = false,
     val isAdulto:Boolean = false,
     val isIdoso:Boolean = false,
 )

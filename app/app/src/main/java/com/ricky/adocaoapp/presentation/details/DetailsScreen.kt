@@ -1,5 +1,7 @@
 package com.ricky.adocaoapp.presentation.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,12 +53,14 @@ fun DetailsScreen(
     state: DetailsState,
     onEvent: (DetailsEvent) -> Unit
 ) {
-//    val bitmap = byteArrayToBitmap(state.pet.foto)
-//    val foto = BitmapPainter(bitmap.asImageBitmap())
+    val bitmap = byteArrayToBitmap(state.pet.foto)
+    val foto = BitmapPainter(bitmap.asImageBitmap())
 
     ToastError(error = state.error) {
         onEvent(DetailsEvent.ClearError)
     }
+
+    val context = LocalContext.current
 
     val scrollState = rememberScrollState()
     Box(modifier = Modifier.fillMaxSize()) {
@@ -79,8 +83,8 @@ fun DetailsScreen(
                         .size(400.dp),
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.CenterStart,
-                    painter = painterResource(id = R.drawable.blue_dog),
-//                    painter = foto,
+//                    painter = painterResource(id = R.drawable.blue_dog),
+                    painter = foto,
                     contentDescription = state.pet.nome
                 )
             }
@@ -166,15 +170,35 @@ fun DetailsScreen(
                                 .copy(fontWeight = FontWeight.Bold)
                         )
 
-                        BtnCompose(
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(bottom = 16.dp),
-                            onClick = { },
-                            title = R.string.chat,
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            textColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                            BtnCompose(
+                                modifier = Modifier
+                                    .padding(bottom = 16.dp)
+                                    .weight(1f),
+                                onClick = { },
+                                title = R.string.chat,
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            BtnCompose(
+                                modifier = Modifier
+                                    .padding(bottom = 16.dp)
+                                    .weight(1f),
+                                onClick = {
+                                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                                        data = Uri.parse("tel:${state.pet.usuario.telefone}")
+                                    }
+                                    context.startActivity(intent)
+                                },
+                                title = R.string.chat,
+                                titleString = state.pet.usuario.telefone,
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+
+
                     }
                 }
             }
