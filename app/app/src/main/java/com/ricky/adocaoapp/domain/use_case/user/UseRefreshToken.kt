@@ -4,7 +4,6 @@ import android.util.Log
 import com.ricky.adocaoapp.data.local.DataStoreUtil
 import com.ricky.adocaoapp.domain.models.Token
 import com.ricky.adocaoapp.domain.repository.TokenRepository
-import com.ricky.adocaoapp.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UseRefreshToken @Inject constructor(

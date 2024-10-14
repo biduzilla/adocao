@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.data.repository
 
-import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.domain.models.Login
 import com.ricky.adocaoapp.domain.models.ResetSenha

@@ -5,9 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ricky.adocaoapp.data.local.DataStoreUtil
-import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.PetRequest
-import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.use_case.PetManager
 import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.utils.Constants
@@ -22,7 +20,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel

@@ -2,7 +2,6 @@ package com.ricky.adocaoapp.domain.use_case.pet
 
 import com.google.gson.Gson
 import com.ricky.adocaoapp.domain.models.ErrorRequest
-import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow

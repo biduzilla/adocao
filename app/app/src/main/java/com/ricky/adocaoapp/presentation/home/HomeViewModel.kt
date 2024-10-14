@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ricky.adocaoapp.data.local.DataStoreUtil
@@ -28,7 +27,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         getLoc()
-        loadMore(false)
+//        loadMore(false)
     }
 
     private fun getLoc() {

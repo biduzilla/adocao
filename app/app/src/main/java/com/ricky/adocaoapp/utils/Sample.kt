@@ -8,7 +8,6 @@ import com.ricky.adocaoapp.domain.enums.PetStatusEnum
 import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.Usuario
-import java.time.LocalDate
 
 val pet1 = Pet(
     id = "1",

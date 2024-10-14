@@ -74,16 +74,14 @@ class DetailsViewModel @Inject constructor(
                     )
                 }
 
-                val pet = _state.value.pet
-                pet.distancia = "%.2f km".format(
+                _state.value.pet.distancia = "%.2f km".format(
                     calcularDistancia(
                         lat1 = _state.value.lat,
                         lon1 = _state.value.lat,
-                        lat2 = pet.lat,
-                        lon2 = pet.long
+                        lat2 = _state.value.pet.lat,
+                        lon2 = _state.value.pet.long
                     )
                 )
-
             }
         }
     }

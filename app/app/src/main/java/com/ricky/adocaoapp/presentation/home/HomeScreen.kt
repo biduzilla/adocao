@@ -38,7 +38,6 @@ import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.home.components.PetInfoItem
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.presentation.home.components.TopAppBarCompose
-import com.ricky.adocaoapp.utils.pet1
 
 @Composable
 fun HomeScreen(

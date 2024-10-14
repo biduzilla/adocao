@@ -115,7 +115,7 @@ fun PetInfoItem(
                 ) {
                     Tag(text = pet.status.value)
                     SexoTag(sexo = pet.genero)
-                    Tag(text = pet.tamanho.name)
+                    Tag(text = pet.tamanho.value)
                     Tag(text = pet.tipoAnimal.value)
                     Tag(text = pet.idade.value)
 
@@ -137,7 +137,7 @@ fun SexoTag(sexo: PetGeneroEnum, modifier: Modifier = Modifier) {
             .background(color)
     ) {
         Text(
-            text = sexo.toString(),
+            text = sexo.value,
             modifier = Modifier.padding(
                 start = 12.dp,
                 top = 4.dp,
@@ -145,7 +145,7 @@ fun SexoTag(sexo: PetGeneroEnum, modifier: Modifier = Modifier) {
                 bottom = 6.dp
             ),
             color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.bodyMedium.copy(
+            style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Bold
             )
         )

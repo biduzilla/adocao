@@ -1,7 +1,6 @@
 package com.ricky.adocaoapp.data.local
 
 import android.content.Context
-import android.location.Location
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey

@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -53,8 +54,11 @@ fun DetailsScreen(
     state: DetailsState,
     onEvent: (DetailsEvent) -> Unit
 ) {
-    val bitmap = byteArrayToBitmap(state.pet.foto)
-    val foto = BitmapPainter(bitmap.asImageBitmap())
+    var foto: BitmapPainter? = null
+    if (!state.isLoading) {
+        val bitmap = byteArrayToBitmap(state.pet.foto)
+        foto = BitmapPainter(bitmap.asImageBitmap())
+    }
 
     ToastError(error = state.error) {
         onEvent(DetailsEvent.ClearError)
@@ -84,7 +88,7 @@ fun DetailsScreen(
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.CenterStart,
 //                    painter = painterResource(id = R.drawable.blue_dog),
-                    painter = foto,
+                    painter = if (foto != null) foto else painterResource(id = R.drawable.blue_dog),
                     contentDescription = state.pet.nome
                 )
             }
@@ -107,15 +111,23 @@ fun DetailsScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = state.pet.nome,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                         Row(
                             Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = state.pet.nome,
-                                style = MaterialTheme.typography.displayMedium.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
+                                text = "${state.pet.genero.value} - ${state.pet.idade.value}",
+                                style = MaterialTheme.typography.titleLarge
+                                    .copy(fontWeight = FontWeight.Bold)
                             )
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -123,11 +135,11 @@ fun DetailsScreen(
                                 modifier = Modifier.padding(top = 2.dp)
                             ) {
                                 Text(
-                                    text = state.pet.localizacao.toString(),
+                                    text = state.pet.localizacao.value,
                                     style = MaterialTheme.typography.titleLarge
                                 )
 
-                                if (state.pet.lat != 0.0 && state.pet.long != 0.0) {
+                                if (state.pet.distancia.isNotBlank()) {
                                     Row {
                                         Icon(
                                             imageVector = Icons.Default.Map,
@@ -142,11 +154,7 @@ fun DetailsScreen(
                                 }
                             }
                         }
-                        Text(
-                            text = "${state.pet.genero.value} - ${state.pet.idade.value}",
-                            style = MaterialTheme.typography.titleLarge
-                                .copy(fontWeight = FontWeight.Bold)
-                        )
+
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = MaterialTheme.colorScheme.primaryContainer,

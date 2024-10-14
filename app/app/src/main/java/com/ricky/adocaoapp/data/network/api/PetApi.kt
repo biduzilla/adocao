@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.data.network.api
 
-import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.PagePet
 import com.ricky.adocaoapp.domain.models.Pet
 import com.ricky.adocaoapp.domain.models.PetRequest
