@@ -5,7 +5,8 @@ import lombok.Data
 import java.time.LocalDate
 
 @Data
-@Entity(name = "CHAT_MESSAGE")
+@Entity
+@Table(name = "CHAT_MESSAGE")
 data class ChatMessage(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

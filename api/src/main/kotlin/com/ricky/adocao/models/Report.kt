@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import lombok.Data
 
 @Entity
+@Table(name = "REPORT")
 @Data
 data class Report(
     @Id

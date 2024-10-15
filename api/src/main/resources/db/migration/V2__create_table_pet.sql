@@ -2,7 +2,7 @@ create table PET (
     PET_ID varchar(255) primary key not null,
     DATA_PUBLICACAO date,
     DESCRICAO varchar(255),
-    FOTO blob,
+    FOTO MEDIUMBLOB,
     GENERO varchar(255),
     IDADE varchar(255),
     LOCALIZACAO DOUBLE,

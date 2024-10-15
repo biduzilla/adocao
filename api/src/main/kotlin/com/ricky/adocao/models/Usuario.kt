@@ -3,6 +3,7 @@ package com.ricky.adocao.models
 import jakarta.persistence.*
 
 @Entity(name = "USUARIO")
+@Table(name = "USUARIO")
 data class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

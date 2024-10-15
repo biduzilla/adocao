@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0.31
+    volumes:
+      - dbbase:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adocao_db
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8001:80
+
+volumes:
+  dbbase:
+
+#docker-compose -f mysql-docker-compose.yml up -d

@@ -2,7 +2,6 @@ package com.ricky.adocao.dto
 
 import com.ricky.adocao.enums.*
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDate
 

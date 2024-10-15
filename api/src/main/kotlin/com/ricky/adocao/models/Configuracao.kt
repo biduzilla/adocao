@@ -4,8 +4,10 @@ import com.ricky.adocao.enums.ConfiguracaoEnum
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
-@Entity(name="CONFIGURACAO")
+@Entity
+@Table(name = "CONFIGURACAO")
 data class Configuracao(
 
     @Id

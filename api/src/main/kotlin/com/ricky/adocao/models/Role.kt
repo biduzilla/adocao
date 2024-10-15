@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 
 @Entity
+@Table(name = "ROLE")
 data class Role(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROLE_ID")

@@ -4,7 +4,6 @@ import com.ricky.adocao.dto.FiltroSearchDTO
 import com.ricky.adocao.models.Pet
 import com.ricky.adocao.models.Usuario
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 
 interface PetService {
     fun findAll(

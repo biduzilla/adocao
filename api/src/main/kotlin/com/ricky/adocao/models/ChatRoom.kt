@@ -4,7 +4,8 @@ import jakarta.persistence.*
 import lombok.Data
 
 @Data
-@Entity(name = "CHAT_ROOM")
+@Entity
+@Table(name = "CHAT_ROOM")
 data class ChatRoom(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
