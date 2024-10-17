@@ -365,7 +365,7 @@ class FormViewModel @Inject constructor(
                             especie = it.tipoAnimal,
                             status = it.status,
                             tamanho = it.tamanho,
-                            foto = byteArrayToBitmap(it.foto.toByteArray()),
+                            foto = byteArrayToBitmap(it.foto),
                             petId = it.id,
                             isUpdate = true,
                         )

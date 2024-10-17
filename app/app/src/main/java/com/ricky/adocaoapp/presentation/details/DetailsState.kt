@@ -9,4 +9,5 @@ data class DetailsState(
     val isLoading: Boolean = true,
     val lat:Double = 0.0,
     val long:Double = 0.0,
+    val isDono:Boolean = false,
 )

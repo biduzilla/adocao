@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,12 +37,15 @@ class DetailsViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            dataStoreUtil.getToken().collect {
-                _state.update {
-                    it.copy(
-                        userId = it.userId
-                    )
+            dataStoreUtil.getToken().collect { token ->
+                token?.let {
+                    _state.update {
+                        it.copy(
+                            userId = token.idUser
+                        )
+                    }
                 }
+                checkIfIsDono()
             }
         }
     }
@@ -49,9 +53,11 @@ class DetailsViewModel @Inject constructor(
     fun onEvent(event: DetailsEvent) {
         when (event) {
             DetailsEvent.ClearError -> {
-                _state.value = DetailsState(
-                    error = ""
-                )
+                _state.update { state ->
+                    state.copy(
+                        error = ""
+                    )
+                }
             }
         }
     }
@@ -64,6 +70,7 @@ class DetailsViewModel @Inject constructor(
                         lat = lat,
                     )
                 }
+                updateDistancia()
             }
         }
         viewModelScope.launch {
@@ -74,14 +81,7 @@ class DetailsViewModel @Inject constructor(
                     )
                 }
 
-                _state.value.pet.distancia = "%.2f km".format(
-                    calcularDistancia(
-                        lat1 = _state.value.lat,
-                        lon1 = _state.value.lat,
-                        lat2 = _state.value.pet.lat,
-                        lon2 = _state.value.pet.long
-                    )
-                )
+                updateDistancia()
             }
         }
     }
@@ -90,27 +90,64 @@ class DetailsViewModel @Inject constructor(
         petCaseGetById(petId).onEach { result ->
             when (result) {
                 is Resource.Error -> {
-                    _state.value = DetailsState(
-                        isLoading = false,
-                        error = result.message ?: "Error Inesperado"
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            isLoading = false,
+                            error = result.message ?: "Erro inesperado"
+                        )
+                    }
                 }
 
                 is Resource.Loading -> {
-                    _state.value = DetailsState(
-                        isLoading = true
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            isLoading = true,
+                        )
+                    }
                 }
 
                 is Resource.Success -> {
-                    result.data?.let {
-                        _state.value = DetailsState(
-                            isLoading = false,
-                            pet = result.data,
-                        )
+                    result.data?.let { pet ->
+                        _state.update { state ->
+                            state.copy(
+                                isLoading = false,
+                                pet = pet
+                            )
+                        }
+                        checkIfIsDono()
+                        updateDistancia()
                     }
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun checkIfIsDono() {
+        val userId = _state.value.userId
+        val donoId = _state.value.pet.donoId
+
+        if (userId != null && userId == donoId) {
+            _state.update { state ->
+                state.copy(isDono = true)
+            }
+        }
+    }
+
+    private fun updateDistancia() {
+        val lat1 = _state.value.lat
+        val lon1 = _state.value.long
+        val pet = _state.value.pet
+
+        if (lat1 != null && lon1 != null && pet.lat != null && pet.long != null) {
+            val distancia = calcularDistancia(
+                lat1 = lat1,
+                lon1 = lon1,
+                lat2 = pet.lat,
+                lon2 = pet.long
+            )
+            _state.update { state ->
+                state.copy(pet = pet.copy(distancia = "%.2f km".format(distancia)))
+            }
+        }
     }
 }

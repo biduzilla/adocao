@@ -2,6 +2,7 @@ package com.ricky.adocaoapp.presentation.details
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,21 +30,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
+import com.ricky.adocaoapp.presentation.home.HomeEvent
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.utils.byteArrayToBitmap
 import com.ricky.adocaoapp.utils.pet1
@@ -55,7 +62,7 @@ fun DetailsScreen(
     onEvent: (DetailsEvent) -> Unit
 ) {
     var foto: BitmapPainter? = null
-    if (!state.isLoading) {
+    if (!state.isLoading && state.error.isBlank()) {
         val bitmap = byteArrayToBitmap(state.pet.foto)
         foto = BitmapPainter(bitmap.asImageBitmap())
     }
@@ -110,7 +117,6 @@ fun DetailsScreen(
                             .fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = state.pet.nome,
                             textAlign = TextAlign.Center,
@@ -227,7 +233,7 @@ fun DetailsScreen(
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                    if (state.pet.donoId == state.userId)
+                    if (state.pet.donoId==state.userId){
                         IconButton(
                             onClick = {
                                 navController.navigate(Screens.Form.route + "/${state.pet.id}")
@@ -238,6 +244,7 @@ fun DetailsScreen(
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
+                    }
                 }
             }
         }
