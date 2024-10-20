@@ -15,6 +15,13 @@ interface PetRepository {
         filtros: FiltroSearch
     ): Response<PagePet>
 
+    suspend fun getByUserId(
+        page: Int = 0,
+        orderBy: String?,
+        qtd: Int = 15,
+        userId: String
+    ): Response<PagePet>
+
     suspend fun getById(id: String): Response<Pet>
 
     suspend fun save(pet: PetRequest): Response<Pet>

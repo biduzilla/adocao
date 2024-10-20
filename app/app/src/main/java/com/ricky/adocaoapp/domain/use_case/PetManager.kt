@@ -7,6 +7,7 @@ import com.ricky.adocaoapp.domain.models.PetRequest
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseDeleteById
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetAll
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetById
+import com.ricky.adocaoapp.domain.use_case.pet.PetCaseGetByUserId
 import com.ricky.adocaoapp.domain.use_case.pet.PetCasePost
 import com.ricky.adocaoapp.domain.use_case.pet.PetCaseUpdate
 import com.ricky.adocaoapp.utils.Resource
@@ -18,7 +19,8 @@ class PetManager @Inject constructor(
     private val petCaseGetById: PetCaseGetById,
     private val petCasePost: PetCasePost,
     private val petCaseUpdate: PetCaseUpdate,
-    private val petCaseDeleteById: PetCaseDeleteById
+    private val petCaseDeleteById: PetCaseDeleteById,
+    private val petCaseGetByUserId: PetCaseGetByUserId
 ) {
     fun getAll(
         page: Int = 0,
@@ -33,6 +35,20 @@ class PetManager @Inject constructor(
             orderBy = orderBy,
             qtd = qtd,
             filtros = filtros
+        )
+    }
+
+    fun getByUserId(
+        page: Int = 0,
+        orderBy: String? = null,
+        qtd: Int = 15,
+        userId: String,
+    ): Flow<Resource<PagePet>> {
+        return petCaseGetByUserId(
+            page = page,
+            orderBy = orderBy,
+            qtd = qtd,
+            userId = userId
         )
     }
 

@@ -16,7 +16,8 @@ class PetRepositoryImpl @Inject constructor(private val api: PetApi) : PetReposi
         orderBy: String?,
         qtd: Int,
         filtros: FiltroSearch
-    ): Response<PagePet> = api.getAll(page, search, orderBy, qtd,
+    ): Response<PagePet> = api.getAll(
+        page, search, orderBy, qtd,
         isDog = filtros.isDog,
         isCat = filtros.isCat,
         isAchado = filtros.isAchado,
@@ -30,7 +31,19 @@ class PetRepositoryImpl @Inject constructor(private val api: PetApi) : PetReposi
         isFilhote = filtros.isFilhote,
         isAdulto = filtros.isAdulto,
         isIdoso = filtros.isIdoso
-        )
+    )
+
+    override suspend fun getByUserId(
+        page: Int,
+        orderBy: String?,
+        qtd: Int,
+        userId: String
+    ): Response<PagePet> = api.getByUserId(
+        page = page,
+        orderBy = orderBy,
+        qtd = qtd,
+        userId = userId
+    )
 
     override suspend fun getById(id: String): Response<Pet> = api.getById(id)
 

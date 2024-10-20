@@ -8,6 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ricky.adocaoapp.presentation.config.ConfigScreen
+import com.ricky.adocaoapp.presentation.config.ConfigViewModel
 import com.ricky.adocaoapp.presentation.home.HomeScreen
 import com.ricky.adocaoapp.presentation.home.HomeViewModel
 
@@ -25,6 +27,17 @@ fun BottomNav(
             val state by viewModel.state.collectAsState()
 
             HomeScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composable(BottomScreens.ConfigScreen.route) {
+            val viewModel = hiltViewModel<ConfigViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            ConfigScreen(
                 navController = navController,
                 state = state,
                 onEvent = viewModel::onEvent

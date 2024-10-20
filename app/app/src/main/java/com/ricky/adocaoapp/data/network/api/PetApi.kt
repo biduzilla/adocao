@@ -21,30 +21,38 @@ interface PetApi {
         @Query("search") search: String?,
         @Query("orderBy") orderBy: String?,
         @Query("qtd") qtd: Int = 15,
-        @Query("isDog") isDog:Boolean,
-        @Query("isCat") isCat:Boolean,
-        @Query("isAchado") isAchado:Boolean,
-        @Query("isAdotar") isAdotar:Boolean,
-        @Query("isPerdido") isPerdido:Boolean,
-        @Query("isGrande") isGrande:Boolean,
-        @Query("isMedio") isMedio:Boolean,
-        @Query("isPequeno") isPequeno:Boolean,
-        @Query("isMacho") isMacho:Boolean,
-        @Query("isFemea") isFemea:Boolean,
-        @Query("isFilhote") isFilhote:Boolean,
-        @Query("isAdulto") isAdulto:Boolean,
-        @Query("isIdoso") isIdoso:Boolean,
+        @Query("isDog") isDog: Boolean,
+        @Query("isCat") isCat: Boolean,
+        @Query("isAchado") isAchado: Boolean,
+        @Query("isAdotar") isAdotar: Boolean,
+        @Query("isPerdido") isPerdido: Boolean,
+        @Query("isGrande") isGrande: Boolean,
+        @Query("isMedio") isMedio: Boolean,
+        @Query("isPequeno") isPequeno: Boolean,
+        @Query("isMacho") isMacho: Boolean,
+        @Query("isFemea") isFemea: Boolean,
+        @Query("isFilhote") isFilhote: Boolean,
+        @Query("isAdulto") isAdulto: Boolean,
+        @Query("isIdoso") isIdoso: Boolean,
     ): Response<PagePet>
 
     @GET("${Constants.PET_ENDPOINT}/{id}")
-    suspend fun getById(@Path("id")id:String):Response<Pet>
+    suspend fun getById(@Path("id") id: String): Response<Pet>
+
+    @GET("${Constants.PET_ENDPOINT}/user/{userId}")
+    suspend fun getByUserId(
+        @Query("page") page: Int = 0,
+        @Query("orderBy") orderBy: String?,
+        @Query("qtd") qtd: Int = 15,
+        @Path("userId") userId: String
+    ): Response<PagePet>
 
     @POST(Constants.PET_ENDPOINT)
-    suspend fun save(@Body pet: PetRequest):Response<Pet>
+    suspend fun save(@Body pet: PetRequest): Response<Pet>
 
     @PUT(Constants.PET_ENDPOINT)
-    suspend fun update(@Body pet:PetRequest):Response<Pet>
+    suspend fun update(@Body pet: PetRequest): Response<Pet>
 
     @DELETE("${Constants.PET_ENDPOINT}/{id}")
-    suspend fun deleteById(@Path("id")id:String):Response<Void>
+    suspend fun deleteById(@Path("id") id: String): Response<Void>
 }
