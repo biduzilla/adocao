@@ -30,19 +30,19 @@ class PetController(
         @RequestParam(required = false) search: String?,
         @RequestParam(required = false) orderBy: String?,
         @RequestParam(defaultValue = "15") qtd: Int,
-        @RequestParam(defaultValue = "false")isDog:Boolean,
-        @RequestParam(defaultValue = "false") isCat:Boolean,
-        @RequestParam(defaultValue = "false") isAchado:Boolean,
-        @RequestParam(defaultValue = "false") isAdotar:Boolean,
-        @RequestParam(defaultValue = "false") isPerdido:Boolean,
-        @RequestParam(defaultValue = "false") isGrande:Boolean,
-        @RequestParam(defaultValue = "false") isMedio:Boolean,
-        @RequestParam(defaultValue = "false") isPequeno:Boolean,
-        @RequestParam(defaultValue = "false") isMacho:Boolean,
-        @RequestParam(defaultValue = "false") isFemea:Boolean,
-        @RequestParam(defaultValue = "false") isFilhote:Boolean,
-        @RequestParam(defaultValue = "false") isAdulto:Boolean,
-        @RequestParam(defaultValue = "false") isIdoso:Boolean,
+        @RequestParam(defaultValue = "false") isDog: Boolean,
+        @RequestParam(defaultValue = "false") isCat: Boolean,
+        @RequestParam(defaultValue = "false") isAchado: Boolean,
+        @RequestParam(defaultValue = "false") isAdotar: Boolean,
+        @RequestParam(defaultValue = "false") isPerdido: Boolean,
+        @RequestParam(defaultValue = "false") isGrande: Boolean,
+        @RequestParam(defaultValue = "false") isMedio: Boolean,
+        @RequestParam(defaultValue = "false") isPequeno: Boolean,
+        @RequestParam(defaultValue = "false") isMacho: Boolean,
+        @RequestParam(defaultValue = "false") isFemea: Boolean,
+        @RequestParam(defaultValue = "false") isFilhote: Boolean,
+        @RequestParam(defaultValue = "false") isAdulto: Boolean,
+        @RequestParam(defaultValue = "false") isIdoso: Boolean,
     ): Page<PetDTO> {
         val filtros = FiltroSearchDTO(
             isDog = isDog,
@@ -65,6 +65,23 @@ class PetController(
             page = page,
             qtd = qtd,
             filtro = filtros
+        )
+        return pageable.map { petDTOMapper.map(it) }
+    }
+
+    @GetMapping("/user/{userId}")
+    @Cacheable(CacheConstants.PET_CACHE)
+    fun findByUserId(
+        @PathVariable userId: String,
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam(required = false) orderBy: String?,
+        @RequestParam(defaultValue = "15") qtd: Int
+    ): Page<PetDTO> {
+        val pageable = petService.findByUser(
+            userId = userId,
+            orderBy = orderBy,
+            page = page,
+            qtd = qtd,
         )
         return pageable.map { petDTOMapper.map(it) }
     }

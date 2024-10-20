@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,9 +31,6 @@ class DetailsViewModel @Inject constructor(
 
     init {
         getLoc()
-        saveStateHandle.get<String>(Constants.PARAM_PET_ID)?.let { petId ->
-            loadPet(petId)
-        }
 
         viewModelScope.launch {
             dataStoreUtil.getToken().collect { token ->
@@ -45,7 +41,6 @@ class DetailsViewModel @Inject constructor(
                         )
                     }
                 }
-                checkIfIsDono()
             }
         }
     }
@@ -57,6 +52,12 @@ class DetailsViewModel @Inject constructor(
                     state.copy(
                         error = ""
                     )
+                }
+            }
+
+            DetailsEvent.Reload -> {
+                saveStateHandle.get<String>(Constants.PARAM_PET_ID)?.let { petId ->
+                    loadPet(petId)
                 }
             }
         }

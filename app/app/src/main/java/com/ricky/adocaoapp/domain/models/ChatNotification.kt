@@ -1,4 +1,4 @@
-package com.ricky.adocao.models
+package com.ricky.adocaoapp.domain.models
 
 data class ChatNotification(
     var id: String = "",

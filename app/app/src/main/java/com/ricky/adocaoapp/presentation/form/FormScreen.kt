@@ -58,6 +58,7 @@ import com.ricky.adocaoapp.domain.enums.PetGeneroEnum
 import com.ricky.adocaoapp.domain.enums.PetIdadeEnum
 import com.ricky.adocaoapp.domain.enums.PetStatusEnum
 import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
+import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 import com.ricky.adocaoapp.presentation.form.components.DialogRemover
@@ -122,7 +123,11 @@ fun FormScreen(
     }
 
     if (state.isOk) {
-        navController.popBackStack()
+        navController.navigate(Screens.MainScreen.route){
+            popUpTo(navController.graph.startDestinationId){
+                inclusive=true
+            }
+        }
     }
 
     if (state.isShowDialogRemover) {
@@ -160,7 +165,7 @@ fun FormScreen(
                     modifier = Modifier
                         .padding(12.dp),
                     onClick = {
-                        onEvent(FormEvent.DeletePet)
+                        onEvent(FormEvent.ShowDialogRemover)
                     }) {
                     Icon(
                         imageVector = Icons.Default.Delete,

@@ -13,6 +13,9 @@ interface PetRepository : JpaRepository<Pet, String> {
     @Query("SELECT p.usuario FROM Pet p WHERE p= :pet")
     fun findUsuarioByPet(@Param("pet") pet: Pet): Usuario
 
+    @Query("SELECT p FROM Pet p WHERE p.usuario.id = :id")
+    fun findByUserId(@Param("id") id:String,pageable: Pageable): Page<Pet>
+
     @Query(
         "SELECT p FROM Pet p " +
                 "WHERE (:#{#filtro.isDog} = false OR p.tipoAnimal = 'CACHORRO') " +

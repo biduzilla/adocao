@@ -15,6 +15,13 @@ interface PetService {
     ): Page<Pet>
 
     fun findById(idPet: String): Pet
+    fun findByUser(
+        userId: String,
+        orderBy: String?,
+        page: Int,
+        qtd: Int,
+    ): Page<Pet>
+
     fun findUsuarioByPet(pet: Pet): Usuario
     fun update(pet: Pet): Pet
     fun save(pet: Pet, userId: String): Pet

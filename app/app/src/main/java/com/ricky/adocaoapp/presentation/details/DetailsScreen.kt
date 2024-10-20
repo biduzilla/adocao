@@ -2,7 +2,6 @@ package com.ricky.adocaoapp.presentation.details
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,7 +49,6 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
-import com.ricky.adocaoapp.presentation.home.HomeEvent
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.utils.byteArrayToBitmap
 import com.ricky.adocaoapp.utils.pet1
@@ -69,6 +67,15 @@ fun DetailsScreen(
 
     ToastError(error = state.error) {
         onEvent(DetailsEvent.ClearError)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            onEvent(DetailsEvent.Reload)
+        }
     }
 
     val context = LocalContext.current
@@ -184,21 +191,12 @@ fun DetailsScreen(
                                 .copy(fontWeight = FontWeight.Bold)
                         )
 
-                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                        if(state.pet.donoId!=state.userId){
                             BtnCompose(
                                 modifier = Modifier
-                                    .padding(bottom = 16.dp)
-                                    .weight(1f),
-                                onClick = { },
-                                title = R.string.chat,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            BtnCompose(
-                                modifier = Modifier
-                                    .padding(bottom = 16.dp)
-                                    .weight(1f),
+                                    .align(Alignment.CenterHorizontally)
+                                    .padding(bottom = 16.dp),
+                                icon = Icons.Default.Phone,
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_DIAL).apply {
                                         data = Uri.parse("tel:${state.pet.usuario.telefone}")
@@ -210,8 +208,38 @@ fun DetailsScreen(
                                 color = MaterialTheme.colorScheme.primaryContainer,
                                 textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
+
                         }
 
+//                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+//                            BtnCompose(
+//                                modifier = Modifier
+//                                    .padding(bottom = 16.dp)
+//                                    .weight(1f),
+//                                onClick = { navController.navigate(Screens.ChatMsgScreen.route + "/${state.pet.donoId}")},
+//                                title = R.string.chat,
+//                                color = MaterialTheme.colorScheme.primaryContainer,
+//                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
+//                            )
+//                            Spacer(modifier = Modifier.width(16.dp))
+//                            BtnCompose(
+//                                modifier = Modifier
+//                                    .padding(bottom = 16.dp)
+//                                    .weight(1f),
+//                                icon = Icons.Default.Phone,
+//                                onClick = {
+//                                    val intent = Intent(Intent.ACTION_DIAL).apply {
+//                                        data = Uri.parse("tel:${state.pet.usuario.telefone}")
+//                                    }
+//                                    context.startActivity(intent)
+//                                },
+//                                title = R.string.chat,
+//                                titleString = state.pet.usuario.telefone,
+//                                color = MaterialTheme.colorScheme.primaryContainer,
+//                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
+//                            )
+//                        }
+//
 
                     }
                 }

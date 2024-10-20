@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.form
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -108,23 +107,29 @@ class FormViewModel @Inject constructor(
                     petManager.update(pet).onEach { result ->
                         when (result) {
                             is Resource.Error -> {
-                                _state.value = FormState(
-                                    isLoading = false,
-                                    error = result.message ?: "Error Inesperado"
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        error = result.message ?: "Error Inesperado"
+                                    )
+                                }
                             }
 
                             is Resource.Loading -> {
-                                _state.value = FormState(
-                                    isLoading = true
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = true
+                                    )
+                                }
                             }
 
                             is Resource.Success -> {
-                                _state.value = FormState(
-                                    isLoading = false,
-                                    isOk = true
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        isOk = true
+                                    )
+                                }
                             }
                         }
                     }.launchIn(viewModelScope)
@@ -132,23 +137,29 @@ class FormViewModel @Inject constructor(
                     petManager.save(pet).onEach { result ->
                         when (result) {
                             is Resource.Error -> {
-                                _state.value = FormState(
-                                    isLoading = false,
-                                    error = result.message ?: "Error Inesperado"
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        error = result.message ?: "Error Inesperado"
+                                    )
+                                }
                             }
 
                             is Resource.Loading -> {
-                                _state.value = FormState(
-                                    isLoading = true
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = true
+                                    )
+                                }
                             }
 
                             is Resource.Success -> {
-                                _state.value = FormState(
-                                    isLoading = false,
-                                    isOk = true
-                                )
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        isOk = true
+                                    )
+                                }
                             }
                         }
                     }.launchIn(viewModelScope)
@@ -163,23 +174,29 @@ class FormViewModel @Inject constructor(
                 petManager.deleteById(_state.value.petId).onEach { result ->
                     when (result) {
                         is Resource.Error -> {
-                            _state.value = FormState(
-                                isLoading = false,
-                                error = result.message ?: "Error Inesperado"
-                            )
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = result.message ?: "Error Inesperado"
+                                )
+                            }
                         }
 
                         is Resource.Loading -> {
-                            _state.value = FormState(
-                                isLoading = true
-                            )
+                            _state.update {
+                                it.copy(
+                                    isLoading = true
+                                )
+                            }
                         }
 
                         is Resource.Success -> {
-                            _state.value = FormState(
-                                isLoading = false,
-                                isOk = true
-                            )
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isOk = true
+                                )
+                            }
                         }
                     }
                 }.launchIn(viewModelScope)
@@ -255,10 +272,6 @@ class FormViewModel @Inject constructor(
                         foto = uriToBitmap(uri = event.uri, context = event.context),
                         onErrorPhoto = false
                     )
-                } ?: run {
-                    _state.value = _state.value.copy(
-                        onErrorPhoto = true
-                    )
                 }
             }
 
@@ -321,7 +334,6 @@ class FormViewModel @Inject constructor(
                         lat = lat,
                     )
                 }
-                Log.i("infoteste", "lat: $lat")
             }
         }
         viewModelScope.launch {
@@ -332,7 +344,6 @@ class FormViewModel @Inject constructor(
                     )
                 }
 
-                Log.i("infoteste", "long: $long")
             }
         }
     }

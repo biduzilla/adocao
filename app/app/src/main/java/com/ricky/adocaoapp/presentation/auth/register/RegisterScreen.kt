@@ -110,7 +110,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = stringResource(id = R.string.criar_conta),
+                        text = stringResource(id = if(state.isUpdate)R.string.atualizar_conta else R.string.criar_conta),
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -188,7 +188,7 @@ fun RegisterScreen(
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 4.dp),
-                                    text = stringResource(id = R.string.cadastrar),
+                                    text = stringResource(id = if(state.isUpdate)R.string.atualizar else R.string.cadastrar),
                                     style = MaterialTheme.typography.titleLarge
                                         .copy(fontWeight = FontWeight.Bold)
                                 )

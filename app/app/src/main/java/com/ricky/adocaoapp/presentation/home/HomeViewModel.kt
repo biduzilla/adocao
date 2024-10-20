@@ -158,6 +158,11 @@ class HomeViewModel @Inject constructor(
             }
 
             HomeEvent.Resume -> {
+                _state.update {
+                    it.copy(
+                        page = 0
+                    )
+                }
                 loadMore(true)
             }
         }

@@ -89,7 +89,7 @@ fun TopAppBarCompose(
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
                 icon = Icons.Default.Search,
-                ime = ImeAction.Next,
+                ime = ImeAction.Done,
                 onDone = {
                     onSearch()
                 },

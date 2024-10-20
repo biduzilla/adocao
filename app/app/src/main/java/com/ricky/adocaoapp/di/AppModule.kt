@@ -5,6 +5,7 @@ import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.ricky.adocaoapp.data.local.DataStoreUtil
+import com.ricky.adocaoapp.data.network.api.ChatApi
 import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
@@ -80,6 +81,21 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(PetApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideChatApi(authInterceptor: AuthInterceptor): ChatApi {
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ChatApi::class.java)
     }
 
     @Singleton

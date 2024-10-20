@@ -41,6 +41,16 @@ class PetServiceImpl(
         return petRepository.findById(idPet).orElseThrow { NotFoundException(i18n.getMessage("pet.nao.encontrado")) }
     }
 
+    override fun findByUser(
+        userId: String, orderBy: String?,
+        page: Int,
+        qtd: Int,
+    ): Page<Pet> {
+        val sort = orderByToSort(orderBy);
+        val pageable = PageRequest.of(page, qtd, sort);
+        return petRepository.findByUserId(userId,pageable)
+    }
+
     override fun findUsuarioByPet(pet: Pet): Usuario {
         return petRepository.findUsuarioByPet(pet)
     }

@@ -20,12 +20,6 @@ sealed class BottomScreens(
         unselectedIcon = Icons.Outlined.Pets
     )
 
-    data object MsgScreen:BottomScreens(
-        route="msg",
-        selectedIcon = Icons.AutoMirrored.Filled.Chat,
-        unselectedIcon = Icons.AutoMirrored.Outlined.Chat
-    )
-
     data object ConfigScreen:BottomScreens(
         route="config",
         selectedIcon = Icons.Filled.Settings,

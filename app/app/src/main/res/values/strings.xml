@@ -50,6 +50,10 @@
     <string name="status">Status</string>
     <string name="camera">Câmera</string>
     <string name="galeria">Galeria</string>
+    <string name="atualizar_conta">Atualizar conta</string>
+    <string name="tema_escuro">Tema escuro</string>
+    <string name="tema_claro">Tema claro</string>
+    <string name="meus_posts">Meus posts</string>
 
     <string name="fileprovider">com.ricky.adocaoapp.fileprovider</string>
 

@@ -16,8 +16,10 @@ object Constants {
     const val USER_LAT: String = "userLong"
     const val USER_LONG: String = "userLat"
     const val PET_ENDPOINT: String = "/pet"
+    const val MESSAGE_ENDPOINT: String = "/messages"
 
     const val PARAM_PET_ID = "petId"
     const val PARAM_USER_ID = "userId"
+    const val PARAM_RECEIVER_ID = "receiverId"
 
 }
