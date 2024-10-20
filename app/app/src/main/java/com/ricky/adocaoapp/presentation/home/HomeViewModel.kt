@@ -27,7 +27,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         getLoc()
-//        loadMore(false)
     }
 
     private fun getLoc() {
@@ -52,7 +51,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadMore(isFiltro:Boolean) {
+    private fun loadMore(isFiltro: Boolean) {
         petManager.getAll(
             page = _state.value.page,
             search = _state.value.search,
@@ -75,10 +74,18 @@ class HomeViewModel @Inject constructor(
                 is Resource.Success -> {
                     result.data?.let { pagePet ->
                         _state.update {
+                            val newPetsList = if (isFiltro) {
+                                pagePet.content
+                            } else {
+                                _state.value.pets + pagePet.content
+                            }
+
                             it.copy(
-                                pets = if(isFiltro) pagePet.content else _state.value.pets + pagePet.content
+                                pets = newPetsList,
+                                loadMoreVisible = newPetsList.size < pagePet.totalElements
                             )
                         }
+
                         setDistancia()
                     }
                     _state.value = _state.value.copy(
@@ -160,7 +167,8 @@ class HomeViewModel @Inject constructor(
             HomeEvent.Resume -> {
                 _state.update {
                     it.copy(
-                        page = 0
+                        page = 0,
+                        pets = emptyList()
                     )
                 }
                 loadMore(true)

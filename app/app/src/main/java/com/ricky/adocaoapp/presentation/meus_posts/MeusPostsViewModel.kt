@@ -32,7 +32,6 @@ class MeusPostsViewModel @Inject constructor(
                             idUser = token.idUser
                         )
                     }
-                    loadMore()
                 }
             }
         }
@@ -58,7 +57,8 @@ class MeusPostsViewModel @Inject constructor(
             MeusPostsEvent.Resume -> {
                 _state.update {
                     it.copy(
-                        page = 0
+                        page = 0,
+                        pets = emptyList()
                     )
                 }
                 loadMore()
@@ -88,8 +88,11 @@ class MeusPostsViewModel @Inject constructor(
                 is Resource.Success -> {
                     result.data?.let { pagePet ->
                         _state.update {
+                            val newPetsList = _state.value.pets + pagePet.content
                             it.copy(
-                                pets = _state.value.pets + pagePet.content
+                                pets = newPetsList,
+                                loadMoreVisible = newPetsList.size < pagePet.totalElements,
+                                isLoading = false,
                             )
                         }
                     }

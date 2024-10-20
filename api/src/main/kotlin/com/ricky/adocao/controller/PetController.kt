@@ -29,7 +29,7 @@ class PetController(
         @RequestParam(required = false, defaultValue = "0") page: Int,
         @RequestParam(required = false) search: String?,
         @RequestParam(required = false) orderBy: String?,
-        @RequestParam(defaultValue = "15") qtd: Int,
+        @RequestParam(defaultValue = "5") qtd: Int,
         @RequestParam(defaultValue = "false") isDog: Boolean,
         @RequestParam(defaultValue = "false") isCat: Boolean,
         @RequestParam(defaultValue = "false") isAchado: Boolean,
@@ -75,7 +75,7 @@ class PetController(
         @PathVariable userId: String,
         @RequestParam(required = false, defaultValue = "0") page: Int,
         @RequestParam(required = false) orderBy: String?,
-        @RequestParam(defaultValue = "15") qtd: Int
+        @RequestParam(defaultValue = "5") qtd: Int
     ): Page<PetDTO> {
         val pageable = petService.findByUser(
             userId = userId,

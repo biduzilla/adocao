@@ -42,7 +42,7 @@ class ConfigViewModel @Inject constructor(private val dataStoreUtil: DataStoreUt
         when (event) {
             ConfigEvent.ChangeTheme -> {
                 viewModelScope.launch {
-                    dataStoreUtil.saveTheme(_state.value.isDark)
+                    dataStoreUtil.saveTheme(!_state.value.isDark)
                 }
             }
         }

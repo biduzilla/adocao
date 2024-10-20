@@ -12,6 +12,8 @@ import com.ricky.adocaoapp.presentation.config.ConfigScreen
 import com.ricky.adocaoapp.presentation.config.ConfigViewModel
 import com.ricky.adocaoapp.presentation.home.HomeScreen
 import com.ricky.adocaoapp.presentation.home.HomeViewModel
+import com.ricky.adocaoapp.presentation.meus_posts.MeusPostsScreen
+import com.ricky.adocaoapp.presentation.meus_posts.MeusPostsViewModel
 
 @Composable
 fun BottomNav(
@@ -27,6 +29,17 @@ fun BottomNav(
             val state by viewModel.state.collectAsState()
 
             HomeScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composable(BottomScreens.MeusPosts.route) {
+            val viewModel = hiltViewModel<MeusPostsViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            MeusPostsScreen(
                 navController = navController,
                 state = state,
                 onEvent = viewModel::onEvent

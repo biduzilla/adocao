@@ -39,10 +39,10 @@ val SurfaceVariantLight = Color(0xFFdfe2eb)
 val OnSurfaceVariantLight = Color(0xFF43474e)
 
 // Dark
-val PrimaryDark = Color(0xFF2c9fff)
-val OnPrimaryDark = Color(0xFF003258)
-val PrimaryContainerDark = Color(0xFF00497d)
-val OnPrimaryContainerDark = Color(0xFFd1e4ff)
+val PrimaryDark = Color(0xFF512DA8)
+val OnPrimaryDark = Color(0xFF001d36)
+val PrimaryContainerDark = Color(0xFFFFC107)
+val OnPrimaryContainerDark = Color(0xFFFFFFFF)
 
 val SecondaryDark = Color(0xFFbbc7db)
 val OnSecondaryDark = Color(0xFF253140)

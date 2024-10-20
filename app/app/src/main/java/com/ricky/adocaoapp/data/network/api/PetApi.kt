@@ -41,10 +41,10 @@ interface PetApi {
 
     @GET("${Constants.PET_ENDPOINT}/user/{userId}")
     suspend fun getByUserId(
+        @Path("userId") userId: String,
         @Query("page") page: Int = 0,
         @Query("orderBy") orderBy: String?,
         @Query("qtd") qtd: Int = 15,
-        @Path("userId") userId: String
     ): Response<PagePet>
 
     @POST(Constants.PET_ENDPOINT)
