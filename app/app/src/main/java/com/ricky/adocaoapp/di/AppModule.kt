@@ -40,26 +40,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton
-    @Provides
-    fun provideWebsocketSession(): StompSession {
-        return runBlocking(Dispatchers.IO) {
-            val client = StompClient(KtorWebSocketClient())
-            client.connect("ws://192.168.0.13:8080/ws")
-        }
-    }
-
-    @Singleton
-    @Provides
-    fun provideSendMessage(session: StompSession): SendMessage {
-        return SendMessage(session)
-    }
-
-    @Singleton
-    @Provides
-    fun provideGetMessage(session: StompSession): GetMessage {
-        return GetMessage(session)
-    }
+//    @Singleton
+//    @Provides
+//    fun provideWebsocketSession(): StompSession {
+//        return runBlocking(Dispatchers.IO) {
+//            val client = StompClient(KtorWebSocketClient())
+//            client.connect("ws://192.168.0.13:8080/ws")
+//        }
+//    }
+//
+//    @Singleton
+//    @Provides
+//    fun provideSendMessage(session: StompSession): SendMessage {
+//        return SendMessage(session)
+//    }
+//
+//    @Singleton
+//    @Provides
+//    fun provideGetMessage(session: StompSession): GetMessage {
+//        return GetMessage(session)
+//    }
 
     @Singleton
     @Provides

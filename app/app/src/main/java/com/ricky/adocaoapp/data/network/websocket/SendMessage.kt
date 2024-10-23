@@ -14,8 +14,8 @@ import org.hildan.krossbow.stomp.sendText
 import java.time.Instant
 import javax.inject.Inject
 
-class SendMessage @Inject constructor(private val session: StompSession) {
-    operator fun invoke(sendChatMessage: SendChatMessage): Flow<Boolean> = flow {
+class SendMessage {
+    operator fun invoke(sendChatMessage: SendChatMessage,session: StompSession): Flow<Boolean> = flow {
         val gson: Gson = GsonBuilder()
             .registerTypeAdapter(Instant::class.java, JsonSerializer<Instant> { src, _, _ ->
                 src?.let {

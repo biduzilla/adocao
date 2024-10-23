@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,12 +24,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,7 +46,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.domain.models.Msg
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
-import com.ricky.adocaoapp.presentation.chat.ChatEvent
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,13 +58,22 @@ fun ChatMsgScreen(
     ToastError(error = state.error) {
         onEvent(ChatMsgEvent.ClearError)
     }
-
+    val listState = rememberLazyListState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    if (state.msgs.size > 1) {
+        LaunchedEffect(state.msgs) {
+            listState.scrollToItem(state.msgs.size - 1)
+        }
+    }
 
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
             onEvent(ChatMsgEvent.Resume)
+        }
+        if (lifecycleState == Lifecycle.State.DESTROYED) {
+            onEvent(ChatMsgEvent.Disconnect)
         }
     }
 
@@ -82,6 +88,7 @@ fun ChatMsgScreen(
                 .align(Alignment.Start)
                 .padding(12.dp),
             onClick = {
+                onEvent(ChatMsgEvent.Disconnect)
                 focusManager.clearFocus()
                 navController.popBackStack()
             }) {
@@ -133,7 +140,8 @@ fun ChatMsgScreen(
                                 .fillMaxSize()
                         ) {
                             LazyColumn(
-                                Modifier
+                                state = listState,
+                                modifier = Modifier
                                     .weight(1f)
                                     .padding(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -151,7 +159,7 @@ fun ChatMsgScreen(
                                         .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
                                 ) {
                                     TextFieldCompose(
-                                        modifier = Modifier.weight(6f),
+                                        modifier = Modifier.weight(10f),
                                         value = state.msg,
                                         colors = TextFieldDefaults.colors(
                                             focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
@@ -217,7 +225,7 @@ fun ChatBubble(
         ) {
             Text(
                 text = msg.content,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

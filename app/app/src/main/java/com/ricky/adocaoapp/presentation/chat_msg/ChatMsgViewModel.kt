@@ -18,18 +18,21 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.hildan.krossbow.stomp.StompClient
+import org.hildan.krossbow.stomp.StompSession
+import org.hildan.krossbow.websocket.ktor.KtorWebSocketClient
 import javax.inject.Inject
 
 @HiltViewModel
 class ChatMsgViewModel @Inject constructor(
-    private val sendMessage: SendMessage,
-    private val getMessage: GetMessage,
     private val savedStateHandle: SavedStateHandle,
     private val chatCaseGetAll: ChatCaseGetAll,
     private val dataStoreUtil: DataStoreUtil
 ) : ViewModel() {
     private val _state = MutableStateFlow(ChatMsgState())
     val state = _state.asStateFlow()
+
+    private var session: StompSession? = null
 
     init {
         viewModelScope.launch {
@@ -40,7 +43,12 @@ class ChatMsgViewModel @Inject constructor(
                             senderId = token.idUser
                         )
                     }
-                    receiveNotification(token.idUser)
+                    viewModelScope.launch {
+                        val client = StompClient(KtorWebSocketClient())
+                        session = client.connect("ws://192.168.0.13:8080/ws")
+                        receiveNotification(token.idUser)
+                    }
+
                 }
             }
         }
@@ -107,21 +115,30 @@ class ChatMsgViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun receiveNotification(idUser:String) {
-        viewModelScope.launch {
-            getMessage(idUser).collect { noti ->
-                val msgs = _state.value.msgs.toMutableList()
-                msgs.add(
-                    Msg(
-                        content = noti.content,
-                        isFromMe = false
+    private fun receiveNotification(idUser: String) {
+        session?.let { session ->
+            viewModelScope.launch {
+               GetMessage().invoke(idUser, session).collect { noti ->
+                    val msgs = _state.value.msgs.toMutableList()
+                    msgs.add(
+                        Msg(
+                            content = noti.content,
+                            isFromMe = false
+                        )
                     )
-                )
-                _state.update {
-                    it.copy(
-                        msgs = msgs
-                    )
+                    _state.update {
+                        it.copy(
+                            msgs = msgs
+                        )
+                    }
                 }
+            }
+
+        } ?: run {
+            _state.update {
+                it.copy(
+                    error = "Error ao conectar as mensagens"
+                )
             }
         }
     }
@@ -141,27 +158,38 @@ class ChatMsgViewModel @Inject constructor(
                     return
                 }
 
-                sendMessage(
-                    SendChatMessage(
-                        senderId = _state.value.senderId,
-                        recipientId = _state.value.recipientId,
-                        content = _state.value.msg,
-                    )
-                ).launchIn(viewModelScope)
+                session?.let { session ->
+                    SendMessage().invoke(
+                        SendChatMessage(
+                            senderId = _state.value.senderId,
+                            recipientId = _state.value.recipientId,
+                            content = _state.value.msg,
+                        ),
+                        session
+                    ).launchIn(viewModelScope)
 
-                val msgs = _state.value.msgs.toMutableList()
-                msgs.add(
-                    Msg(
-                        content = _state.value.msg,
-                        isFromMe = true
+                    val msgs = _state.value.msgs.toMutableList()
+                    msgs.add(
+                        Msg(
+                            content = _state.value.msg,
+                            isFromMe = true
+                        )
                     )
-                )
-                _state.update {
-                    it.copy(
-                        msgs = msgs,
-                        msg = "",
-                    )
+                    _state.update {
+                        it.copy(
+                            msgs = msgs,
+                            msg = "",
+                        )
+                    }
+                } ?: run {
+                    _state.update {
+                        it.copy(
+                            error = "Error ao conectar as mensagens"
+                        )
+                    }
                 }
+
+
             }
 
             ChatMsgEvent.ClearError -> {
@@ -174,6 +202,14 @@ class ChatMsgViewModel @Inject constructor(
 
             ChatMsgEvent.Resume -> {
                 loadMsgs()
+            }
+
+            ChatMsgEvent.Disconnect -> {
+                session?.let {
+                    viewModelScope.launch {
+                        it.disconnect()
+                    }
+                }
             }
         }
     }

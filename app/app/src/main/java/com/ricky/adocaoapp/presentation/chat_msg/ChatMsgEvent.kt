@@ -5,5 +5,6 @@ sealed interface ChatMsgEvent {
     data object SendMsg: ChatMsgEvent
     data object ClearError : ChatMsgEvent
     data object Resume : ChatMsgEvent
+    data object Disconnect : ChatMsgEvent
 
 }

@@ -9,8 +9,8 @@ import org.hildan.krossbow.stomp.StompSession
 import org.hildan.krossbow.stomp.subscribeText
 import javax.inject.Inject
 
-class GetMessage @Inject constructor(private val session: StompSession) {
-    operator fun invoke(userId: String): Flow<ChatNotification> = flow {
+class GetMessage {
+    operator fun invoke(userId: String,session: StompSession): Flow<ChatNotification> = flow {
         try {
             Log.i("infoteste", "GetMessage IdUser: /user/$userId/queue/messages")
             session.subscribeText("/user/$userId/queue/messages").collect { msg ->

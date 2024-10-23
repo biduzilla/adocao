@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
 interface ChatMessageRepository : JpaRepository<ChatMessage, String> {
-    @Query(value = "SELECT cm FROM ChatMessage cm WHERE cm.chatRoom.chatId = :chatId")
+    @Query(value = "SELECT cm FROM ChatMessage cm WHERE cm.chatRoom.chatId = :chatId ORDER BY cm.timestamp ASC")
     fun findByChatId(@Param("chatId") chatId: String): List<ChatMessage>
 
     @Query(value = "SELECT cm FROM ChatMessage cm WHERE cm.senderId = :senderId and cm.recipientId = :receiverId")
