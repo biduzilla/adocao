@@ -15,6 +15,7 @@ icons = "1.6.7"
 coil = "2.4.0"
 location ="20.0.0"
 scarlet="0.1.12"
+krossbow = "8.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,13 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.9.3" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "4.9.0" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.0" }
 
+#websocket
+krossbow-stomp-core = { group = "org.hildan.krossbow", name = "krossbow-stomp-core", version.ref = "krossbow" }
+krossbow-websocket-builtin = { group = "org.hildan.krossbow", name = "krossbow-websocket-builtin", version.ref = "krossbow" }
+krossbow-websocket-okhttp = { group = "org.hildan.krossbow", name = "krossbow-websocket-okhttp", version.ref = "krossbow" }
+krossbow-websocket-ktor = { group = "org.hildan.krossbow", name = "krossbow-websocket-ktor", version.ref = "krossbow" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version = "2.3.10" }
+
 #Extended Icons
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons" }
 
@@ -68,7 +76,7 @@ services-location = { group = "com.google.android.gms", name = "play-services-lo
 dagger-hilt = ["hilt-android", "hilt-navigation-compose"]
 kapt-dagger-hilt = ["kapt-hilt-android-compiler", "kapt-hilt-compiler"]
 coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
-network = ["retrofit", "converter-gson", "okhttp", "logging-interceptor", "kotlinx-serialization-json"]
+network = ["krossbow-websocket-ktor","ktor-client-cio","krossbow-websocket-ktor","krossbow-websocket-okhttp","krossbow-websocket-builtin","krossbow-stomp-core","retrofit", "converter-gson", "okhttp", "logging-interceptor", "kotlinx-serialization-json"]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

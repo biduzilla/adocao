@@ -1,0 +1,29 @@
+package com.ricky.adocaoapp.data.network.websocket
+
+import android.util.Log
+import com.google.gson.Gson
+import com.ricky.adocaoapp.domain.models.ChatNotification
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import org.hildan.krossbow.stomp.StompSession
+import org.hildan.krossbow.stomp.subscribeText
+import javax.inject.Inject
+
+class GetMessage @Inject constructor(private val session: StompSession) {
+    operator fun invoke(userId: String): Flow<ChatNotification> = flow {
+        try {
+            session.subscribeText("/user/$userId/queue/messages").collect { msg ->
+                Log.i("infoteste", "GetMessage: $msg")
+                val notification = Gson().fromJson(msg, ChatNotification::class.java)
+                notification?.let {
+                    emit(it)
+                }
+                if (notification != null) {
+                    return@collect
+                }
+            }
+        } catch (e: Exception) {
+            return@flow
+        }
+    }
+}

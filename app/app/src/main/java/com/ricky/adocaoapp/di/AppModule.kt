@@ -10,6 +10,8 @@ import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.network.interceptor.AuthInterceptor
+import com.ricky.adocaoapp.data.network.websocket.GetMessage
+import com.ricky.adocaoapp.data.network.websocket.SendMessage
 import com.ricky.adocaoapp.data.repository.PetRepositoryImpl
 import com.ricky.adocaoapp.data.repository.TokenRepositoryImpl
 import com.ricky.adocaoapp.data.repository.UserRepositoryImpl
@@ -22,7 +24,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
+import org.hildan.krossbow.stomp.StompClient
+import org.hildan.krossbow.stomp.StompSession
+import org.hildan.krossbow.websocket.ktor.KtorWebSocketClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -30,6 +37,27 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun provideWebsocketSession(): StompSession {
+        return runBlocking(Dispatchers.IO) {
+            val client = StompClient(KtorWebSocketClient())
+            client.connect("ws://192.168.0.13:8080/ws")
+        }
+    }
+
+    @Singleton
+    @Provides
+    fun provideSendMessage(session: StompSession): SendMessage {
+        return SendMessage(session)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetMessage(session: StompSession): GetMessage {
+        return GetMessage(session)
+    }
 
     @Singleton
     @Provides

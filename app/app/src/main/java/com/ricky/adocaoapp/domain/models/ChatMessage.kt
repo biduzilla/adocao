@@ -1,12 +1,12 @@
 package com.ricky.adocaoapp.domain.models
 
-import java.time.LocalDate
+import java.time.Instant
 
 data class ChatMessage(
-    var id: String = "",
-    var chatRoom: ChatRoom = ChatRoom(),
-    var senderId: String = "",
-    var recipientId: String = "",
-    var content: String = "",
-    var timestamp: String = ""
+    val id: String,
+    val chatRoom: ChatRoom = ChatRoom(),
+    val senderId: String,
+    val recipientId: String,
+    val content: String,
+    val timestamp: Instant,
 )

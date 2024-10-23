@@ -21,5 +21,6 @@ object Constants {
     const val PARAM_PET_ID = "petId"
     const val PARAM_USER_ID = "userId"
     const val PARAM_RECEIVER_ID = "receiverId"
+    const val PARAM_RECEIVER_NOME = "receiverNome"
 
 }
