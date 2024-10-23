@@ -68,6 +68,8 @@ class SecurityConfiguration(
                 .requestMatchers("/usuario/login")?.permitAll()
                 ?.requestMatchers("/usuario/find-all")?.hasAnyRole("ADMIN")
                 ?.requestMatchers("/usuario/alterar-senha")?.permitAll()
+                ?.requestMatchers("/ws/**")?.permitAll()
+                ?.requestMatchers("/ws")?.permitAll()
                 ?.requestMatchers(HttpMethod.POST,"/usuario/**")?.permitAll()
                 ?.requestMatchers(HttpMethod.GET,"/report/**")?.hasAnyRole("ADMIN")
                 ?.requestMatchers(HttpMethod.PUT,"/report/**")?.hasAnyRole("ADMIN")

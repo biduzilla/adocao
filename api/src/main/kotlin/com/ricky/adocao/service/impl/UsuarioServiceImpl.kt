@@ -137,6 +137,10 @@ class UsuarioServiceImpl(
         )
     }
 
+    override fun findUsuariosBySenderId(userId: String): List<Usuario> {
+        return usuarioRepository.findUsuariosBySenderId(userId)
+    }
+
     private fun verificarSenha(senha: String) {
         if (senha.toCharArray().size <= 7) {
             throw SenhaCurtaException(i18n.getMessage("error.senha.curta"))

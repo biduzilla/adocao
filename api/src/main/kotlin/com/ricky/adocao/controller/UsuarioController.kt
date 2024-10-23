@@ -108,4 +108,11 @@ class UsuarioController(
             cod = resetSenhaDTO.cod
         )
     }
+
+    @GetMapping("/get-users-by-sender-id/{idUser}")
+    fun findUsuariosBySenderId(@PathVariable idUser: String): List<UsuarioDTO> {
+        return usuarioService.findUsuariosBySenderId(idUser).map {
+            usuarioDTOMapper.map(it)
+        }
+    }
 }

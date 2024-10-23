@@ -5,6 +5,7 @@ import com.ricky.adocao.dto.TokenDTO
 import com.ricky.adocao.models.Usuario
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.query.Param
 
 interface UsuarioService {
     fun findAll(pageable: Pageable): Page<Usuario>
@@ -20,4 +21,5 @@ interface UsuarioService {
     fun alterarSenha(email: String, senha: String, cod:Int)
     fun verificarCod(cod: Int, email: String)
     fun refreshToken(tokenDTO: TokenDTO):TokenDTO
+    fun findUsuariosBySenderId(userId: String): List<Usuario>
 }

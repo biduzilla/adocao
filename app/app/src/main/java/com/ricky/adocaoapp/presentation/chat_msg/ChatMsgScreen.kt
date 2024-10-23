@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,10 +34,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ricky.adocaoapp.domain.models.Msg
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
 import com.ricky.adocaoapp.presentation.home.components.ToastError
@@ -44,106 +49,133 @@ import com.ricky.adocaoapp.presentation.home.components.ToastError
 @Composable
 fun ChatMsgScreen(
     state: ChatMsgState,
-    onEvent: (ChatMsgEvent) -> Unit
+    onEvent: (ChatMsgEvent) -> Unit,
+    navController: NavController
 ) {
     ToastError(error = state.error) {
         onEvent(ChatMsgEvent.ClearError)
     }
 
-    if (state.isLoading) {
+    val focusManager = LocalFocusManager.current
+
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
+        IconButton(
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(12.dp),
+            onClick = {
+                focusManager.clearFocus()
+                navController.popBackStack()
+            }) {
+            Icon(
+                imageVector = Icons.Default.ArrowBackIosNew,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Column(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            CircularProgressIndicator()
-        }
-    } else {
-        Scaffold(topBar = {
-            TopAppBar(modifier = Modifier.clip(
-                RoundedCornerShape(
-                    bottomEnd = 20.dp,
-                    bottomStart = 20.dp
-                )
-            ),
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                title = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = state.recipientNome,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        )
-                    }
-                })
-        }
-        ) {
-            Column(
-                Modifier
-                    .padding(it)
-                    .fillMaxSize()
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize(),
+                shape = RoundedCornerShape(topStart = 50.dp, topEnd = 50.dp)
             ) {
-                LazyColumn(
-                    Modifier
-                        .weight(1f)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(
+                            top = 8.dp,
+                        )
                 ) {
-                    items(state.msgs) { item ->
-                        ChatBubble(msg = item)
-                    }
-                }
-                Surface(
-                    color = MaterialTheme.colorScheme.primary
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TextFieldCompose(
-                            modifier = Modifier.weight(5f),
-                            value = state.msg,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                                unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                            ),
-                            ime = ImeAction.Done,
-                            onDone = {
-                                onEvent(ChatMsgEvent.SendMsg)
-                            },
-                        ) { msg ->
-                            onEvent(ChatMsgEvent.OnChangeMsg(msg))
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        IconButton(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .weight(1f),
-                            onClick = { onEvent(ChatMsgEvent.SendMsg) }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Send,
-                                contentDescription = null
-                            )
-                        }
-                    }
-                }
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = state.recipientNome,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
 
 
+                    if (state.isLoading) {
+                        Column(
+                            Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    } else {
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            LazyColumn(
+                                Modifier
+                                    .weight(1f)
+                                    .padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                items(state.msgs) { item ->
+                                    ChatBubble(msg = item)
+                                }
+                            }
+                            Surface(
+                                color = MaterialTheme.colorScheme.primary
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
+                                ) {
+                                    TextFieldCompose(
+                                        modifier = Modifier.weight(5f),
+                                        value = state.msg,
+                                        colors = TextFieldDefaults.colors(
+                                            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                            unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                                            focusedIndicatorColor = Color.Transparent,
+                                            unfocusedIndicatorColor = Color.Transparent,
+                                        ),
+                                        ime = ImeAction.Done,
+                                        onDone = {
+                                            onEvent(ChatMsgEvent.SendMsg)
+                                        },
+                                    ) { msg ->
+                                        onEvent(ChatMsgEvent.OnChangeMsg(msg))
+                                    }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    IconButton(
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .weight(1f)
+                                            .padding(top = 4.dp),
+                                        onClick = { onEvent(ChatMsgEvent.SendMsg) }) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.Send,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                    }
+                }
             }
-
         }
     }
+
 
 }
 
@@ -180,7 +212,7 @@ fun ChatBubble(
 @Preview
 @Composable
 private fun ChatMsgScreenPrev() {
-    ChatMsgScreen(state = ChatMsgState()) {
-
-    }
+    val context = LocalContext.current
+    val navController = NavController(context)
+    ChatMsgScreen(state = ChatMsgState(), navController = navController, onEvent = {})
 }

@@ -15,4 +15,15 @@ interface UsuarioRepository : JpaRepository<Usuario, String> {
     fun findByCodVerificacao(id: Int): Optional<Usuario>
     fun existsByCodVerificacaoAndEmail(id: Int, email: String): Boolean
     fun existsByCodVerificacao(id: Int): Boolean
+
+    @Query(
+        """
+        SELECT u FROM USUARIO u 
+        WHERE u.id IN (
+            SELECT c.recipientId FROM CHAT_MESSAGE c 
+            WHERE c.senderId = :userId
+        )
+    """
+    )
+    fun findUsuariosBySenderId(@Param("userId") userId: String): List<Usuario>
 }

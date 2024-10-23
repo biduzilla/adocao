@@ -22,7 +22,8 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/ws").withSockJS()
+        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/ws");
     }
 
     override fun configureMessageConverters(messageConverters: MutableList<MessageConverter>): Boolean {
