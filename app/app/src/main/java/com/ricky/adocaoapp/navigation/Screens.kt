@@ -28,4 +28,8 @@ sealed class Screens(val route:String) {
     data object Form:Screens(
         route="form"
     )
+
+    data object ChatMsgScreen:Screens(
+        route="chat_msg"
+    )
 }

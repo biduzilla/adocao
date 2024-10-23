@@ -12,9 +12,11 @@ import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.network.interceptor.AuthInterceptor
 import com.ricky.adocaoapp.data.network.websocket.GetMessage
 import com.ricky.adocaoapp.data.network.websocket.SendMessage
+import com.ricky.adocaoapp.data.repository.ChatRepositoryImpl
 import com.ricky.adocaoapp.data.repository.PetRepositoryImpl
 import com.ricky.adocaoapp.data.repository.TokenRepositoryImpl
 import com.ricky.adocaoapp.data.repository.UserRepositoryImpl
+import com.ricky.adocaoapp.domain.repository.ChatRepository
 import com.ricky.adocaoapp.domain.repository.PetRepository
 import com.ricky.adocaoapp.domain.repository.TokenRepository
 import com.ricky.adocaoapp.domain.repository.UserRepository
@@ -126,6 +128,7 @@ object AppModule {
             .create(ChatApi::class.java)
     }
 
+
     @Singleton
     @Provides
     fun provideUserRepository(
@@ -143,4 +146,10 @@ object AppModule {
     fun providePetRepository(
         api: PetApi
     ): PetRepository = PetRepositoryImpl(api)
+
+    @Singleton
+    @Provides
+    fun provideChatRepository(
+        api: ChatApi
+    ): ChatRepository = ChatRepositoryImpl(api)
 }

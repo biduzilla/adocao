@@ -191,41 +191,11 @@ fun DetailsScreen(
                                 .copy(fontWeight = FontWeight.Bold)
                         )
 
-                        if(state.pet.donoId!=state.userId){
-                            BtnCompose(
-                                modifier = Modifier
-                                    .align(Alignment.CenterHorizontally)
-                                    .padding(bottom = 16.dp),
-                                icon = Icons.Default.Phone,
-                                onClick = {
-                                    val intent = Intent(Intent.ACTION_DIAL).apply {
-                                        data = Uri.parse("tel:${state.pet.usuario.telefone}")
-                                    }
-                                    context.startActivity(intent)
-                                },
-                                title = R.string.chat,
-                                titleString = state.pet.usuario.telefone,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-                        }
-
-//                        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                        if (state.pet.donoId != state.userId) {
 //                            BtnCompose(
 //                                modifier = Modifier
-//                                    .padding(bottom = 16.dp)
-//                                    .weight(1f),
-//                                onClick = { navController.navigate(Screens.ChatMsgScreen.route + "/${state.pet.donoId}")},
-//                                title = R.string.chat,
-//                                color = MaterialTheme.colorScheme.primaryContainer,
-//                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
-//                            )
-//                            Spacer(modifier = Modifier.width(16.dp))
-//                            BtnCompose(
-//                                modifier = Modifier
-//                                    .padding(bottom = 16.dp)
-//                                    .weight(1f),
+//                                    .align(Alignment.CenterHorizontally)
+//                                    .padding(bottom = 16.dp),
 //                                icon = Icons.Default.Phone,
 //                                onClick = {
 //                                    val intent = Intent(Intent.ACTION_DIAL).apply {
@@ -238,7 +208,37 @@ fun DetailsScreen(
 //                                color = MaterialTheme.colorScheme.primaryContainer,
 //                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
 //                            )
-//                        }
+                            Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                                BtnCompose(
+                                    modifier = Modifier
+                                        .padding(bottom = 16.dp)
+                                        .weight(1f),
+                                    onClick = { navController.navigate(Screens.ChatMsgScreen.route + "/${state.pet.donoId}/${state.pet.usuario.nome}") },
+                                    title = R.string.chat,
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                BtnCompose(
+                                    modifier = Modifier
+                                        .padding(bottom = 16.dp)
+                                        .weight(1f),
+                                    icon = Icons.Default.Phone,
+                                    onClick = {
+                                        val intent = Intent(Intent.ACTION_DIAL).apply {
+                                            data = Uri.parse("tel:${state.pet.usuario.telefone}")
+                                        }
+                                        context.startActivity(intent)
+                                    },
+                                    title = R.string.chat,
+                                    titleString = state.pet.usuario.telefone,
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
+
+                        }
+
 //
 
                     }
@@ -261,7 +261,7 @@ fun DetailsScreen(
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                    if (state.pet.donoId==state.userId){
+                    if (state.pet.donoId == state.userId) {
                         IconButton(
                             onClick = {
                                 navController.navigate(Screens.Form.route + "/${state.pet.id}")

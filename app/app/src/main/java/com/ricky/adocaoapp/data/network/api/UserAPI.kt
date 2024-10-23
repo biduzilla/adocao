@@ -38,4 +38,8 @@ interface UserAPI {
         @Path("idUser") idUser:String
     ): Response<Usuario>
 
+    @GET("${Constants.USER_CHATS_ENPOINT}/{idUser}")
+    suspend fun getUsuariosBySenderId(
+        @Path("idUser") idUser:String
+    ): Response<List<Usuario>>
 }

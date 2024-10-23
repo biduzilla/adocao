@@ -12,11 +12,12 @@ object Constants {
     const val USER_CHANGE_PASSWORD_ENDPOINT: String = "/usuario/alterar-senha"
     const val USER_GET_BY_ID: String = "/usuario/get-user"
     const val USER_TOKEN: String = "userToken"
+    const val USER_CHATS_ENPOINT: String = "/get-users-by-sender-id"
     const val USER_LOCATION: String = "userLocation"
     const val USER_LAT: String = "userLong"
     const val USER_LONG: String = "userLat"
     const val PET_ENDPOINT: String = "/pet"
-    const val MESSAGE_ENDPOINT: String = "/messages"
+    const val MESSAGE_ENDPOINT: String = "/chat/messages"
 
     const val PARAM_PET_ID = "petId"
     const val PARAM_USER_ID = "userId"

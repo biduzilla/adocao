@@ -7,6 +7,7 @@ import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.models.VerificarCod
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseChangePassword
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseGetById
+import com.ricky.adocaoapp.domain.use_case.user.UseCaseGetUsuariosBySenderId
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseLogin
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseResetPassword
 import com.ricky.adocaoapp.domain.use_case.user.UseCaseSave
@@ -21,7 +22,8 @@ class UserManager @Inject constructor(
     private val resetPasswordCase: UseCaseResetPassword,
     private val saveCase: UseCaseSave,
     private val verifyCodCase: UseCaseVerifyCod,
-    private val getByIdCase: UseCaseGetById
+    private val getByIdCase: UseCaseGetById,
+    private val getUsuariosBySenderIdCase: UseCaseGetUsuariosBySenderId,
 ) {
     fun changePassword(resetSenha: ResetSenha): Flow<Resource<Boolean>> {
         return changePasswordCase(resetSenha)
@@ -45,5 +47,9 @@ class UserManager @Inject constructor(
 
     fun getById(idUser: String): Flow<Resource<Usuario>> {
         return getByIdCase(idUser)
+    }
+
+    fun getUsuariosBySenderId(idUser: String): Flow<Resource<List<Usuario>>> {
+        return getUsuariosBySenderIdCase(idUser)
     }
 }
