@@ -12,6 +12,7 @@ import javax.inject.Inject
 class GetMessage @Inject constructor(private val session: StompSession) {
     operator fun invoke(userId: String): Flow<ChatNotification> = flow {
         try {
+            Log.i("infoteste", "GetMessage IdUser: /user/$userId/queue/messages")
             session.subscribeText("/user/$userId/queue/messages").collect { msg ->
                 Log.i("infoteste", "GetMessage: $msg")
                 val notification = Gson().fromJson(msg, ChatNotification::class.java)

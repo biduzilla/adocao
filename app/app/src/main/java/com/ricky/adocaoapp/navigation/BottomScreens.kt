@@ -35,7 +35,7 @@ sealed class BottomScreens(
     )
 
     data object ConfigScreen : BottomScreens(
-        route = "Configurações",
+        route = "Config",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
     )

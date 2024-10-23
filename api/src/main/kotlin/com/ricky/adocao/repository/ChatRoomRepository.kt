@@ -8,5 +8,4 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, String> {
     fun findBySenderIdAndRecipientId(senderId: String, recipientId: String): Optional<ChatRoom>
 
     fun findByChatIdAndSenderIdAndRecipientId(chatId: String, senderId: String, recipientId: String): Optional<ChatRoom>
-
 }

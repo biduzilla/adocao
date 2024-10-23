@@ -34,6 +34,14 @@ class ChatMessageServiceImpl(
             recipientId = recipientId,
             createNewRoomIfNotExists = false
         )
+
+//        if (chatId.isEmpty) {
+//            chatId = chatRoomService.getChatRoomId(
+//                senderId = recipientId,
+//                recipientId = senderId,
+//                createNewRoomIfNotExists = false
+//            )
+//        }
         return chatId.map(chatMessageRepository::findByChatId).orElse(listOf());
     }
 

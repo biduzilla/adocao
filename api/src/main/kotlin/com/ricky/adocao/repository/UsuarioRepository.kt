@@ -22,11 +22,12 @@ interface UsuarioRepository : JpaRepository<Usuario, String> {
     WHERE u.id IN (
         SELECT c.recipientId FROM ChatMessage c 
         WHERE c.senderId = :userId
-        OR c.recipientId = :userId
+        AND c.recipientId <> :userId
     )
     OR u.id IN (
         SELECT c.senderId FROM ChatMessage c 
         WHERE c.recipientId = :userId
+        AND c.senderId <> :userId
     )
     """
     )

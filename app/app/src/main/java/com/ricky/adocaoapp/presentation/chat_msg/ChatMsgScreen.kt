@@ -151,7 +151,7 @@ fun ChatMsgScreen(
                                         .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
                                 ) {
                                     TextFieldCompose(
-                                        modifier = Modifier.weight(5f),
+                                        modifier = Modifier.weight(6f),
                                         value = state.msg,
                                         colors = TextFieldDefaults.colors(
                                             focusedContainerColor = MaterialTheme.colorScheme.onPrimary,

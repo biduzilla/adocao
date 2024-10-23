@@ -40,6 +40,7 @@ class ChatMsgViewModel @Inject constructor(
                             senderId = token.idUser
                         )
                     }
+                    receiveNotification(token.idUser)
                 }
             }
         }
@@ -59,7 +60,6 @@ class ChatMsgViewModel @Inject constructor(
                 )
             }
         }
-        receiveNotification()
     }
 
     private fun loadMsgs() {
@@ -107,9 +107,9 @@ class ChatMsgViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun receiveNotification() {
+    private fun receiveNotification(idUser:String) {
         viewModelScope.launch {
-            getMessage(_state.value.senderId).collect { noti ->
+            getMessage(idUser).collect { noti ->
                 val msgs = _state.value.msgs.toMutableList()
                 msgs.add(
                     Msg(

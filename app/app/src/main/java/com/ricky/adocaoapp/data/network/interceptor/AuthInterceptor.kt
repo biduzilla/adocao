@@ -30,13 +30,13 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val response = chain.proceed(request)
 
-        if (response.isSuccessful) {
+        if (response.isSuccessful || response.code != 403) {
             return response
         }
 
         response.close()
 
-        if (token.isNotBlank() && response.code == 403) {
+        if (token.isNotBlank()) {
             val newRequest = request
                 .newBuilder()
                 .addHeader("Authorization", token)

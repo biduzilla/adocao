@@ -102,7 +102,8 @@ fun ChatScreen(
             LazyColumn(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(state.users) { item ->
                     Card(

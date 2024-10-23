@@ -43,15 +43,15 @@ class ChatRoomServiceImpl(private val chatRoomRepository: ChatRoomRepository) : 
         val chatId = String.format("%s_%s", senderId, recipientId)
 
         val senderRecipient = ChatRoom(
-            id = chatId,
+            chatId = chatId,
             senderId = senderId,
             recipientId = recipientId,
         )
 
         val recipientSender = ChatRoom(
             chatId = chatId,
-            recipientId = recipientId,
-            senderId = senderId
+            recipientId = senderId,
+            senderId = recipientId
         )
 
         chatRoomRepository.saveAll(listOf(senderRecipient, recipientSender))

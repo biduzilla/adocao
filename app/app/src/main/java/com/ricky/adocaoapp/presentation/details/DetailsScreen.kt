@@ -219,7 +219,7 @@ fun DetailsScreen(
                                     onClick = { navController.navigate(Screens.ChatMsgScreen.route + "/${state.pet.donoId}/${state.pet.usuario.nome}") },
                                     title = R.string.chat,
                                     color = MaterialTheme.colorScheme.primaryContainer,
-                                    textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    textColor = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
                                 BtnCompose(
@@ -236,7 +236,7 @@ fun DetailsScreen(
                                     title = R.string.chat,
                                     titleString = state.pet.usuario.telefone,
                                     color = MaterialTheme.colorScheme.primaryContainer,
-                                    textColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    textColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
 
