@@ -18,12 +18,18 @@ interface UsuarioRepository : JpaRepository<Usuario, String> {
 
     @Query(
         """
-        SELECT u FROM USUARIO u 
-        WHERE u.id IN (
-            SELECT c.recipientId FROM CHAT_MESSAGE c 
-            WHERE c.senderId = :userId
-        )
+    SELECT DISTINCT u FROM USUARIO u 
+    WHERE u.id IN (
+        SELECT c.recipientId FROM ChatMessage c 
+        WHERE c.senderId = :userId
+        OR c.recipientId = :userId
+    )
+    OR u.id IN (
+        SELECT c.senderId FROM ChatMessage c 
+        WHERE c.recipientId = :userId
+    )
     """
     )
-    fun findUsuariosBySenderId(@Param("userId") userId: String): List<Usuario>
+    fun findDistinctUsuariosBySenderIdOrRecipientId(@Param("userId") userId: String): List<Usuario>
+
 }

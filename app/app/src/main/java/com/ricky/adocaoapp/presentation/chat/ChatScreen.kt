@@ -75,7 +75,7 @@ fun ChatScreen(
                     ) {
                         Text(
                             text = stringResource(id = R.string.chat),
-                            style = MaterialTheme.typography.titleLarge.copy(
+                            style = MaterialTheme.typography.displayMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
@@ -125,7 +125,9 @@ fun ChatScreen(
                                 modifier = Modifier
                                     .padding(16.dp),
                                 text = item.nome,
-                                style = MaterialTheme.typography.titleSmall
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                )
                             )
                         }
                     }

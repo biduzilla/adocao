@@ -138,7 +138,7 @@ class UsuarioServiceImpl(
     }
 
     override fun findUsuariosBySenderId(userId: String): List<Usuario> {
-        return usuarioRepository.findUsuariosBySenderId(userId)
+        return usuarioRepository.findDistinctUsuariosBySenderIdOrRecipientId(userId)
     }
 
     private fun verificarSenha(senha: String) {

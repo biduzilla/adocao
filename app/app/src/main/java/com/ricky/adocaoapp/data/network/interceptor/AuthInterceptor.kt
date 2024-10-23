@@ -36,7 +36,7 @@ class AuthInterceptor @Inject constructor(
 
         response.close()
 
-        if (token.isNotBlank()) {
+        if (token.isNotBlank() && response.code == 403) {
             val newRequest = request
                 .newBuilder()
                 .addHeader("Authorization", token)

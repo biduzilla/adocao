@@ -26,7 +26,6 @@ class ChatViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreUtil.getToken().collect { token ->
                 token?.let {
-                    loadUsers(token.idUser)
                     _state.update {
                         it.copy(
                             idUser = token.idUser

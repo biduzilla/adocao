@@ -180,7 +180,10 @@ fun DetailsScreen(
                                 ),
                                 text = state.pet.status.value,
                                 style = MaterialTheme.typography.titleLarge
-                                    .copy(fontWeight = FontWeight.Bold)
+                                    .copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onPrimary
+                                    )
                             )
                         }
 

@@ -34,6 +34,13 @@ class ChatMessageServiceImpl(
             recipientId = recipientId,
             createNewRoomIfNotExists = false
         )
-        return chatId.map(chatMessageRepository::findByChatId).orElse( listOf());
+        return chatId.map(chatMessageRepository::findByChatId).orElse(listOf());
+    }
+
+    override fun findBySenderIdAndReceiverId(senderId: String, receiverId: String): List<ChatMessage> {
+        return chatMessageRepository.findBySenderIdAndReceiverId(
+            senderId,
+            receiverId
+        )
     }
 }

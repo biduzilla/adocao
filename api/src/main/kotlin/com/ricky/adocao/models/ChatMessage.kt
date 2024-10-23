@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.util.*
 
 @Data
-@Entity
+@Entity(name = "ChatMessage")
 @Table(name = "CHAT_MESSAGE")
 data class ChatMessage(
     @Id

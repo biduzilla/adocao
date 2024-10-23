@@ -171,6 +171,10 @@ class ChatMsgViewModel @Inject constructor(
                     )
                 }
             }
+
+            ChatMsgEvent.Resume -> {
+                loadMsgs()
+            }
         }
     }
 }

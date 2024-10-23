@@ -30,19 +30,25 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.domain.models.Msg
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.presentation.chat.ChatEvent
 import com.ricky.adocaoapp.presentation.home.components.ToastError
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +60,15 @@ fun ChatMsgScreen(
 ) {
     ToastError(error = state.error) {
         onEvent(ChatMsgEvent.ClearError)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            onEvent(ChatMsgEvent.Resume)
+        }
     }
 
     val focusManager = LocalFocusManager.current
@@ -99,11 +114,10 @@ fun ChatMsgScreen(
 
                     Text(
                         text = state.recipientNome,
-                        style = MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold
                         )
                     )
-
 
                     if (state.isLoading) {
                         Column(

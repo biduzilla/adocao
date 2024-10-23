@@ -8,5 +8,5 @@ data class ChatMessage(
     val senderId: String,
     val recipientId: String,
     val content: String,
-    val timestamp: Instant,
+    val timestamp: String,
 )
