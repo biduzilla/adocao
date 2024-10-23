@@ -18,6 +18,8 @@ import com.ricky.adocaoapp.presentation.auth.login.LoginScreen
 import com.ricky.adocaoapp.presentation.auth.login.LoginViewModel
 import com.ricky.adocaoapp.presentation.auth.register.RegisterScreen
 import com.ricky.adocaoapp.presentation.auth.register.RegisterViewModel
+import com.ricky.adocaoapp.presentation.chat_msg.ChatMsgScreen
+import com.ricky.adocaoapp.presentation.chat_msg.ChatMsgViewModel
 import com.ricky.adocaoapp.presentation.details.DetailsScreen
 import com.ricky.adocaoapp.presentation.details.DetailsViewModel
 import com.ricky.adocaoapp.presentation.form.FormScreen
@@ -63,7 +65,7 @@ fun AppNav() {
             )
         }
 
-        composableSlideHorizontally(Screens.RegisterScreen.route+ "/{${Constants.PARAM_USER_ID}}") {
+        composableSlideHorizontally(Screens.RegisterScreen.route + "/{${Constants.PARAM_USER_ID}}") {
             val viewModel = hiltViewModel<RegisterViewModel>()
             val state by viewModel.state.collectAsState()
 
@@ -107,7 +109,7 @@ fun AppNav() {
             )
         }
 
-        composableSlideHorizontally(Screens.Form.route,) {
+        composableSlideHorizontally(Screens.Form.route) {
             val viewModel = hiltViewModel<FormViewModel>()
             val state by viewModel.state.collectAsState()
 
@@ -118,11 +120,21 @@ fun AppNav() {
             )
         }
 
-        composableSlideHorizontally(Screens.MainScreen.route,) {
+        composableSlideHorizontally(Screens.MainScreen.route) {
             val viewModel = hiltViewModel<MainViewModel>()
             val state by viewModel.state.collectAsState()
 
             MainScreen(
+                navController = navController,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
+        composableSlideHorizontally(Screens.ChatMsgScreen.route + "/{${Constants.PARAM_RECEIVER_ID}}/{${Constants.PARAM_RECEIVER_NOME}}") {
+            val viewModel = hiltViewModel<ChatMsgViewModel>()
+            val state by viewModel.state.collectAsState()
+
+            ChatMsgScreen(
                 navController = navController,
                 state = state,
                 onEvent = viewModel::onEvent

@@ -19,6 +19,7 @@ fun BottomBar(
     val items = listOf(
         BottomScreens.HomeScreen,
         BottomScreens.MeusPosts,
+        BottomScreens.ChatScreen,
         BottomScreens.ConfigScreen,
     )
 

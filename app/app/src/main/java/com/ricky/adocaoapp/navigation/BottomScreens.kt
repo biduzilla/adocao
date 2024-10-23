@@ -12,24 +12,30 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomScreens(
-    val route:String,
-    val selectedIcon:ImageVector,
-    val unselectedIcon:ImageVector
+    val route: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
 ) {
-    data object HomeScreen:BottomScreens(
-        route="Home",
+    data object HomeScreen : BottomScreens(
+        route = "Home",
         selectedIcon = Icons.Filled.Pets,
         unselectedIcon = Icons.Outlined.Pets
     )
 
-    data object MeusPosts:BottomScreens(
-        route="Meus Posts",
+    data object MeusPosts : BottomScreens(
+        route = "Meus Posts",
         selectedIcon = Icons.Filled.PermMedia,
         unselectedIcon = Icons.Outlined.PermMedia
     )
 
-    data object ConfigScreen:BottomScreens(
-        route="Configurações",
+    data object ChatScreen : BottomScreens(
+        route = "Chat",
+        selectedIcon = Icons.AutoMirrored.Filled.Chat,
+        unselectedIcon = Icons.AutoMirrored.Outlined.Chat
+    )
+
+    data object ConfigScreen : BottomScreens(
+        route = "Configurações",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
     )
