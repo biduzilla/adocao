@@ -10,8 +10,6 @@ import com.ricky.adocaoapp.data.network.api.PetApi
 import com.ricky.adocaoapp.data.network.api.RefreshTokenAPI
 import com.ricky.adocaoapp.data.network.api.UserAPI
 import com.ricky.adocaoapp.data.network.interceptor.AuthInterceptor
-import com.ricky.adocaoapp.data.network.websocket.GetMessage
-import com.ricky.adocaoapp.data.network.websocket.SendMessage
 import com.ricky.adocaoapp.data.repository.ChatRepositoryImpl
 import com.ricky.adocaoapp.data.repository.PetRepositoryImpl
 import com.ricky.adocaoapp.data.repository.TokenRepositoryImpl
@@ -26,12 +24,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
-import org.hildan.krossbow.stomp.StompClient
-import org.hildan.krossbow.stomp.StompSession
-import org.hildan.krossbow.websocket.ktor.KtorWebSocketClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton

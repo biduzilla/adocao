@@ -5,8 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -15,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Person
@@ -42,6 +45,8 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.presentation.form.FormEvent
+import com.ricky.adocaoapp.presentation.form.components.DialogRemover
 import com.ricky.adocaoapp.utils.rememberImeState
 
 @Composable
@@ -71,23 +76,61 @@ fun RegisterScreen(
         onEvent(RegisterEvent.ClearError)
     }
 
+    if (state.isShowDialogRemover) {
+        DialogRemover(
+            onDimiss = { onEvent(RegisterEvent.ShowDialogRemover) },
+            onRemover = {
+                onEvent(RegisterEvent.DeleteUser)
+            },
+            title = stringResource(id = R.string.titulo_excluir_conta),
+            btnText = stringResource(id = R.string.excluir)
+        )
+    }
+
+    if (state.deleteOk) {
+        navController.navigate(Screens.LoginScreen.route) {
+            popUpTo(navController.graph.startDestinationId) {
+                inclusive = true
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.primary)
     ) {
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(12.dp),
-            onClick = {
-                focusManager.clearFocus()
-                navController.popBackStack()
-            }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBackIosNew,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .padding(12.dp),
+                onClick = {
+                    focusManager.clearFocus()
+                    navController.popBackStack()
+                }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIosNew,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            if (state.isUpdate) {
+                IconButton(
+                    modifier = Modifier
+                        .padding(12.dp),
+                    onClick = {
+                        onEvent(RegisterEvent.ShowDialogRemover)
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Column(
@@ -110,7 +153,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = stringResource(id = if(state.isUpdate)R.string.atualizar_conta else R.string.criar_conta),
+                        text = stringResource(id = if (state.isUpdate) R.string.atualizar_conta else R.string.criar_conta),
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -188,7 +231,7 @@ fun RegisterScreen(
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 4.dp),
-                                    text = stringResource(id = if(state.isUpdate)R.string.atualizar else R.string.cadastrar),
+                                    text = stringResource(id = if (state.isUpdate) R.string.atualizar else R.string.cadastrar),
                                     style = MaterialTheme.typography.titleLarge
                                         .copy(fontWeight = FontWeight.Bold)
                                 )

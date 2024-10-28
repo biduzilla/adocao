@@ -1,6 +1,7 @@
 package com.ricky.adocaoapp.presentation.auth.register
 
 data class RegisterState(
+    var userId:String = "",
     var loading: Boolean = false,
     var nome: String = "",
     var email: String = "",
@@ -14,5 +15,7 @@ data class RegisterState(
     var onErrorSenha: Boolean = false,
     var onErrorConfirmarSenha: Boolean = false,
     var createOk: Boolean = false,
-    var isUpdate:Boolean = false
+    var deleteOk: Boolean = false,
+    var isUpdate:Boolean = false,
+    var isShowDialogRemover: Boolean = false,
 )

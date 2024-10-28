@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.flow
 import org.hildan.krossbow.stomp.StompSession
 import org.hildan.krossbow.stomp.sendText
 import java.time.Instant
-import javax.inject.Inject
 
 class SendMessage {
     operator fun invoke(sendChatMessage: SendChatMessage,session: StompSession): Flow<Boolean> = flow {
@@ -27,9 +26,7 @@ class SendMessage {
             })
             .create()
         try {
-            Log.i("infoteste", "SendMessage: $sendChatMessage")
             val jsonMessage = gson.toJson(sendChatMessage)
-            Log.i("infoteste", "SendMessage: $jsonMessage")
             session.sendText("/app/chat", jsonMessage)
         } catch (e: Exception) {
         }

@@ -1,5 +1,7 @@
 package com.ricky.adocaoapp.presentation.auth.register
 
+import com.ricky.adocaoapp.presentation.form.FormEvent
+
 sealed interface RegisterEvent {
     data class OnChangeNome(val nome: String) : RegisterEvent
     data class OnChangeTelefone(val telefone: String) : RegisterEvent
@@ -8,4 +10,6 @@ sealed interface RegisterEvent {
     data class OnChangeConfirmSenha(val senha: String) : RegisterEvent
     data object CreateAccount : RegisterEvent
     data object ClearError : RegisterEvent
+    data object ShowDialogRemover : RegisterEvent
+    data object DeleteUser : RegisterEvent
 }

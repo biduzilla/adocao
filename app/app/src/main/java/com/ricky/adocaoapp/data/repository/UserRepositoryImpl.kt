@@ -28,4 +28,6 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getById(idUser: String): Response<Usuario> = api.getById(idUser)
     override suspend fun getUsuariosBySenderId(idUser: String): Response<List<Usuario>> =
         api.getUsuariosBySenderId(idUser)
+
+    override suspend fun deleteUser(idUser: String): Response<Void> = api.deleteUser(idUser)
 }

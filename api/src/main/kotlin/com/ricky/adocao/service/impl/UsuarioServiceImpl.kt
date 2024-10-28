@@ -6,6 +6,7 @@ import com.ricky.adocao.exception.*
 import com.ricky.adocao.models.Usuario
 import com.ricky.adocao.repository.UsuarioRepository
 import com.ricky.adocao.security.JwtService
+import com.ricky.adocao.service.PetService
 import com.ricky.adocao.service.RoleService
 import com.ricky.adocao.service.UserDetail
 import com.ricky.adocao.service.UsuarioService
@@ -29,6 +30,7 @@ class UsuarioServiceImpl(
     @Lazy private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val roleService: RoleService,
+    @Lazy private val petService: PetService
 ) : UsuarioService, UserDetailsService {
     override fun findAll(pageable: Pageable): Page<Usuario> {
         return usuarioRepository.findAll(pageable)
@@ -90,6 +92,8 @@ class UsuarioServiceImpl(
     }
 
     override fun deleteById(idUsuario: String) {
+        val pets = petService.findByUserIdList(id = idUsuario)
+        petService.deleteAll(pets)
         usuarioRepository.deleteById(idUsuario)
     }
 

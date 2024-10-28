@@ -19,7 +19,9 @@ import com.ricky.adocaoapp.R
 fun DialogRemover(
     modifier: Modifier = Modifier,
     onDimiss: () -> Unit,
-    onRemover: () -> Unit
+    onRemover: () -> Unit,
+    title: String? = null,
+    btnText: String? = null
 ) {
 
     AlertDialog(
@@ -27,7 +29,7 @@ fun DialogRemover(
         shape = RoundedCornerShape(20.dp),
         text = {
             Text(
-                text = stringResource(id = R.string.titulo_apagar),
+                text = title ?: stringResource(id = R.string.titulo_apagar),
                 style = MaterialTheme.typography.bodyLarge
             )
         },
@@ -38,7 +40,7 @@ fun DialogRemover(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = { onRemover() }) {
-                    Text(text = stringResource(id = R.string.apagar))
+                    Text(text = btnText ?: stringResource(id = R.string.apagar))
                 }
                 Button(onClick = { onDimiss() }) {
                     Text(text = stringResource(id = R.string.cancelar))

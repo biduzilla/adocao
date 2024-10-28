@@ -3,6 +3,8 @@ package com.ricky.adocaoapp.presentation.auth.register
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ricky.adocaoapp.data.local.DataStoreUtil
+import com.ricky.adocaoapp.domain.models.Token
 import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.use_case.UserManager
 import com.ricky.adocaoapp.utils.Constants
@@ -14,17 +16,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val userCases: UserManager,
-private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val userCases: UserManager,
+    private val savedStateHandle: SavedStateHandle,
+    private val dataStoreUtil: DataStoreUtil
+) : ViewModel() {
 
     private val _state = MutableStateFlow(RegisterState())
     val state = _state.asStateFlow()
 
     init {
         savedStateHandle.get<String>(Constants.PARAM_USER_ID)?.let { userId ->
+            _state.update {
+                it.copy(
+                    userId = userId
+                )
+            }
             loadUser(userId)
             _state.update {
                 it.copy(
@@ -34,12 +45,12 @@ private val savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 
-    private fun loadUser(userId:String){
-        userCases.getById(userId).onEach {result->
+    private fun loadUser(userId: String) {
+        userCases.getById(userId).onEach { result ->
             when (result) {
                 is Resource.Error -> {
                     _state.value = _state.value.copy(
-                        loading  = false,
+                        loading = false,
                         error = result.message ?: "Error"
                     )
                 }
@@ -206,6 +217,48 @@ private val savedStateHandle: SavedStateHandle) : ViewModel() {
             RegisterEvent.ClearError -> _state.update {
                 it.copy(
                     error = ""
+                )
+            }
+
+            RegisterEvent.DeleteUser -> {
+                userCases.deleteUserById(_state.value.userId).onEach { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    loading = false,
+                                    error = result.message ?: "Error",
+                                )
+                            }
+                        }
+
+                        is Resource.Loading -> {
+                            _state.update {
+                                it.copy(
+                                    loading = true,
+                                )
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            val token = Token()
+                            viewModelScope.launch {
+                                dataStoreUtil.saveToken(token)
+                                _state.update {
+                                    it.copy(
+                                        loading = false,
+                                        deleteOk = true,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }.launchIn(viewModelScope)
+            }
+
+            RegisterEvent.ShowDialogRemover -> {
+                _state.value = _state.value.copy(
+                    isShowDialogRemover = !_state.value.isShowDialogRemover
                 )
             }
         }

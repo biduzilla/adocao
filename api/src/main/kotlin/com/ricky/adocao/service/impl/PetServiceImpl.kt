@@ -10,6 +10,7 @@ import com.ricky.adocao.service.UsuarioService
 import com.ricky.adocao.utils.I18n
 import com.ricky.adocao.utils.orderByToSort
 import org.springframework.beans.BeanUtils
+import org.springframework.context.annotation.Lazy
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 class PetServiceImpl(
     private val petRepository: PetRepository,
-    private val usuarioService: UsuarioService,
+    @Lazy private val usuarioService: UsuarioService,
     private val i18n: I18n
 ) : PetService {
     override fun findAll(
@@ -48,7 +49,7 @@ class PetServiceImpl(
     ): Page<Pet> {
         val sort = orderByToSort(orderBy);
         val pageable = PageRequest.of(page, qtd, sort);
-        return petRepository.findByUserId(userId,pageable)
+        return petRepository.findByUserId(userId, pageable)
     }
 
     override fun findUsuarioByPet(pet: Pet): Usuario {
@@ -71,8 +72,16 @@ class PetServiceImpl(
         petRepository.delete(pet)
     }
 
+    override fun deleteAll(pets: List<Pet>) {
+        petRepository.deleteAll(pets)
+    }
+
     override fun deleteById(idPet: String) {
         petRepository.deleteById(idPet)
+    }
+
+    override fun findByUserIdList(id: String): List<Pet> {
+        return petRepository.findByUserIdList(id)
     }
 
 }

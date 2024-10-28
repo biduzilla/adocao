@@ -45,7 +45,8 @@ class ChatMsgViewModel @Inject constructor(
                     }
                     viewModelScope.launch {
                         val client = StompClient(KtorWebSocketClient())
-                        session = client.connect("ws://192.168.0.13:8080/ws")
+                        session = client.connect(Constants.BASE_URL_WEBSOCKET)
+//                        session = client.connect("ws://192.168.0.13:8080/ws")
                         receiveNotification(token.idUser)
                     }
 

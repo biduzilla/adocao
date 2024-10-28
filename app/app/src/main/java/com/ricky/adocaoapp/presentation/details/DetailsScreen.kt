@@ -241,9 +241,6 @@ fun DetailsScreen(
                             }
 
                         }
-
-//
-
                     }
                 }
             }

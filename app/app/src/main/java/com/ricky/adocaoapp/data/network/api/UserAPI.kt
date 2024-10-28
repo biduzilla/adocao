@@ -8,6 +8,7 @@ import com.ricky.adocaoapp.domain.models.VerificarCod
 import com.ricky.adocaoapp.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -42,4 +43,9 @@ interface UserAPI {
     suspend fun getUsuariosBySenderId(
         @Path("idUser") idUser:String
     ): Response<List<Usuario>>
+
+    @DELETE("${Constants.USER_DELETE_ACCOUNT}/{idUser}")
+    suspend fun deleteUser(
+        @Path("idUser") idUser:String
+    ): Response<Void>
 }

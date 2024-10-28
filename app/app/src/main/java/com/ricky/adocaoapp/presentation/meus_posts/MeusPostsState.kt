@@ -1,8 +1,6 @@
 package com.ricky.adocaoapp.presentation.meus_posts
 
-import com.ricky.adocaoapp.domain.models.FiltroSearch
 import com.ricky.adocaoapp.domain.models.Pet
-import com.ricky.adocaoapp.domain.models.Usuario
 
 data class MeusPostsState(
     var isLoading: Boolean = false,
