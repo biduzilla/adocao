@@ -3,8 +3,8 @@ package com.ricky.adocaoapp.utils
 object Constants {
     const val SETTINGS: String = "settings"
     const val IS_DARK_MODE: String = "darkMode"
-    const val BASE_URL: String = "http://192.168.0.13:8080"
-    const val BASE_URL_WEBSOCKET: String = "ws://192.168.0.13:8080/ws"
+    const val BASE_URL: String = "http://192.168.0.11:8080"
+    const val BASE_URL_WEBSOCKET: String = "ws://192.168.0.11:8080/ws"
     const val USER_LOGIN_ENDPOINT: String = "/usuario/login"
     const val USER_SAVE_ENDPOINT: String = "/usuario/save"
     const val USER_REFRESH_TOKEN_ENDPOINT: String = "/usuario/refresh-token"

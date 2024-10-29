@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AdocaoApp</string>
+    <string name="app_name">Adocao</string>
     <string name="email">E-mail</string>
     <string name="senha">Senha</string>
     <string name="nome">Nome</string>
