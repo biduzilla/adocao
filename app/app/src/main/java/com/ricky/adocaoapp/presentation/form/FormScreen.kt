@@ -37,6 +37,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,11 +48,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.ricky.adocao.enums.PetTipoAnimalEnum
 import com.ricky.adocaoapp.R
@@ -61,6 +66,7 @@ import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.presentation.chat.ChatEvent
 import com.ricky.adocaoapp.presentation.form.components.DialogRemover
 import com.ricky.adocaoapp.presentation.form.components.DropdownCompose
 import com.ricky.adocaoapp.presentation.form.components.ModalBottomSheetCompose
@@ -74,6 +80,8 @@ fun FormScreen(
     navController: NavController,
     onEvent: (FormEvent) -> Unit
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     val context = LocalContext.current
     val tempUri = remember { mutableStateOf<Uri?>(null) }
     val scrollState = rememberScrollState()
@@ -113,6 +121,12 @@ fun FormScreen(
 //            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
 //        }
 //    }
+
+    LaunchedEffect(lifecycleState) {
+        if (lifecycleState == Lifecycle.State.RESUMED) {
+            onEvent(FormEvent.Resume)
+        }
+    }
 
     ToastError(error = state.error) {
         onEvent(FormEvent.ClearError)

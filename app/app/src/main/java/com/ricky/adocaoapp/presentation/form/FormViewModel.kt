@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.form
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,9 +36,13 @@ class FormViewModel @Inject constructor(
     init {
         getLoc()
         viewModelScope.launch {
-            dataStoreUtil.getToken().collect{
-                it?.let {
-                    loadUser(it.idUser)
+            dataStoreUtil.getToken().collect {token->
+                token?.let {
+                    _state.update { currentState ->
+                        currentState.copy(
+                            userId = token.idUser
+                        )
+                    }
                 }
             }
         }
@@ -65,27 +70,32 @@ class FormViewModel @Inject constructor(
         when (event) {
             is FormEvent.AddPet -> {
                 if (_state.value.nome.trim().isBlank()) {
-                    _state.value = FormState(
-                        onErrorNome = true
-                    )
+                    _state.update {
+                        it.copy(
+                            onErrorNome = true
+                        )
+                    }
                     return
                 }
 
                 if (_state.value.descricao.trim().isBlank()) {
-                    _state.value = FormState(
-                        onErrorDescricao = true
-                    )
+                    _state.update {
+                        it.copy(
+                            onErrorDescricao = true
+                        )
+                    }
                     return
                 }
 
 
                 if (_state.value.foto == null) {
-                    _state.value = _state.value.copy(
-                        onErrorPhoto = true
-                    )
+                    _state.update {
+                        it.copy(
+                            onErrorPhoto = true
+                        )
+                    }
                     return
                 }
-
                 val pet = PetRequest(
                     nome = _state.value.nome,
                     idade = _state.value.idade,
@@ -96,7 +106,7 @@ class FormViewModel @Inject constructor(
                     foto = bitmapToByteArray(_state.value.foto!!),
                     status = _state.value.status,
                     tamanho = _state.value.tamanho,
-                    donoId = _state.value.usuario.id,
+                    donoId = _state.value.userId,
                     lat = _state.value.lat,
                     long = _state.value.long,
                 )
@@ -133,7 +143,7 @@ class FormViewModel @Inject constructor(
                             }
                         }
                     }.launchIn(viewModelScope)
-                }else{
+                } else {
                     petManager.save(pet).onEach { result ->
                         when (result) {
                             is Resource.Error -> {
@@ -268,47 +278,63 @@ class FormViewModel @Inject constructor(
 
             is FormEvent.SelectPhoto -> {
                 event.uri?.let {
-                    _state.value = _state.value.copy(
-                        foto = uriToBitmap(uri = event.uri, context = event.context),
-                        onErrorPhoto = false
-                    )
+                    _state.update {
+                        it.copy(
+                            foto = uriToBitmap(uri = event.uri, context = event.context),
+                            onErrorPhoto = false
+                        )
+                    }
                 }
             }
 
             FormEvent.ShowBottomSheet -> {
-                _state.value = _state.value.copy(
-                    isShowBottomSheet = !_state.value.isShowBottomSheet
-                )
+                _state.update {
+                    it.copy(
+                        isShowBottomSheet = !_state.value.isShowBottomSheet
+                    )
+                }
             }
 
             FormEvent.ShowDialogRemover -> {
-                _state.value = _state.value.copy(
-                    isShowDialogRemover = !_state.value.isShowDialogRemover
-                )
+                _state.update {
+                    it.copy(
+                        isShowDialogRemover = !_state.value.isShowDialogRemover
+                    )
+                }
             }
 
             FormEvent.ClearError -> {
-                _state.value = _state.value.copy(
-                    error = ""
-                )
+                _state.update {
+                    it.copy(
+                        error = ""
+                    )
+                }
+            }
+
+            FormEvent.Resume -> {
+                loadUser(_state.value.userId)
             }
         }
     }
 
-    private fun loadUser(idUser:String) {
+    private fun loadUser(idUser: String) {
         userManager.getById(idUser).onEach { result ->
             when (result) {
                 is Resource.Error -> {
-                    _state.value = _state.value.copy(
-                        isLoading = false,
-                        error = result.message ?: "Error"
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message ?: "Error"
+                        )
+                    }
                 }
 
                 is Resource.Loading -> {
-                    _state.value = _state.value.copy(
-                        isLoading = true,
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = true,
+                        )
+                    }
                 }
 
                 is Resource.Success -> {
@@ -352,34 +378,40 @@ class FormViewModel @Inject constructor(
         petManager.getById(petId).onEach { result ->
             when (result) {
                 is Resource.Error -> {
-                    _state.value = FormState(
-                        isLoading = false,
-                        error = result.message ?: "Error Inesperado"
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message ?: "Error Inesperado"
+                        )
+                    }
                 }
 
                 is Resource.Loading -> {
-                    _state.value = FormState(
-                        isLoading = true
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
                 }
 
                 is Resource.Success -> {
                     result.data?.let {
-                        _state.value = FormState(
-                            isLoading = false,
-                            nome = it.nome,
-                            descricao = it.descricao,
-                            idade = it.idade,
-                            cidade = it.localizacao,
-                            genero = it.genero,
-                            especie = it.tipoAnimal,
-                            status = it.status,
-                            tamanho = it.tamanho,
-                            foto = byteArrayToBitmap(it.foto),
-                            petId = it.id,
-                            isUpdate = true,
-                        )
+                        _state.update {currentState->
+                            currentState.copy(
+                                isLoading = false,
+                                nome = it.nome,
+                                descricao = it.descricao,
+                                idade = it.idade,
+                                cidade = it.localizacao,
+                                genero = it.genero,
+                                especie = it.tipoAnimal,
+                                status = it.status,
+                                tamanho = it.tamanho,
+                                foto = byteArrayToBitmap(it.foto),
+                                petId = it.id,
+                                isUpdate = true,
+                            )
+                        }
                     }
                 }
             }

@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,7 +77,11 @@ fun <T : Enum<T>> DropdownCompose(
                     val itemAsEnumWithValue = item as? EnumWithValue
                     val text = itemAsEnumWithValue?.value ?: item.name
                     DropdownMenuItem(
-                        text = { Text(text = text) },
+                        text = { Text(text = text,
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )},
                         onClick = {
                             onChange(item)
                             expanded = false
