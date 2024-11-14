@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ricky.adocaoapp.R
@@ -40,10 +41,20 @@ fun DialogRemover(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(onClick = { onRemover() }) {
-                    Text(text = btnText ?: stringResource(id = R.string.apagar))
+                    Text(
+                        text = btnText ?: stringResource(id = R.string.apagar),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    )
                 }
                 Button(onClick = { onDimiss() }) {
-                    Text(text = stringResource(id = R.string.cancelar))
+                    Text(
+                        text = stringResource(id = R.string.cancelar),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    )
                 }
             }
         },
