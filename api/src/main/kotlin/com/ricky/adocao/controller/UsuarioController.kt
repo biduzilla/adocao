@@ -88,11 +88,14 @@ class UsuarioController(
         emailService.sendEmail(cod = cod.toString(), to = user.email)
     }
 
-    @GetMapping("verificar-cod")
-    fun verificarCod(@RequestBody @Valid verificarCodDTO: VerificarCodDTO) {
+    @GetMapping("verificar-cod/{cod}/{email}")
+    fun verificarCod(
+        @PathVariable cod: Int,
+        @PathVariable email: String,
+    ) {
         usuarioService.verificarCod(
-            cod = verificarCodDTO.cod.toInt(),
-            email = verificarCodDTO.email
+            cod = cod,
+            email = email
         )
     }
 

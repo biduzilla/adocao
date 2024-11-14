@@ -51,6 +51,7 @@ fun TextFieldCompose(
     ime: ImeAction = ImeAction.Next,
     onDone: () -> Unit = {},
     onNext: () -> Unit = {},
+    enable:Boolean = true,
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
@@ -71,6 +72,7 @@ fun TextFieldCompose(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(10.dp),
             value = value,
+            enabled = enable,
             onValueChange = { onChange(it) },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,

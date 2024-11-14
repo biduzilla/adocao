@@ -43,8 +43,14 @@ class UserManager @Inject constructor(
         return saveCase(usuario)
     }
 
-    fun verifyCod(verificarCod: VerificarCod): Flow<Resource<Boolean>> {
-        return verifyCodCase(verificarCod)
+    fun verifyCod(
+        cod: Int,
+        email: String
+    ): Flow<Resource<Boolean>> {
+        return verifyCodCase(
+            cod = cod,
+            email = email
+        )
     }
 
     fun getById(idUser: String): Flow<Resource<Usuario>> {

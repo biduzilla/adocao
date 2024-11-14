@@ -1,5 +1,6 @@
 package com.ricky.adocaoapp.presentation.auth.forget_password
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ricky.adocaoapp.domain.models.ResetSenha
@@ -9,6 +10,7 @@ import com.ricky.adocaoapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -68,41 +70,38 @@ class ForgetPassViewModel @Inject constructor(private val userManager: UserManag
                     return
                 }
 
-                viewModelScope.launch {
-                    val verifyCod = VerificarCod(
-                        cod = _state.value.cod,
-                        email = _state.value.email
-                    )
-                    userManager.verifyCod(verifyCod).onEach { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update {
-                                    it.copy(
-                                        error = result.message ?: "",
-                                        isLoading = false
-                                    )
-                                }
+                userManager.verifyCod(
+                    cod = _state.value.cod.toInt(),
+                    email = _state.value.email
+                ).onEach { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message ?: "",
+                                    isLoading = false
+                                )
                             }
+                        }
 
-                            is Resource.Loading -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = true
-                                    )
-                                }
+                        is Resource.Loading -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = true
+                                )
                             }
+                        }
 
-                            is Resource.Success -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isCodVer = true
-                                    )
-                                }
+                        is Resource.Success -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isCodVer = true
+                                )
                             }
                         }
                     }
-                }
+                }.launchIn(viewModelScope)
             }
 
             ForgetPassEvent.OnSendEmail -> {
@@ -114,38 +113,35 @@ class ForgetPassViewModel @Inject constructor(private val userManager: UserManag
                     }
                     return
                 }
-
-                viewModelScope.launch {
-                    userManager.resetPassword(_state.value.email).onEach { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update {
-                                    it.copy(
-                                        error = result.message ?: "",
-                                        isLoading = false
-                                    )
-                                }
+                userManager.resetPassword(_state.value.email).onEach { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message ?: "",
+                                    isLoading = false
+                                )
                             }
+                        }
 
-                            is Resource.Loading -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = true
-                                    )
-                                }
+                        is Resource.Loading -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = true
+                                )
                             }
+                        }
 
-                            is Resource.Success -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isEmailSend = true
-                                    )
-                                }
+                        is Resource.Success -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isEmailSend = true
+                                )
                             }
                         }
                     }
-                }
+                }.launchIn(viewModelScope)
             }
 
             ForgetPassEvent.OnUpdatePassword -> {
@@ -175,40 +171,44 @@ class ForgetPassViewModel @Inject constructor(private val userManager: UserManag
                     cod = _state.value.cod.toInt()
                 )
 
-                viewModelScope.launch {
-                    userManager.changePassword(resetSenha).onEach { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update {
-                                    it.copy(
-                                        error = result.message ?: "",
-                                        isLoading = false
-                                    )
-                                }
+                userManager.changePassword(resetSenha).onEach { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message ?: "",
+                                    isLoading = false
+                                )
                             }
+                        }
 
-                            is Resource.Loading -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = true
-                                    )
-                                }
+                        is Resource.Loading -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = true
+                                )
                             }
+                        }
 
-                            is Resource.Success -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isOk = true
-                                    )
-                                }
+                        is Resource.Success -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isOk = true
+                                )
                             }
                         }
                     }
-                }
+                }.launchIn(viewModelScope)
             }
 
-            ForgetPassEvent.ClearError -> TODO()
+            ForgetPassEvent.ClearError -> {
+                _state.update {
+                    it.copy(
+                        error = ""
+                    )
+                }
+            }
         }
     }
 }

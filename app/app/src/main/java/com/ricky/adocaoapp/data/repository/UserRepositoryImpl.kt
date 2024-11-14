@@ -8,6 +8,7 @@ import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.models.VerificarCod
 import com.ricky.adocaoapp.domain.repository.UserRepository
 import retrofit2.Response
+import retrofit2.http.Path
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -19,8 +20,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun resetPassword(email: String): Response<Void> = api.resetPassword(email)
 
-    override suspend fun verifyCod(verificarCod: VerificarCod): Response<Void> =
-        api.verifyCod(verificarCod)
+    override suspend fun verifyCod(
+        cod: Int,
+        email: String
+    ): Response<Void> =
+        api.verifyCod(
+            cod = cod,
+            email = email
+        )
 
     override suspend fun changePassword(resetSenha: ResetSenha): Response<Void> =
         api.changePassword(resetSenha)

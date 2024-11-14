@@ -13,15 +13,22 @@ import javax.inject.Inject
 
 class UseCaseVerifyCod @Inject constructor(private val repository: UserRepository) {
 
-    operator fun invoke(verificarCod: VerificarCod): Flow<Resource<Boolean>> = flow {
+    operator fun invoke(
+        cod: Int,
+        email: String
+    ): Flow<Resource<Boolean>> = flow {
         try {
             emit(Resource.Loading())
 
-            repository.verifyCod(verificarCod).let { result ->
+            repository.verifyCod(
+                cod = cod,
+                email = email
+            ).let { result ->
                 if (result.isSuccessful) {
                     emit(Resource.Success(true))
                 } else {
-                    val error = Gson().fromJson(result.errorBody()?.charStream(), ErrorRequest::class.java)
+                    val error =
+                        Gson().fromJson(result.errorBody()?.charStream(), ErrorRequest::class.java)
                     emit(Resource.Error(error?.message ?: "Error desconhecido"))
                 }
             }

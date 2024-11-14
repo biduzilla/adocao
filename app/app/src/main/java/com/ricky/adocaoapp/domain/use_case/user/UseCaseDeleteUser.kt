@@ -2,7 +2,6 @@ package com.ricky.adocaoapp.domain.use_case.user
 
 import com.google.gson.Gson
 import com.ricky.adocaoapp.domain.models.ErrorRequest
-import com.ricky.adocaoapp.domain.models.Usuario
 import com.ricky.adocaoapp.domain.repository.UserRepository
 import com.ricky.adocaoapp.utils.Resource
 import kotlinx.coroutines.flow.Flow

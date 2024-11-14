@@ -45,7 +45,6 @@ import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
-import com.ricky.adocaoapp.presentation.form.FormEvent
 import com.ricky.adocaoapp.presentation.form.components.DialogRemover
 import com.ricky.adocaoapp.utils.rememberImeState
 

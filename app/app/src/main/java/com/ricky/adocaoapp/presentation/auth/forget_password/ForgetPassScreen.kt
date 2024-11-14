@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.auth.forget_password
 
-import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,7 +16,6 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Numbers
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ricky.adocaoapp.R
 import com.ricky.adocaoapp.navigation.Screens
+import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
+import com.ricky.adocaoapp.presentation.home.components.ToastError
 import com.ricky.adocaoapp.utils.rememberImeState
 
 @Composable
@@ -49,7 +48,6 @@ fun ForgetPassScreen(
     state: ForgetPassState,
     onEvent: (ForgetPassEvent) -> Unit
 ) {
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val imeState = rememberImeState()
     val focusManager = LocalFocusManager.current
@@ -59,9 +57,7 @@ fun ForgetPassScreen(
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
     }
-
-    if (state.error.isNotBlank()) {
-        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    ToastError(error = state.error) {
         onEvent(ForgetPassEvent.ClearError)
     }
 
@@ -121,6 +117,7 @@ fun ForgetPassScreen(
                         value = state.email,
                         isError = state.onErrorEmail,
                         label = R.string.email,
+                        enable = !state.isEmailSend,
                         icon = Icons.Default.Email,
                         ime = ImeAction.Next
                     ) {
@@ -131,22 +128,13 @@ fun ForgetPassScreen(
                         CircularProgressIndicator()
                     } else {
                         Column {
-                            Button(
+                            BtnCompose(
+                                enable = !state.isEmailSend,
                                 onClick = {
                                     focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnSendEmail)
-                                },
-                                modifier = Modifier
-                                    .width(220.dp),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(vertical = 4.dp),
-                                    text = stringResource(id = R.string.enviar_email),
-                                    style = MaterialTheme.typography.titleLarge
-                                        .copy(fontWeight = FontWeight.Bold)
-                                )
-                            }
+                                }, title = R.string.enviar_email
+                            )
                         }
                     }
 
@@ -154,8 +142,9 @@ fun ForgetPassScreen(
                         TextFieldCompose(
                             value = state.cod,
                             isError = state.onErrorCod,
-                            label = R.string.cod_invalido,
+                            label = R.string.codigo,
                             icon = Icons.Default.Numbers,
+                            enable = !state.isCodVer,
                             keyboardType = KeyboardType.Number,
                             errorText = R.string.cod_invalido,
                             ime = ImeAction.Next
@@ -168,22 +157,13 @@ fun ForgetPassScreen(
                         CircularProgressIndicator()
                     } else if (!state.isLoading && state.isEmailSend) {
                         Column {
-                            Button(
+                            BtnCompose(
+                                enable = !state.isCodVer,
                                 onClick = {
                                     focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnSendCod)
-                                },
-                                modifier = Modifier
-                                    .width(220.dp),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(vertical = 4.dp),
-                                    text = stringResource(id = R.string.ver_cod),
-                                    style = MaterialTheme.typography.titleLarge
-                                        .copy(fontWeight = FontWeight.Bold)
-                                )
-                            }
+                                }, title = R.string.ver_cod
+                            )
                         }
                     }
 
@@ -192,6 +172,7 @@ fun ForgetPassScreen(
                             value = state.senha,
                             isError = state.onErrorSenha,
                             label = R.string.senha,
+                            isPassword = true,
                             icon = Icons.Default.Key,
                             ime = ImeAction.Next
                         ) {
@@ -203,6 +184,7 @@ fun ForgetPassScreen(
                             isError = state.onErrorConfirmSenha,
                             label = R.string.confirm_senha,
                             icon = Icons.Default.Key,
+                            isPassword = true,
                             ime = ImeAction.Done,
                             errorText = R.string.confirm_senha_error
                         ) {
@@ -214,22 +196,12 @@ fun ForgetPassScreen(
                         CircularProgressIndicator()
                     } else if (!state.isLoading && state.isCodVer) {
                         Column {
-                            Button(
+                            BtnCompose(
                                 onClick = {
                                     focusManager.clearFocus()
                                     onEvent(ForgetPassEvent.OnUpdatePassword)
-                                },
-                                modifier = Modifier
-                                    .width(220.dp),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(vertical = 4.dp),
-                                    text = stringResource(id = R.string.alterar_senha),
-                                    style = MaterialTheme.typography.titleLarge
-                                        .copy(fontWeight = FontWeight.Bold)
-                                )
-                            }
+                                }, title = R.string.alterar_senha
+                            )
                         }
                     }
                 }

@@ -78,9 +78,9 @@ fun <T : Enum<T>> DropdownCompose(
                     val text = itemAsEnumWithValue?.value ?: item.name
                     DropdownMenuItem(
                         text = { Text(text = text,
-                            style = TextStyle(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
+//                            style = TextStyle(
+//                                color = MaterialTheme.colorScheme.onPrimaryContainer
+//                            )
                         )},
                         onClick = {
                             onChange(item)

@@ -27,6 +27,7 @@ import com.ricky.adocaoapp.R
 fun BtnCompose(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enable: Boolean = true,
     @StringRes title: Int,
     icon: ImageVector? = null,
     titleString: String? = null,
@@ -35,6 +36,7 @@ fun BtnCompose(
 ) {
     val focusManager = LocalFocusManager.current
     Button(
+        enabled = enable,
         onClick = {
             focusManager.clearFocus()
             onClick()
@@ -47,14 +49,14 @@ fun BtnCompose(
         )
     ) {
         if (icon != null) {
-            Icon( imageVector = icon, contentDescription = titleString ?: stringResource(id = title))
+            Icon(imageVector = icon, contentDescription = titleString ?: stringResource(id = title))
         }
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             modifier = Modifier.padding(vertical = 4.dp),
             text = titleString ?: stringResource(id = title),
             style = MaterialTheme.typography.titleLarge
-                .copy(fontWeight = FontWeight.Bold,)
+                .copy(fontWeight = FontWeight.Bold)
         )
     }
 }
@@ -62,5 +64,10 @@ fun BtnCompose(
 @Preview
 @Composable
 private fun BtnComposePrev() {
-    BtnCompose(onClick = {}, title = R.string.cadastrar, titleString = "(61)995932139", icon = Icons.Default.Phone)
+    BtnCompose(
+        onClick = {},
+        title = R.string.cadastrar,
+        titleString = "(61)995932139",
+        icon = Icons.Default.Phone
+    )
 }

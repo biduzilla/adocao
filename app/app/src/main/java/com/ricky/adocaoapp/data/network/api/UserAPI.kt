@@ -26,8 +26,11 @@ interface UserAPI {
     @POST("${Constants.USER_RESET_PASSWORD_ENDPOINT}/{email}")
     suspend fun resetPassword(@Path("email") email: String): Response<Void>
 
-    @GET(Constants.USER_VERIFY_CODE_ENDPOINT)
-    suspend fun verifyCod(@Body verificarCod: VerificarCod): Response<Void>
+    @GET("${Constants.USER_VERIFY_CODE_ENDPOINT}/{cod}/{email}")
+    suspend fun verifyCod(
+        @Path("cod") cod: Int,
+        @Path("email") email: String
+    ): Response<Void>
 
     @PUT(Constants.USER_CHANGE_PASSWORD_ENDPOINT)
     suspend fun changePassword(
@@ -36,16 +39,16 @@ interface UserAPI {
 
     @GET("${Constants.USER_GET_BY_ID}/{idUser}")
     suspend fun getById(
-        @Path("idUser") idUser:String
+        @Path("idUser") idUser: String
     ): Response<Usuario>
 
     @GET("${Constants.USER_CHATS_ENPOINT}/{idUser}")
     suspend fun getUsuariosBySenderId(
-        @Path("idUser") idUser:String
+        @Path("idUser") idUser: String
     ): Response<List<Usuario>>
 
     @DELETE("${Constants.USER_DELETE_ACCOUNT}/{idUser}")
     suspend fun deleteUser(
-        @Path("idUser") idUser:String
+        @Path("idUser") idUser: String
     ): Response<Void>
 }

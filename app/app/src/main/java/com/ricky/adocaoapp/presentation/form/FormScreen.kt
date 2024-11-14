@@ -66,7 +66,6 @@ import com.ricky.adocaoapp.domain.enums.PetTamanhoEnum
 import com.ricky.adocaoapp.navigation.Screens
 import com.ricky.adocaoapp.presentation.auth.login.components.BtnCompose
 import com.ricky.adocaoapp.presentation.auth.login.components.TextFieldCompose
-import com.ricky.adocaoapp.presentation.chat.ChatEvent
 import com.ricky.adocaoapp.presentation.form.components.DialogRemover
 import com.ricky.adocaoapp.presentation.form.components.DropdownCompose
 import com.ricky.adocaoapp.presentation.form.components.ModalBottomSheetCompose

@@ -1,6 +1,5 @@
 package com.ricky.adocaoapp.presentation.form
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,7 +35,7 @@ class FormViewModel @Inject constructor(
     init {
         getLoc()
         viewModelScope.launch {
-            dataStoreUtil.getToken().collect {token->
+            dataStoreUtil.getToken().collect { token ->
                 token?.let {
                     _state.update { currentState ->
                         currentState.copy(
@@ -96,83 +95,91 @@ class FormViewModel @Inject constructor(
                     }
                     return
                 }
-                val pet = PetRequest(
-                    nome = _state.value.nome,
-                    idade = _state.value.idade,
-                    localizacao = _state.value.cidade,
-                    descricao = _state.value.descricao,
-                    genero = _state.value.genero,
-                    tipoAnimal = _state.value.especie,
-                    foto = bitmapToByteArray(_state.value.foto!!),
-                    status = _state.value.status,
-                    tamanho = _state.value.tamanho,
-                    donoId = _state.value.userId,
-                    lat = _state.value.lat,
-                    long = _state.value.long,
-                )
 
-                if (_state.value.isUpdate) {
-                    pet.id = _state.value.petId
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
 
-                    petManager.update(pet).onEach { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        error = result.message ?: "Error Inesperado"
-                                    )
+                    val pet = PetRequest(
+                        nome = _state.value.nome,
+                        idade = _state.value.idade,
+                        localizacao = _state.value.cidade,
+                        descricao = _state.value.descricao,
+                        genero = _state.value.genero,
+                        tipoAnimal = _state.value.especie,
+                        foto = bitmapToByteArray(_state.value.foto!!),
+                        status = _state.value.status,
+                        tamanho = _state.value.tamanho,
+                        donoId = _state.value.userId,
+                        lat = _state.value.lat,
+                        long = _state.value.long,
+                    )
+                    if (_state.value.isUpdate) {
+                        pet.id = _state.value.petId
+
+                        petManager.update(pet).onEach { result ->
+                            when (result) {
+                                is Resource.Error -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            error = result.message ?: "Error Inesperado"
+                                        )
+                                    }
                                 }
-                            }
 
-                            is Resource.Loading -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = true
-                                    )
+                                is Resource.Loading -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = true
+                                        )
+                                    }
                                 }
-                            }
 
-                            is Resource.Success -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isOk = true
-                                    )
-                                }
-                            }
-                        }
-                    }.launchIn(viewModelScope)
-                } else {
-                    petManager.save(pet).onEach { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        error = result.message ?: "Error Inesperado"
-                                    )
-                                }
-                            }
-
-                            is Resource.Loading -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = true
-                                    )
-                                }
-                            }
-
-                            is Resource.Success -> {
-                                _state.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        isOk = true
-                                    )
+                                is Resource.Success -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            isOk = true
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }.launchIn(viewModelScope)
+                    } else {
+                        petManager.save(pet).onEach { result ->
+                            when (result) {
+                                is Resource.Error -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            error = result.message ?: "Error Inesperado"
+                                        )
+                                    }
+                                }
+
+                                is Resource.Loading -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = true
+                                        )
+                                    }
+                                }
+
+                                is Resource.Success -> {
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            isOk = true
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -396,7 +403,7 @@ class FormViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     result.data?.let {
-                        _state.update {currentState->
+                        _state.update { currentState ->
                             currentState.copy(
                                 isLoading = false,
                                 nome = it.nome,

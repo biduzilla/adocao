@@ -11,7 +11,11 @@ interface UserRepository {
     suspend fun login(login: Login): Response<Token>
     suspend fun save(usuario: Usuario): Response<Usuario>
     suspend fun resetPassword(email: String): Response<Void>
-    suspend fun verifyCod(verificarCod: VerificarCod): Response<Void>
+    suspend fun verifyCod(
+        cod: Int,
+        email: String
+    ): Response<Void>
+
     suspend fun changePassword(resetSenha: ResetSenha): Response<Void>
     suspend fun getById(idUser: String): Response<Usuario>
     suspend fun getUsuariosBySenderId(
