@@ -79,8 +79,6 @@ fun FormScreen(
     navController: NavController,
     onEvent: (FormEvent) -> Unit
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     val context = LocalContext.current
     val tempUri = remember { mutableStateOf<Uri?>(null) }
     val scrollState = rememberScrollState()
@@ -120,12 +118,6 @@ fun FormScreen(
 //            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
 //        }
 //    }
-
-    LaunchedEffect(lifecycleState) {
-        if (lifecycleState == Lifecycle.State.RESUMED) {
-            onEvent(FormEvent.Resume)
-        }
-    }
 
     ToastError(error = state.error) {
         onEvent(FormEvent.ClearError)

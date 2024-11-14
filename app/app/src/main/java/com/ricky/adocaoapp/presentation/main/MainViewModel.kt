@@ -25,23 +25,28 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            dataStoreUtil.getToken().collect{
-                it?.let {
-                    loadUser(it.idUser)
+            dataStoreUtil.getToken().collect {
+                it?.let { token ->
+                    _state.update { currentState ->
+                        currentState.copy(
+                            idUser = token.idUser
+                        )
+                    }
                 }
             }
         }
     }
 
-    fun onEvent(event:MainEvent){
-        when(event){
+    fun onEvent(event: MainEvent) {
+        when (event) {
             MainEvent.ClearError -> {
                 _state.update {
                     it.copy(
-                        error=""
+                        error = ""
                     )
                 }
             }
+
             MainEvent.OnSair -> {
                 val token = Token()
                 viewModelScope.launch {
@@ -53,11 +58,15 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+
+            MainEvent.Resume -> {
+                loadUser()
+            }
         }
     }
 
-    private fun loadUser(idUser:String) {
-        userManager.getById(idUser).onEach { result ->
+    private fun loadUser() {
+        userManager.getById(_state.value.idUser).onEach { result ->
             when (result) {
                 is Resource.Error -> {
                     _state.value = _state.value.copy(

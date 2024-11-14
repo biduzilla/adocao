@@ -6,5 +6,6 @@ data class MainState(
     var usuario:Usuario = Usuario(),
     var error:String = "",
     var isLoading:Boolean = false,
-    var onSair:Boolean = false
+    var onSair:Boolean = false,
+    var idUser:String = ""
 )

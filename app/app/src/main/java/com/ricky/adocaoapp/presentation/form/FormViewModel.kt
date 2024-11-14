@@ -54,15 +54,15 @@ class FormViewModel @Inject constructor(
             loadPet(petId)
         }
 
-        viewModelScope.launch {
-            dataStoreUtil.getToken().collect {
-                _state.update {
-                    it.copy(
-                        userId = it.userId
-                    )
-                }
-            }
-        }
+//        viewModelScope.launch {
+//            dataStoreUtil.getToken().collect {
+//                _state.update {
+//                    it.copy(
+//                        userId = it.userId
+//                    )
+//                }
+//            }
+//        }
     }
 
     fun onEvent(event: FormEvent) {
@@ -148,7 +148,7 @@ class FormViewModel @Inject constructor(
                                     }
                                 }
                             }
-                        }
+                        }.launchIn(viewModelScope)
                     } else {
                         petManager.save(pet).onEach { result ->
                             when (result) {
@@ -178,7 +178,7 @@ class FormViewModel @Inject constructor(
                                     }
                                 }
                             }
-                        }
+                        }.launchIn(viewModelScope)
                     }
                 }
             }
@@ -317,46 +317,7 @@ class FormViewModel @Inject constructor(
                     )
                 }
             }
-
-            FormEvent.Resume -> {
-                loadUser(_state.value.userId)
-            }
         }
-    }
-
-    private fun loadUser(idUser: String) {
-        userManager.getById(idUser).onEach { result ->
-            when (result) {
-                is Resource.Error -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            error = result.message ?: "Error"
-                        )
-                    }
-                }
-
-                is Resource.Loading -> {
-                    _state.update {
-                        it.copy(
-                            isLoading = true,
-                        )
-                    }
-                }
-
-                is Resource.Success -> {
-                    result.data?.let { user ->
-                        _state.update {
-                            it.copy(
-                                usuario = user,
-                                isLoading = false
-                            )
-                        }
-
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
     }
 
     private fun getLoc() {
